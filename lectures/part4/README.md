@@ -10,7 +10,17 @@
 - Google AI Studio 소개 & Gemini API 구조
 - API Key 발급 및 보안 관리 (.env + .gitignore)
 - Gemini의 멀티모달 능력 (텍스트 + 이미지 + 영상)
-- Claude API vs Gemini API 비교 — 어떤 걸 언제 쓸까
+- **Claude API vs Gemini API 비교**
+
+| 항목 | Claude API | Gemini API |
+|------|-----------|-----------|
+| 무료 한도 | Claude.ai 기반 / API는 유료 | 하루 1,500회 / 분당 15회 무료 |
+| 가장 강한 모델 | Claude Sonnet 4.6 | Gemini 1.5 Pro |
+| 맥락 창 | 200K 토큰 | 1M 토큰 |
+| 장점 | 코딩/분석 정확도 높음 | 무료 한도 넉넉, Google 통합 |
+| 단점 | 무료 API 없음 | 긴 추론 일관성 낮을 수 있음 |
+| 이 강의 활용 | 텔레그램 봇 (13~14강) | 챗봇·시뮬레이션 (8~9강) |
+
 - **[흥미 포인트]** Google DeepMind와 Gemini 합쳐진 이야기
 
 ### 실습 (18분)
@@ -47,25 +57,34 @@
 
 ---
 
-## 10강: Google Antigravity 웹앱 만들기 (30분)
+## 10강: 웹앱 배포 플랫폼 심화 + AI 스펙 비교 앱 (30분)
+
+> ⚠️ **강사 참고**: `antigravity.google` URL은 강의 준비 시점에 반드시 접속 확인 필요.
+> 서비스 미제공 시 **Streamlit Cloud** 또는 **Firebase Studio**(idx.google.com)로 대체.
+> 아래 실습은 Streamlit Cloud 기준으로도 100% 진행 가능하도록 작성됨.
 
 ### 오프닝 훅
-> *"Google이 만든 AI 웹앱 플랫폼 Antigravity.
-> 이름부터 '중력을 거스른다' — 기존 무거운 개발 방식을 뒤집겠다는 선언.
-> → [antigravity.google](https://antigravity.google)"*
+> *"같은 앱을 GitHub Pages / Streamlit Cloud / Firebase Studio 어디에 올리느냐에 따라
+> 성능·비용·유지보수가 완전히 달라진다.
+> 오늘은 플랫폼을 '골라 쓰는 눈'을 기른다."*
 
 ### 이론 (15분)
-- Google Antigravity 플랫폼 소개
-  - AI 에이전트 기반 웹앱 생성
-  - 550+ 전문 AI 스킬 라이브러리 (antigravity-awesome-skills)
-  - Gemini + Google Workspace 통합
-- 기존 플랫폼(Firebase, Streamlit)과의 차이점
+- 배포 플랫폼 비교 — 목적에 따른 선택 기준
+
+| 플랫폼 | 적합한 앱 | 무료 한도 | 특징 |
+|--------|----------|----------|------|
+| GitHub Pages | 정적 HTML/JS | 무제한 | 가장 빠름, 서버 없음 |
+| Streamlit Cloud | Python 데이터앱 | 1앱 무료 | 배포 1분, Python 그대로 |
+| Firebase Studio | Full-stack | 스파크 플랜 무료 | Google AI 통합 |
+| Render | 모든 앱 | 750h/월 | Node.js/Python/Docker |
+
+- Gemini + Google Workspace 통합 가능성 소개
 
 ### 실습 (15분)
-- Google Antigravity 계정 설정 & 첫 앱 생성
 - 실습 앱: **"디스플레이 스펙 비교 웹앱"**
-  - 주요 스마트폰/TV 디스플레이 스펙 데이터
+  - 주요 스마트폰/TV 디스플레이 스펙 내장 데이터
   - 사용자가 기기 선택 → 스펙 비교 시각화
-  - Antigravity 플랫폼에 배포
+  - Streamlit Cloud에 배포 (백업: Firebase Studio)
+- 강사가 사전에 확인한 플랫폼으로 실습 진행
 
 > ✅ **이후 프로젝트 2 시작** → [projects/project2/](../../projects/project2/README.md)

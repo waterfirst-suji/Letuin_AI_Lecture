@@ -23,6 +23,14 @@
 
 ## 6강: R Shiny (30분)
 
+> ⚠️ **수강생 사전 준비 필수** (강의 전 주 공지):
+> - R 설치: https://cran.r-project.org (무료)
+> - RStudio 설치: https://posit.co/downloads (무료)
+> - shinyapps.io 계정 생성: https://www.shinyapps.io (무료 플랜)
+> - RStudio에서 패키지 설치: `install.packages(c("shiny", "shinydashboard", "ggplot2", "dplyr", "rsconnect"))`
+>
+> **미설치 시 6강 실습 불가** — 강의 당일 설치 시 15~20분 소요
+
 ### 오프닝 훅
 > *"R은 통계학자들이 만든 언어. 데이터 분석에서는 Python보다 강력한 면이 있다.
 > Shiny는 R로 웹앱을 만드는 마법 같은 라이브러리."*

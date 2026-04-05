@@ -1,11 +1,11 @@
 # 🎯 프로젝트 2 — 디스플레이 공정 시뮬레이터 or 데이터 분석 앱
 
 > **제출 시기**: 10강 후 1주일 이내
-> **주요 도구**: Streamlit / R Shiny / Google Antigravity 중 선택
+> **주요 도구**: Streamlit / R Shiny / Firebase Studio 중 선택
 
 ## 공통 주제
 
-Python Streamlit, R Shiny, 또는 Google Antigravity 중 하나를 선택하여 디스플레이 산업과 관련된 인터랙티브 앱을 제작하고 배포하시오.
+Python Streamlit, R Shiny, 또는 Firebase Studio 중 하나를 선택하여 디스플레이 산업과 관련된 인터랙티브 앱을 제작하고 배포하시오.
 
 **주제 선택 예시** (자유 선택)
 - OLED/LCD 비교 분석 도구
@@ -47,12 +47,28 @@ streamlit run app.py
 
 ---
 
+## 📊 공개 데이터셋 모음
+
+실제 데이터가 필요한 경우 아래 출처를 활용하세요.
+
+| 데이터셋 | URL | 활용 예시 |
+|---------|-----|----------|
+| 공공데이터포털 | https://www.data.go.kr | 제조업 생산 통계, 불량률 데이터 |
+| IEEE DataPort | https://ieee-dataport.org | 센서/제조 공정 실험 데이터 |
+| Kaggle | https://www.kaggle.com/datasets | 제조 이상 감지, 시계열 데이터 |
+| UCI ML Repository | https://archive.ics.uci.edu | 공정 이상 감지 (SECOM 데이터셋 등) |
+| 한국 산업통상자원부 | https://www.motie.go.kr | 디스플레이 산업 통계 |
+
+> 💡 **SECOM 데이터셋** (UCI): 반도체/디스플레이 공정 센서 데이터 + 수율 레이블 — 프로젝트 2에 최적
+
+---
+
 ## [중] 난이도 — 방향 제시
 
 ### 요구사항
 - AI API(Gemini 또는 Claude) 연동 필수
 - 사용자 입력에 따라 AI가 인사이트를 제공하는 기능 포함
-- 실제 공개 데이터 사용 (AI에게 *"디스플레이 관련 공개 데이터셋 알려줘"* 질문)
+- 위 공개 데이터셋 중 1개 이상 활용
 - README.md에 앱 사용 방법 + 스크린샷 설명
 
 ### 힌트

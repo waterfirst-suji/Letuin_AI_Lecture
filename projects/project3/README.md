@@ -24,9 +24,20 @@
 ✅ Quarto (보고서/문서)
 ✅ Google AI Studio / Gemini API (AI 기능)
 ✅ Claude API (AI 기능)
-✅ Google Antigravity (웹앱 플랫폼)
+✅ Firebase Studio / Streamlit Cloud (웹앱 플랫폼)
 ✅ Telegram Bot (알림/자동화)
 ```
+
+---
+
+## 📊 추천 공개 데이터셋
+
+| 데이터셋 | URL | 활용 예시 |
+|---------|-----|----------|
+| SECOM (UCI) | https://archive.ics.uci.edu/dataset/179/secom | 공정 센서 → 수율 이상 감지 |
+| 공공데이터포털 | https://www.data.go.kr | 제조업 생산/불량 통계 |
+| IEEE DataPort | https://ieee-dataport.org | 실험 기반 센서 데이터 |
+| Kaggle 제조 | https://www.kaggle.com/search?q=manufacturing+yield | 수율 예측 데이터셋 다수 |
 
 ---
 

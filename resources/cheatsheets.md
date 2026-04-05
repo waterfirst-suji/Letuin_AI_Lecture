@@ -49,6 +49,43 @@ runApp("app.R")
 # 또는 RStudio에서 Run App 버튼 클릭
 ```
 
+### 텔레그램 봇 설정 & 실행
+
+```bash
+# 1. 패키지 설치
+pip install python-telegram-bot python-dotenv anthropic
+
+# 2. BotFather에서 봇 생성
+#    https://t.me/BotFather 접속 → /newbot → 봇 이름 입력 → 토큰 복사
+
+# 3. .env 파일에 토큰 저장
+echo "TELEGRAM_BOT_TOKEN=your_token_here" > .env
+
+# 4. 봇 실행
+python bot.py
+```
+
+**BotFather 주요 명령어**
+```
+/newbot      — 새 봇 생성 (이름 + 사용자명 설정)
+/mybots      — 내 봇 목록 확인
+/token       — 봇 토큰 재발급
+/setdescription — 봇 소개 텍스트 설정
+/setuserpic  — 봇 프로필 사진 설정
+/deletebot   — 봇 삭제
+```
+
+**봇 내 명령어 구조 (bot.py 기본)**
+```python
+from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters
+
+app = ApplicationBuilder().token(TOKEN).build()
+app.add_handler(CommandHandler("start", start_fn))     # /start
+app.add_handler(CommandHandler("help", help_fn))       # /help
+app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, msg_fn))
+app.run_polling()  # 봇 시작
+```
+
 ---
 
 ## 프롬프트 템플릿
@@ -92,7 +129,7 @@ runApp("app.R")
 |--------|-----|------|
 | Claude.ai | https://claude.ai | Claude Pro 사용 |
 | Google AI Studio | https://aistudio.google.com | Gemini API |
-| Google Antigravity | https://antigravity.google | AI 웹앱 플랫폼 |
+| Firebase Studio | https://idx.google.com | Google AI 통합 웹앱 플랫폼 |
 
 ### 배포 플랫폼
 | 플랫폼 | URL | 무료 |

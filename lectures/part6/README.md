@@ -71,9 +71,12 @@ async def explain_command(update, context):
 
 ---
 
-## 15강: 종합 통합 실습 — 모든 것을 하나로 (30분)
+## 15강: 종합 통합 실습 — 모든 것을 하나로 (60분)
 
-### 30분 챌린지
+> ⏱️ **강사 참고**: 4개 시스템 통합은 30분에 완성 불가 — 이 강의만 60분으로 진행.
+> 또는 `examples/integrated_system.py` 완성 코드를 미리 제공하고, 수강생이 수정하는 방식으로 진행.
+
+### 시스템 구성도
 
 ```
 [수율 데이터 시뮬레이션]
@@ -85,13 +88,16 @@ async def explain_command(update, context):
 [GitHub에 자동 저장 (Actions)]
 ```
 
-**목표**: 위 시스템을 Claude Code로 30분 안에 구축
+**목표**: 위 시스템을 Claude Code로 구축하고 배포
 
-**순서**
-1. (5분) Claude에게 전체 아키텍처 설계 요청
-2. (15분) Claude Code로 각 파트 코드 생성
-3. (5분) 연결 테스트
-4. (5분) GitHub push + Streamlit 배포
+**순서 (60분)**
+1. (10분) Claude에게 전체 아키텍처 설계 요청 & 구조 이해
+2. (25분) Claude Code로 각 파트 코드 생성
+   - `data_simulator.py` — 수율 데이터 시뮬레이터
+   - `app.py` — Streamlit 대시보드 + Gemini 분석
+   - `alert_bot.py` — 텔레그램 알람 모듈
+3. (15분) 연결 테스트 & 디버깅
+4. (10분) GitHub push + Streamlit 배포
 
 ---
 
