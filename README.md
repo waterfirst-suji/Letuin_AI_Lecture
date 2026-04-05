@@ -4,7 +4,7 @@
 
 [![강의 상태](https://img.shields.io/badge/상태-준비중-yellow)](.)
 [![총 강의](https://img.shields.io/badge/총%20강의-16강-blue)](.)
-[![강의시간](https://img.shields.io/badge/강의당-30분-green)](.)
+[![강의시간](https://img.shields.io/badge/강의당-30분(15강%20제외)-green)](.)
 [![Claude Pro](https://img.shields.io/badge/Claude%20Pro-1개월%20제공-orange)](.)
 
 ---
@@ -22,8 +22,8 @@
 
 | 구분 | 내용 | 링크 |
 |------|------|------|
-| 📝 사전 테스트 | 입과 전 객관식 35문항 | [pre_test.md](docs/pre_test.md) |
-| 📚 전체 강의안 | 16강 상세 내용 | [full_course_plan.md](docs/full_course_plan.md) |
+| 📝 사전 테스트 | 필수 26문항 + 보너스 9문항 | [pre_test.md](docs/pre_test.md) |
+| 📚 강사용 타임테이블 | 강의별 시간 배분 & 체크리스트 | [full_course_plan.md](docs/full_course_plan.md) |
 | 🎯 프로젝트 1 | 소개 웹페이지 (상/중/하) | [project1/](projects/project1/README.md) |
 | 🎯 프로젝트 2 | 공정 시뮬레이터 (상/중/하) | [project2/](projects/project2/README.md) |
 | 🎯 프로젝트 3 | AI 디스플레이 도구 (상/중/하) | [project3/](projects/project3/README.md) |
@@ -36,7 +36,7 @@
 
 ```
 Claude Code  ·  Claude Agent  ·  GitHub  ·  Python Streamlit
-R Shiny  ·  Quarto  ·  Google AI Studio  ·  Google Antigravity
+R Shiny  ·  Quarto  ·  Google AI Studio  ·  Firebase Studio
 Telegram Bot (Claude + Gemini)  ·  배포 전략 10종
 ```
 
@@ -70,19 +70,21 @@ Telegram Bot (Claude + Gemini)  ·  배포 전략 10종
 
 ### PART 3 — 데이터 시각화 앱 3종 (5~7강)
 
-| 강 | 제목 | 핵심 내용 |
-|----|------|----------|
-| 5강 | Python Streamlit | PPI 계산기 앱 제작 + Streamlit Cloud 배포 |
-| 6강 | R Shiny | 수율 트렌드 대시보드 + shinyapps.io 배포 |
-| 7강 | Quarto | AI로 공정 분석 보고서 → GitHub Pages |
+> ⚠️ **6강 수강 전 필수**: R + RStudio + shinyapps.io 계정을 미리 설치하세요 ([6강 안내](lectures/part3/README.md) 참조)
 
-### PART 4 — AI API + 시뮬레이션 + Antigravity (8~10강)
+| 강 | 제목 | 핵심 내용 | 예제 코드 |
+|----|------|----------|----------|
+| 5강 | Python Streamlit | PPI 계산기 앱 제작 + Streamlit Cloud 배포 | [app.py](lectures/part3/examples/app.py) |
+| 6강 | R Shiny | 수율 트렌드 대시보드 + shinyapps.io 배포 | — |
+| 7강 | Quarto | AI로 공정 분석 보고서 → GitHub Pages | — |
 
-| 강 | 제목 | 핵심 내용 |
-|----|------|----------|
-| 8강 | Google AI Studio + Gemini API | API Key 발급, 디스플레이 Q&A 챗봇 |
-| 9강 | AI 시뮬레이션 만들기 | 픽셀/색역 시뮬레이터, 포토공정 시각화 |
-| 10강 | [Google Antigravity](https://antigravity.google) 웹앱 | AI 에이전트 플랫폼, 디스플레이 스펙 비교 앱 |
+### PART 4 — AI API + 시뮬레이션 (8~10강)
+
+| 강 | 제목 | 핵심 내용 | 예제 코드 |
+|----|------|----------|----------|
+| 8강 | Google AI Studio + Gemini API | API Key 발급, Claude vs Gemini 비교, Q&A 챗봇 | [gemini_chatbot.py](lectures/part4/examples/gemini_chatbot.py) |
+| 9강 | AI 시뮬레이션 만들기 | 픽셀/색역 시뮬레이터, 포토공정 시각화 | — |
+| 10강 | 배포 플랫폼 심화 | GitHub Pages / Streamlit / Firebase Studio 비교 배포 | — |
 
 > **🎯 [프로젝트 2](projects/project2/README.md)** — 디스플레이 공정 시뮬레이터 or 데이터 분석 앱
 
@@ -95,12 +97,12 @@ Telegram Bot (Claude + Gemini)  ·  배포 전략 10종
 
 ### PART 6 — 텔레그램 봇 + 종합 실습 (13~16강)
 
-| 강 | 제목 | 핵심 내용 |
-|----|------|----------|
-| 13강 | 텔레그램 봇 + Claude 연결 | BotFather, python-telegram-bot, 공정 알람 봇 |
-| 14강 | Gemini 봇 + 설비 알람 | [gemini_telebot](https://github.com/waterfirst/gemini_telebot) 분석, 수율 모니터링 봇 |
-| 15강 | 종합 통합 실습 | 전체 스택 연결 (Streamlit + Gemini + 텔레그램) |
-| 16강 | 최신 AI 트렌드 & 수료 | 프로젝트 3 발표, 다음 학습 로드맵 |
+| 강 | 제목 | 핵심 내용 | 예제 코드 |
+|----|------|----------|----------|
+| 13강 | 텔레그램 봇 + Claude 연결 | BotFather, python-telegram-bot, 공정 알람 봇 | [bot.py](lectures/part6/examples/bot.py) |
+| 14강 | Gemini 봇 + 설비 알람 | [gemini_telebot](https://github.com/waterfirst/gemini_telebot) 분석, 수율 모니터링 봇 | — |
+| 15강 ⏱️60분 | 종합 통합 실습 | 전체 스택 연결 (Streamlit + Gemini + 텔레그램) | — |
+| 16강 | 최신 AI 트렌드 & 수료 | 프로젝트 3 발표, 다음 학습 로드맵 | — |
 
 > **🎯 [프로젝트 3](projects/project3/README.md)** — 나만의 AI 디스플레이 도구 (전체 스택)
 
@@ -110,12 +112,33 @@ Telegram Bot (Claude + Gemini)  ·  배포 전략 10종
 
 | 프로젝트 | 주제 | 제출 시기 | 난이도 |
 |---------|------|----------|--------|
-| Project 1 | 디스플레이 관심 분야 소개 웹페이지 | 4강 후 | 상/중/하 선택 |
-| Project 2 | 디스플레이 공정 시뮬레이터/분석 앱 | 10강 후 | 상/중/하 선택 |
-| Project 3 | 나만의 AI 디스플레이 도구 (전체 스택) | 16강 후 | 상/중/하 선택 |
+| Project 1 | 디스플레이 관심 분야 소개 웹페이지 | 4강 후 1주일 | 상/중/하 선택 |
+| Project 2 | 디스플레이 공정 시뮬레이터/분석 앱 | 10강 후 1주일 | 상/중/하 선택 |
+| Project 3 | 나만의 AI 디스플레이 도구 (전체 스택) | 16강 후 2주일 | 상/중/하 선택 |
 
 > 상/중/하는 **동일한 주제**를 얼마나 많은 힌트를 받고 구현하는지에 따른 구분입니다.
 > 자신의 수준에 맞게 선택하세요.
+
+---
+
+## 📂 바로 실행 가능한 예제 코드
+
+수강생이 복사해서 바로 실행할 수 있는 완성 코드입니다.
+
+| 파일 | 강의 | 설명 |
+|------|------|------|
+| [lectures/part3/examples/app.py](lectures/part3/examples/app.py) | 5강 | 디스플레이 PPI 계산기 (Streamlit) |
+| [lectures/part4/examples/gemini_chatbot.py](lectures/part4/examples/gemini_chatbot.py) | 8강 | 디스플레이 Q&A 챗봇 (Gemini API) |
+| [lectures/part6/examples/bot.py](lectures/part6/examples/bot.py) | 13강 | 디스플레이 상담 텔레그램 봇 (Claude API) |
+
+각 폴더에 `.env.example`과 `requirements.txt`가 포함되어 있습니다.
+
+```bash
+# 실행 예시 (5강 PPI 계산기)
+cd lectures/part3/examples
+pip install -r requirements.txt
+streamlit run app.py
+```
 
 ---
 
@@ -124,10 +147,18 @@ Telegram Bot (Claude + Gemini)  ·  배포 전략 10종
 **필수 계정 (강의 전 생성)**
 - [ ] [GitHub](https://github.com)
 - [ ] [Claude.ai](https://claude.ai) — Pro 이용권 강의 당일 지급
-- [ ] [Google AI Studio](https://aistudio.google.com)
-- [ ] [Google Antigravity](https://antigravity.google)
+- [ ] [Google AI Studio](https://aistudio.google.com) — Gemini API Key 발급용
 - [ ] [Streamlit Community Cloud](https://share.streamlit.io)
-- [ ] Telegram 앱
+- [ ] Telegram 앱 설치
+
+**6강 전 추가 준비 (필수)**
+- [ ] [R 4.3+](https://cran.r-project.org) 설치
+- [ ] [RStudio](https://posit.co/downloads) 설치
+- [ ] [shinyapps.io](https://www.shinyapps.io) 계정 생성
+- [ ] RStudio에서 패키지 설치:
+  ```r
+  install.packages(c("shiny", "shinydashboard", "ggplot2", "dplyr", "rsconnect"))
+  ```
 
 **필수 설치**
 ```bash
@@ -135,13 +166,22 @@ Telegram Bot (Claude + Gemini)  ·  배포 전략 10종
 npm install -g @anthropic-ai/claude-code
 
 # Python 3.11+
-pip install streamlit pandas plotly python-dotenv
-
-# R 4.3+ + RStudio + Quarto CLI
+pip install streamlit pandas plotly python-dotenv google-generativeai anthropic python-telegram-bot
 ```
 
 **추천 설치**
 - [cokacdir](https://github.com/waterfirst/cokacdir) — AI 자연어 명령 터미널 파일 매니저
+
+---
+
+## 📊 실습에 활용하는 공개 데이터셋
+
+| 데이터셋 | URL | 활용 강의 |
+|---------|-----|----------|
+| 공공데이터포털 | https://www.data.go.kr | 프로젝트 2/3 |
+| IEEE DataPort | https://ieee-dataport.org | 프로젝트 2/3 |
+| Kaggle | https://www.kaggle.com/datasets | 프로젝트 2/3 |
+| SECOM (UCI) | https://archive.ics.uci.edu/dataset/179/secom | 프로젝트 2 추천 |
 
 ---
 
@@ -159,6 +199,7 @@ pip install streamlit pandas plotly python-dotenv
 
 | 날짜 | 내용 |
 |------|------|
+| 2026-04-05 | 리뷰 피드백 반영: 예제 코드 추가, Antigravity→Firebase Studio 교체, R/RStudio 사전 준비 안내, 텔레그램 치트시트, 공개 데이터셋, Claude vs Gemini 비교표, 사전 테스트 F파트 보너스 분리, 15강 60분 조정, 강사용 타임테이블 재편 |
 | 2026-04-04 | 초안 작성 (16강 커리큘럼, 사전 테스트 35문항, 프로젝트 3종 상/중/하) |
 
 ---
