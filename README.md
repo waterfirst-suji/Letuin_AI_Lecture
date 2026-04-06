@@ -22,6 +22,7 @@
 
 | 구분 | 내용 | 링크 |
 |------|------|------|
+| 📋 KDC 강의계획서 | 렛유인 제출용 공식 강의계획서 (xlsx) | [렛유인_KDC_강의계획서.xlsx](docs/렛유인_KDC_강의계획서.xlsx) |
 | 📝 사전 테스트 | 필수 26문항 + 보너스 9문항 | [pre_test.md](docs/pre_test.md) |
 | 📚 강사용 타임테이블 | 강의별 시간 배분 & 체크리스트 | [full_course_plan.md](docs/full_course_plan.md) |
 | 🎯 프로젝트 1 | 소개 웹페이지 (상/중/하) | [project1/](projects/project1/README.md) |
@@ -199,6 +200,7 @@ pip install streamlit pandas plotly python-dotenv google-generativeai anthropic 
 
 | 날짜 | 내용 |
 |------|------|
+| 2026-04-06 | 렛유인 KDC 강의계획서 xlsx 추가 (수강 대상 명확화: 대학 3~4학년·취업준비생 주 대상, 재직자·이직준비생 확대 대상 반영) |
 | 2026-04-05 | 리뷰 피드백 반영: 예제 코드 추가, Antigravity→Firebase Studio 교체, R/RStudio 사전 준비 안내, 텔레그램 치트시트, 공개 데이터셋, Claude vs Gemini 비교표, 사전 테스트 F파트 보너스 분리, 15강 60분 조정, 강사용 타임테이블 재편 |
 | 2026-04-04 | 초안 작성 (16강 커리큘럼, 사전 테스트 35문항, 프로젝트 3종 상/중/하) |
 
