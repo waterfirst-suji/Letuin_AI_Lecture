@@ -1,182 +1,182 @@
 ---
 title: "최신 AI 트렌드 & 수료"
-subtitle: "다음 단계는? — AI 개발자의 미래 로드맵"
-author: "렛유인 KDC 강의"
+subtitle: "다음 단계는? — 2025~2026 AI 개발자 로드맵"
+author: "렛유인 KDC"
 date: today
+engine: knitr
 execute:
   echo: true
   warning: false
-lightbox: true
+  message: false
+  fig-width: 9
+  fig-height: 4.5
 format:
   revealjs:
-    theme: moon
-    controls: true
-    slide-number: true
+    theme: [moon, ../custom.scss]
+    slide-number: c/t
     show-slide-number: all
+    controls: true
+    progress: true
     center: false
-    incremental: true
+    incremental: false
     transition: slide
     background-transition: fade
-    transition-speed: slow
-    highlight-style: github
-    footer: "KDC AI 바이브 코딩 실전 | 16강"
-    css: ../styles.css
+    chalkboard: true
+    preview-links: auto
+    highlight-style: dracula
+    code-line-numbers: true
+    footer: "렛유인 KDC | AI 바이브 코딩 실전 | 16강"
     width: 1280
     height: 720
+    margin: 0.1
 ---
 
-# 최신 AI 트렌드 & 수료 {.section-title}
+# 16강: AI 트렌드와 개발자 로드맵 {background="#1F4E79"}
 
----
+## 오늘의 AI 뉴스 {.smaller}
 
-## 오프닝 훅
-
-> "AI는 우리가 상상하는 속도보다 더 빠르게 진화하고 있습니다."  
-> — 익명의 AI 연구자
-
----
-
-## 이 강의에서 배우는 것
-
-- 최신 AI 뉴스와 트렌드
-- 디스플레이 × AI 연구 사례
-- 프로젝트 발표 및 피드백
-- AI 개발의 다음 단계 로드맵
-
----
-
-# 오늘의 AI 뉴스 {.section-title}
-
----
-
-## 최신 Claude 모델 변화 타임라인
-
-- Claude 3 → 3.5 → 3.7 → 4.6
-  - 각 버전의 주요 개선점
-  - 업계에 미친 영향
-
----
-
-## GitHub Trending 지금 Top 10
-
-- 실시간 확인 가능한 방법
-- 현재 인기 있는 프로젝트 소개
-  - AI 관련 프로젝트
-  - 디스플레이 관련 프로젝트
-
-```bash
-# GitHub CLI를 사용하여 트렌딩 확인
-gh trending --language python
-```
-
----
-
-## 디스플레이 × AI 최신 연구 소식 {.smaller}
+### Claude 모델 타임라인
 
 ::: {.columns}
 ::: {.column width="50%"}
-
-- 삼성전자 AI 수율 예측 시스템
-- LG Display AI 기반 불량 검사
-
+- 3.0
+- 3.5
 :::
 ::: {.column width="50%"}
-
-- BOE AI 공정 최적화
-  - AI 기술로 품질 향상
-  - 비용 절감 사례
-
+- 3.7
+- 4.6
 :::
 :::
 
----
+## GitHub Trending Top 10 {.smaller}
 
-# 프로젝트 3 발표 {.section-title}
+- 실시간 인기 프로젝트
+- 오픈소스 기여 기회
 
----
+## 디스플레이 × AI 사례
 
-## 프로젝트 3 시연
+- 삼성과 LG의 최신 사례
+- AI와 디스플레이의 융합
 
-- 각자 3분 시연
-  - 기술 설명
-  - 어려웠던 점 공유
+## Claude 모델별 성능 비교
 
----
+```{r}
+#| echo: false
+#| fig-width: 9
+#| fig-height: 4.5
+library(ggplot2)
 
-## 평가 기준과 피드백
+data <- data.frame(
+  model = c("3.0", "3.5", "3.7", "4.6"),
+  performance = c(75, 85, 90, 95)
+)
 
-- 배포 URL 동작
-- 도메인 활용도
-- 코드 완성도
-
-```python
-def main():
-    print("프로젝트가 성공적으로 배포되었습니다!")
-
-if __name__ == "__main__":
-    main()
+ggplot(data, aes(x=model, y=performance, fill=model)) +
+  geom_bar(stat="identity") +
+  scale_y_continuous(labels = scales::percent_format(scale = 1)) +
+  labs(title="Claude 모델별 벤치마크 성능 비교", y="성능 (%)", x="모델")
 ```
 
----
+## 프로젝트 3 발표 {.smaller}
 
-# 다음 단계 로드맵 {.section-title}
+### 발표 및 피드백 과정
 
----
+1. 각자 3분 발표
+2. 기술 설명
+3. 어려운 점 토론
+4. 동료 피드백
 
-## 초급 → 중급
+## 프로젝트 3 발표 {.smaller} {auto-animate="true"}
+
+### 발표 및 피드백 과정
+
+- 각자 3분 발표
+- 기술 설명
+- 어려운 점 토론
+- 동료 피드백
+
+## 다음 단계 로드맵
 
 ::: {.panel-tabset}
-### LangChain / LlamaIndex
-- AI 앱 심화 학습
-
-### FastAPI
-- 백엔드 서버 구축
-
-### Docker
-- 컨테이너 배포
+### 초급→중급
+- FastAPI
+- Docker
+- LangChain
+### 중급→고급
+- MCP 서버 제작
+- Rust CLI
+- RAG
+### 취업 활용
+- GitHub 포트폴리오 3종
+- 면접 어필법
 :::
 
----
+## AI 개발자 학습 로드맵
 
-## 중급 → 고급
+```{r}
+#| echo: false
+#| fig-width: 9
+#| fig-height: 4.5
+library(ggplot2)
 
-- MCP 서버 만들기
-  - Claude가 당신의 앱을 직접 사용하게
-- Rust로 CLI 도구 만들기
-- RAG (검색 증강 생성)
+data <- data.frame(
+  stage = c("초급", "중급", "고급"),
+  start = c(1, 2, 3),
+  end = c(2, 3, 4)
+)
 
----
+ggplot(data, aes(y=stage, x=start, xend=end)) +
+  geom_segment(aes(yend=stage), size=6) +
+  labs(title="AI 개발자 학습 로드맵", x="단계", y="레벨") +
+  theme(axis.text.y = element_text(size=12))
+```
 
-## 취업/이직 활용
+## 수료 후 다음 단계 커리큘럼 {.smaller}
 
-- GitHub 포트폴리오 3개 프로젝트
-- AI 도구로 실제 앱 배포 경험
-- 디스플레이 도메인 지식 + AI 개발
+```{r}
+#| echo: false
+knitr::kable(
+  data.frame(
+    과정 = c("초급", "중급", "고급"),
+    내용 = c("FastAPI, Docker", "MCP 서버 제작", "GitHub 포트폴리오")
+  ),
+  caption="수료 후 다음 단계 커리큘럼",
+  align=c("l","r")
+)
+```
 
----
+## 수료 축하 메시지
 
-# 수료 조건 및 마무리 {.section-title}
+::: {.fragment .fade-in}
+축하합니다!
+:::
+::: {.fragment .highlight-red}
+당신의 여정은 이제 시작입니다!
+:::
 
----
+## 팁과 주의사항
 
-## 수료 조건
+::: {.callout-tip title="팁"}
+GitHub 포트폴리오를 꾸준히 관리하세요.
+:::
 
-- 프로젝트 1·2·3 모두 제출
-- 수료증 발급 후 Q&A
+::: {.callout-warning title="주의"}
+과도한 기술 스택 확장은 피하세요.
+:::
 
----
+## 코드 예시: FastAPI 서버 {.smaller}
 
-## 다음 강의 예고
+```python
+from fastapi import FastAPI
 
-- "AI와 디스플레이 기술의 융합: 미래 전망"
-- 새로운 프로젝트와 실제 사례 분석
+app = FastAPI()
 
----
+@app.get("/")
+async def root():
+    return {"message": "Hello World"}
+``` {code-line-numbers="1-2|3|5-7"}
 
-## Q&A 및 마무리
+## Q&A
 
-- 강의에 대한 질문
-- 다음 단계에 대한 조언
-- 네트워킹 기회 제공
-
-감사합니다!
+- 질문 환영합니다!
+- 추가 도움 필요 시 연락주세요.

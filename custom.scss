@@ -1,0 +1,199 @@
+/*-- scss:defaults --*/
+// Quarto RevealJS custom theme — 렛유인 KDC AI 바이브 코딩
+// Base: moon
+
+$font-family-sans-serif: 'Noto Sans KR', sans-serif !default;
+$font-family-monospace: 'JetBrains Mono', monospace !default;
+$presentation-font-size-root: 26px !default;
+$presentation-h1-font-size: 2em !default;
+$presentation-h2-font-size: 1.4em !default;
+$presentation-h3-font-size: 1.05em !default;
+
+/*-- scss:rules --*/
+
+// ── 구글 폰트 로드 ─────────────────────────────────────────
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap');
+
+// ── 기본 텍스트 ────────────────────────────────────────────
+.reveal {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 26px;
+}
+
+// ── 제목 스타일 ────────────────────────────────────────────
+.reveal h1 {
+  font-size: 1.9em;
+  font-weight: 700;
+  color: #E8F4FD;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  letter-spacing: -0.5px;
+}
+
+.reveal h2 {
+  font-size: 1.35em;
+  font-weight: 600;
+  color: #AED6F1;
+  border-bottom: 2px solid rgba(46, 117, 182, 0.7);
+  padding-bottom: 6px;
+  margin-bottom: 16px;
+}
+
+.reveal h3 {
+  font-size: 1.0em;
+  font-weight: 600;
+  color: #85C1E9;
+  margin-top: 10px;
+}
+
+// ── 코드 블록 ──────────────────────────────────────────────
+.reveal pre {
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+  margin: 8px 0;
+}
+
+.reveal pre code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68em;
+  line-height: 1.55;
+  padding: 14px 18px;
+}
+
+.reveal code:not(pre > code) {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82em;
+  background: rgba(255,255,255,0.12);
+  border-radius: 4px;
+  padding: 1px 5px;
+  color: #F0B27A;
+}
+
+// ── 표 ────────────────────────────────────────────────────
+.reveal table {
+  width: 100%;
+  font-size: 0.72em;
+  border-collapse: collapse;
+  margin: 8px 0;
+
+  th {
+    background: linear-gradient(135deg, #1F4E79, #2E75B6);
+    color: #fff;
+    font-weight: 600;
+    padding: 8px 12px;
+    text-align: left;
+  }
+
+  td {
+    padding: 6px 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  tr:nth-child(even) {
+    background: rgba(255,255,255,0.05);
+  }
+
+  tr:hover {
+    background: rgba(46,117,182,0.15);
+  }
+}
+
+// ── Callout 박스 ───────────────────────────────────────────
+.reveal .callout {
+  border-radius: 8px;
+  padding: 10px 16px;
+  margin: 8px 0;
+  font-size: 0.80em;
+  line-height: 1.5;
+}
+
+.reveal .callout-tip {
+  border-left: 4px solid #27AE60;
+  background: rgba(39,174,96,0.15);
+}
+
+.reveal .callout-warning {
+  border-left: 4px solid #F39C12;
+  background: rgba(243,156,18,0.15);
+}
+
+.reveal .callout-note {
+  border-left: 4px solid #2980B9;
+  background: rgba(41,128,185,0.15);
+}
+
+.reveal .callout-important {
+  border-left: 4px solid #E74C3C;
+  background: rgba(231,76,60,0.15);
+}
+
+// ── 패널 탭셋 ─────────────────────────────────────────────
+.reveal .panel-tabset {
+  font-size: 0.78em;
+
+  .panel-tabset-tabby {
+    font-size: 0.85em;
+    gap: 4px;
+  }
+}
+
+// ── .smaller 클래스 ────────────────────────────────────────
+.reveal .slides section.smaller,
+.reveal .slides section .smaller {
+  font-size: 0.74em;
+}
+
+// ── Fragment 애니메이션 ────────────────────────────────────
+.reveal .slides section .fragment {
+  transition: all 0.35s ease;
+}
+
+// ── 다크 배경 섹션 제목 ────────────────────────────────────
+section.has-dark-background {
+  h1, h2, h3 {
+    color: #ffffff;
+    border-bottom-color: rgba(255,255,255,0.3);
+    text-shadow: 0 2px 6px rgba(0,0,0,0.5);
+  }
+}
+
+// ── 슬라이드 번호 & 푸터 ──────────────────────────────────
+.reveal .slide-number {
+  font-size: 0.58em;
+  color: #85C1E9;
+  background: rgba(0,0,0,0.4);
+  border-radius: 4px;
+  padding: 2px 6px;
+}
+
+.reveal footer {
+  font-size: 0.52em;
+  color: rgba(255,255,255,0.45);
+}
+
+// ── 컬럼 갭 ───────────────────────────────────────────────
+.reveal .columns {
+  gap: 20px;
+}
+
+// ── 목록 ──────────────────────────────────────────────────
+.reveal ul, .reveal ol {
+  line-height: 1.6;
+  margin-left: 1em;
+}
+
+.reveal li {
+  margin-bottom: 4px;
+}
+
+// ── 링크 ──────────────────────────────────────────────────
+.reveal a {
+  color: #5DADE2;
+  text-decoration: none;
+  border-bottom: 1px dotted rgba(93,173,226,0.5);
+
+  &:hover {
+    color: #AED6F1;
+    border-bottom-color: #AED6F1;
+  }
+}

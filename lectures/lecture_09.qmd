@@ -1,138 +1,145 @@
 ---
 title: "AI 시뮬레이션 만들기"
-subtitle: "픽셀의 색이 만들어지는 원리를 눈으로 — RGB 색역 시뮬레이터"
-author: "렛유인 KDC 강의"
+subtitle: "픽셀의 색이 만들어지는 원리를 눈으로"
+author: "렛유인 KDC"
 date: today
+engine: knitr
 execute:
   echo: true
   warning: false
-lightbox: true
+  message: false
+  fig-width: 9
+  fig-height: 4.5
 format:
   revealjs:
-    theme: moon
-    controls: true
-    slide-number: true
+    theme: [moon, ../custom.scss]
+    slide-number: c/t
     show-slide-number: all
+    controls: true
+    progress: true
     center: false
-    incremental: true
+    incremental: false
     transition: slide
     background-transition: fade
-    transition-speed: slow
-    highlight-style: github
-    footer: "KDC AI 바이브 코딩 실전 | 9강"
-    css: ../styles.css
+    chalkboard: true
+    preview-links: auto
+    highlight-style: dracula
+    code-line-numbers: true
+    footer: "렛유인 KDC | AI 바이브 코딩 실전 | 9강"
     width: 1280
     height: 720
+    margin: 0.1
 ---
 
-# AI 시뮬레이션 만들기 {.section-title}
+# PART 4: 디스플레이 색공간 {background="#1F4E79"}
 
-## "픽셀 하나가 어떻게 색을 만드는지 눈으로 보여줄 수 있다면? 포토공정에서 노광 패턴이 어떻게 생기는지 시뮬레이션할 수 있다면?"
+## 오프닝: 픽셀과 색상
+"픽셀 하나가 어떻게 색을 만드는가? 시뮬레이션으로 직접 보자."
 
----
+## 디스플레이 색공간 {.smaller}
+- sRGB
+- DCI-P3
+- Adobe RGB
+- Rec.2020
 
-## 이 강의에서 배우는 것
+## 색역(Color Gamut) 개념
+CIE 1931 xy 색도도
 
-- 다양한 시뮬레이션 종류 이해
-- 디스플레이 관련 시뮬레이션 아이디어 탐색
-- Claude Code로 시뮬레이션 앱 생성
-- RGB 색상 혼합 시뮬레이터 구축
-- Gemini API 활용법 배우기
+## RGB 서브픽셀 레이아웃 비교
+- Stripe
+- Diamond
+- PenTile
 
----
-
-# 시뮬레이션의 종류 {.section-title}
-
-## 시뮬레이션의 종류
-
-- 물리 시뮬레이션
+## 시뮬레이션 종류
 - 광학 시뮬레이션
 - 공정 시뮬레이션
 - 통계 시뮬레이션
 
----
+## RGB 색상 혼합 실습
+R/G/B 슬라이더로 색상 조합을 만들어보세요.
 
-## 디스플레이 관련 시뮬레이션 아이디어들 {.smaller}
+## 색역 시각화
+Gemini API를 사용하여 색상 용도를 자동 해설합니다.
 
-- RGB 서브픽셀 레이아웃
-  - Diamond, Stripe, PenTile
-- 색공간 변환
-  - sRGB ↔ DCI-P3 ↔ Adobe RGB
-- 포토리소그래피 노광 패턴 시뮬레이터
-- 잉크젯 도포 균일성 시뮬레이터
-  - 커피링 효과 포함
-
----
-
-## Claude Code로 시뮬레이션 앱 생성하는 방법 {.smaller}
-
-- 코드 작성 → 시뮬레이션 앱 생성
-- 초기 설정 → 사용자 인터페이스 디자인
-- 데이터 입력/출력 처리 → 시뮬레이션 결과 확인
-
----
-
-# 실습: RGB 픽셀 색상 혼합 & 색역 시뮬레이터 {.section-title}
-
-## 실습 앱: RGB 픽셀 색상 혼합 & 색역 시뮬레이터
-
-- R, G, B 슬라이더로 실시간 색상 조합
-- sRGB / DCI-P3 / Adobe RGB 영역 시각화
-- "이 색은 DCI-P3에서만 표현 가능합니다" AI 해설
-- Gemini API로 색상 용도 설명 자동 생성
-
----
-
-## 코드 예제: Streamlit을 사용한 RGB 슬라이더
-
-```python
-import streamlit as st
-
-# 슬라이더 입력
-R = st.slider('Red', 0, 255, 128)
-G = st.slider('Green', 0, 255, 128)
-B = st.slider('Blue', 0, 255, 128)
-
-# 색상 출력
-st.write(f'RGB: ({R}, {G}, {B})')
-
-# 색상 미리보기
-st.color_picker('Color Preview', f'#{R:02x}{G:02x}{B:02x}')
+## CIE 1931 xy 색도도 시각화 {.smaller}
+```{r}
+#| echo: false
+#| fig-width: 9
+#| fig-height: 4.5
+library(ggplot2)
+cie_data <- data.frame(x = c(0.64, 0.3, 0.15), y = c(0.33, 0.6, 0.06), Gamut = c("sRGB", "DCI-P3", "Rec2020"))
+ggplot(cie_data, aes(x, y, color = Gamut)) +
+  geom_point(size = 5) +
+  geom_polygon(aes(fill = Gamut), alpha = 0.3) +
+  theme_minimal() +
+  labs(title = "CIE 1931 xy 색도도", x = "x", y = "y")
 ```
 
----
+## RGB 서브픽셀 레이아웃 비교 {.smaller}
+```{r}
+#| echo: false
+#| fig-width: 9
+#| fig-height: 4.5
+layout_data <- data.frame(Layout = c("Stripe", "Diamond", "PenTile"), Efficiency = c(80, 85, 78))
+ggplot(layout_data, aes(x = Layout, y = Efficiency, fill = Layout)) +
+  geom_bar(stat = "identity") +
+  theme_minimal() +
+  labs(title = "RGB 서브픽셀 레이아웃 비교", x = "레이아웃", y = "효율성 (%)")
+```
 
-## 실습 앱 시연
+## 색공간별 커버리지 비교 {.smaller}
+```{r}
+#| echo: false
+coverage_data <- data.frame(ColorSpace = c("sRGB", "DCI-P3", "Adobe RGB", "Rec.2020"),
+                            Coverage = c(100, 90, 75, 70))
+knitr::kable(coverage_data, caption="색공간별 커버리지 비교", align=c("l","r"))
+```
 
-- Streamlit Cloud에 배포된 앱 시연
-- 실시간 색상 조합 및 색역 시각화
-- Gemini API 활용 예시
+## 색공간 시각화 {auto-animate="true"}
+RGB 색상 혼합 및 색역 시각화
 
----
+## 색공간 시각화 확장 {auto-animate="true"}
+RGB 색상 혼합 및 색역 시각화 + 경계 시각화
 
-## 디스플레이 색공간 지식 {.smaller}
+## 시뮬레이션의 중요성
+::: {.fragment .fade-in}
+시뮬레이션은 정확한 색상 재현을 위한 필수 도구입니다.
+:::
+::: {.fragment .highlight-red}
+정확한 색상 재현은 사용자 경험에 큰 영향을 미칩니다.
+:::
 
-- **sRGB**: 일반 모니터/인터넷 표준 (Coverage 100%)
-- **DCI-P3**: 영화관 표준 (sRGB보다 26% 넓음)
-- **Adobe RGB**: 인쇄 전문가용
-- **Rec.2020**: 미래 HDR TV 표준
+## 색상 용도 해설
+Gemini API를 통한 자동 해설 기능
 
----
+## 시뮬레이션 종류의 비교
+::: {.panel-tabset}
+### 광학 시뮬레이션
+광학적 특성 분석
+### 공정 시뮬레이션
+제조 공정 최적화
+### 통계 시뮬레이션
+데이터 기반 색상 분석
+:::
 
-# 핵심 정리 / 다음 강의 예고 {.section-title}
+## RGB 색상 혼합: 코드 예시
+```python
+# RGB 색상 혼합 시뮬레이션
+def rgb_mix(red, green, blue):
+    return (red/255, green/255, blue/255)
 
-## 핵심 정리
+rgb_mix(255, 0, 0)
+rgb_mix(0, 255, 0)
+rgb_mix(0, 0, 255)
+``` {code-line-numbers="1-2|3|5-7"}
 
-- 다양한 시뮬레이션 종류 및 디스플레이 관련 아이디어
-- Claude Code로 시뮬레이션 앱 생성
-- 실습 통해 RGB 색상 혼합 및 색역 시뮬레이터 구축
+## 팁과 주의사항
+::: {.callout-tip title="팁"}
+색상 조합 시, 각 색상의 비율을 조정하여 다양한 색상을 만들어보세요.
+:::
+::: {.callout-warning title="주의"}
+색상 데이터의 정확성을 위해 캘리브레이션이 필요합니다.
+:::
 
----
-
-## 다음 강의 예고
-
-- 고급 시뮬레이션 기법
-- AI 기반 자동 분석 도구 개발
-- 실시간 데이터 시각화 기술 탐구
-
----
+## 강의 마무리 {.smaller}
+픽셀이 만드는 색의 세계를 탐구했습니다. 다음 강의에서는 디스플레이 기술의 미래를 살펴보겠습니다.

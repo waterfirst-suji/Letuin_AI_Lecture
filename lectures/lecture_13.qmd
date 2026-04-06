@@ -1,146 +1,142 @@
 ---
 title: "텔레그램 봇 기초 + Claude API 연결"
-subtitle: "AI가 내 폰에 메시지를 보낸다 — 디스플레이 상담 봇 만들기"
-author: "렛유인 KDC 강의"
+subtitle: "AI가 내 폰에 메시지를 보낸다"
+author: "렛유인 KDC"
 date: today
+engine: knitr
 execute:
   echo: true
   warning: false
-lightbox: true
+  message: false
+  fig-width: 9
+  fig-height: 4.5
 format:
   revealjs:
-    theme: moon
-    controls: true
-    slide-number: true
+    theme: [moon, ../custom.scss]
+    slide-number: c/t
     show-slide-number: all
+    controls: true
+    progress: true
     center: false
-    incremental: true
+    incremental: false
     transition: slide
     background-transition: fade
-    transition-speed: slow
-    highlight-style: github
-    footer: "KDC AI 바이브 코딩 실전 | 13강"
-    css: ../styles.css
+    chalkboard: true
+    preview-links: auto
+    highlight-style: dracula
+    code-line-numbers: true
+    footer: "렛유인 KDC | AI 바이브 코딩 실전 | 13강"
     width: 1280
     height: 720
+    margin: 0.1
 ---
 
-# 텔레그램 봇 기초 + Claude API 연결 {.section-title}
+# 13강: 텔레그램 봇과 AI {background="#1F4E79"}
 
-## 오프닝 훅
+## 오프닝: AI와 텔레그램 봇의 변신
+2016년부터 있던 텔레그램 봇. AI가 들어가자 완전히 달라졌다.
 
-"텔레그램 봇은 2016년부터 있었다. 그런데 AI가 들어가자 완전히 달라졌다. 지금 전 세계에서 공장 설비 알람, 주식 알림, 뉴스 요약 봇을 만들고 있다."
+## 텔레그램 봇 구조
+- BotFather → Token → Polling/Webhook
+- python-telegram-bot 라이브러리 구조
 
----
+## Claude API 연동
+- anthropic.Anthropic() → messages.create()
+- 실사례: 공장 설비 알람봇 / 수율 알림봇
 
-## 이 강의에서 배우는 것
+## 실습: 디스플레이 기술 상담 봇
+/start /help /explain [공정명] 커맨드
 
-- 텔레그램 봇의 기본 작동 구조 이해
-- BotFather를 통해 봇 생성 및 관리
-- python-telegram-bot 라이브러리 사용법
-- Claude API와 텔레그램 봇 연동하기
-- 간단한 봇 기능 구현
+::: {.callout-tip title="팁"}
+일반 텍스트 → Claude 자유 답변
+:::
 
----
+## 텔레그램 봇 메시지 흐름 다이어그램
+```{r}
+#| echo: false
+#| fig-width: 9
+#| fig-height: 4.5
+library(ggplot2)
+data <- data.frame(
+  단계 = c("사용자", "봇", "API", "사용자"),
+  메시지 = c("명령어 입력", "처리 중...", "응답 생성", "결과 전달")
+)
 
-# 텔레그램 봇 작동 구조 {.section-title}
-
-## BotFather → Bot Token 발급
-
-- BotFather는 텔레그램 봇 생성을 위한 공식 계정입니다.
-- 새로운 봇을 생성하고 토큰을 발급받습니다.
-- → /newbot 명령어로 시작
-
----
-
-## Polling vs Webhook
-
-- Polling: 주기적으로 서버에 요청을 보내어 새로운 메시지를 확인
-- Webhook: 특정 이벤트가 발생할 때 서버가 자동으로 요청을 받음
-- 두 방법 모두 장단점이 있으며, 상황에 맞게 선택
-
----
-
-## python-telegram-bot 라이브러리 구조
-
-- python-telegram-bot: 파이썬에서 텔레그램 봇을 쉽게 개발할 수 있게 해주는 라이브러리
-- 주요 컴포넌트:
-  - `ApplicationBuilder`: 봇 애플리케이션 빌더
-  - `CommandHandler`: 명령어 처리기
-  - `MessageHandler`: 일반 메시지 처리기
-
----
-
-## Claude API 연동 구조
-
-- Claude API: 자연어 처리 및 생성 AI API
-- 텔레그램 봇에서 Claude API 호출하여 답변 제공
-- 실제 사례: 설비 데이터 → 텔레그램 알람 봇
-
----
-
-# 실습: 디스플레이 기술 상담 봇 {.section-title}
-
-## 나만의 봇 생성
-
-1. BotFather에서 시작: `@BotFather → /newbot`
-2. 봇 이름과 사용자명을 설정
-3. 발급받은 토큰을 기록
-
----
-
-## 봇 기능 구현
-
-- `/start` → 환영 메시지
-- `/help` → 사용법 안내
-- `/explain [공정명]` → Claude API 답변
-- 일반 텍스트 입력 시 Claude 자유 답변
-
----
-
-# 핵심 코드 구조 {.section-title}
-
-## 텔레그램 봇 코드 예제
-
-```python
-from telegram import Update
-from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler
-import anthropic
-
-async def explain_command(update, context):
-    process = " ".join(context.args)
-    response = call_claude(f"{process} 공정을 설명해줘")
-    await update.message.reply_text(response)
-
-app = ApplicationBuilder().token(BOT_TOKEN).build()
-app.add_handler(CommandHandler("explain", explain_command))
-app.run_polling()
+ggplot(data, aes(x = 단계, y = 메시지)) +
+  geom_line(aes(group=1), color="blue") +
+  geom_point(size=2) +
+  theme_minimal() +
+  labs(title="텔레그램 봇 메시지 흐름", x="단계", y="메시지")
 ```
 
----
+## 봇 명령어 목록
+```{r}
+#| echo: false
+df <- data.frame(
+  명령어 = c("/start", "/help", "/explain"),
+  기능 = c("봇 시작", "도움말", "공정 설명"),
+  예시 = c("봇을 시작합니다.", "도움말을 제공합니다.", "특정 공정에 대한 설명을 제공합니다.")
+)
+knitr::kable(df, caption="봇 명령어 목록", align=c("l","r","r"))
+```
 
-# 실습 결과 / 데모 {.section-title}
+## 실습: BotFather 설정
+::: {.panel-tabset}
+### BotFather 설정
+- 봇 생성 및 토큰 발급
+- 권한 설정
 
-## 디스플레이 기술 상담 봇 데모
+### Python 코드
+```python
+from telegram import Bot
+bot = Bot(token='YOUR_TOKEN_HERE')
+bot.send_message(chat_id='CHAT_ID', text="Hello World")
+```
 
-- 봇에게 `/start`를 입력하면 환영 메시지 확인
-- `/explain 포토` 명령어로 Claude API 활용해 설명 받기
-- 일반 텍스트 입력 시 Claude의 자유 답변 확인
+### 실행 결과
+- 봇이 메시지를 성공적으로 전송
+:::
 
----
+## 공장 설비 알람봇
+::: {.fragment .fade-in}
+- 실시간 알람 제공
+:::
 
-# 핵심 정리 / 다음 강의 예고 {.section-title}
+## 수율 알림봇
+::: {.fragment .highlight-red}
+- 수율 데이터 자동 보고
+:::
 
-## 핵심 정리
+## auto-animate 예시 {auto-animate="true"}
+텔레그램 봇의 핵심 구조
 
-- 텔레그램 봇의 기본 구조와 BotFather 사용법
-- python-telegram-bot 라이브러리 활용
-- Claude API를 연동하여 실질적인 봇 기능 구현
+## auto-animate 예시 {auto-animate="true"}
+텔레그램 봇의 핵심 구조 + Claude API 연동
 
-## 다음 강의 예고
+## Python-telegram-bot 라이브러리
+- 설치 및 기본 사용법
+- 메시지 핸들링 및 응답 생성
 
-- 고급 봇 기능: 사용자 데이터 저장 및 분석
-- 사용자 인터페이스 개선: 키보드 및 버튼 활용
-- 더 나은 사용자 경험을 위한 대화 흐름 설계
+## Claude API 연동의 장점
+- 자유로운 대화 생성
+- 다양한 데이터 처리 가능
 
----
+## 컬럼 레이아웃 예시
+::: {.columns}
+::: {.column width="45%"}
+왼쪽: BotFather 설정
+:::
+::: {.column width="55%"}
+오른쪽: Python 코드 및 실행
+:::
+:::
+
+## 주의사항
+::: {.callout-warning title="주의"}
+Claude API 사용 시 데이터 보호에 유의해야 합니다.
+:::
+
+## 강의 요약 {.smaller}
+- 텔레그램 봇의 구조와 기능
+- Claude API의 활용
+- 실습을 통한 이해 증진

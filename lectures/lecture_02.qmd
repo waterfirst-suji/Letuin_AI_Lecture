@@ -1,129 +1,194 @@
 ---
 title: "GitHub + Claude Code 환경 세팅"
 subtitle: "취업 포트폴리오의 시작 — Git, GitHub, Claude Code"
-author: "렛유인 KDC 강의"
+author: "렛유인 KDC"
 date: today
+engine: knitr
 execute:
   echo: true
   warning: false
-lightbox: true
+  message: false
+  fig-width: 9
+  fig-height: 4.5
 format:
   revealjs:
-    theme: moon
-    controls: true
-    slide-number: true
+    theme: [moon, ../custom.scss]
+    slide-number: c/t
     show-slide-number: all
+    controls: true
+    progress: true
     center: false
-    incremental: true
+    incremental: false
     transition: slide
     background-transition: fade
-    transition-speed: slow
-    highlight-style: github
-    footer: "KDC AI 바이브 코딩 실전 | 2강"
-    css: ../styles.css
+    chalkboard: true
+    preview-links: auto
+    highlight-style: dracula
+    code-line-numbers: true
+    footer: "렛유인 KDC | AI 바이브 코딩 실전 | 2강"
     width: 1280
     height: 720
+    margin: 0.1
 ---
 
-# 오프닝 훅 {.section-title}
+# 오프닝 {background="#1F4E79"}
 
-## "Pieter Levels의 성공 사례"
+## Pieter Levels의 성공 사례
+- Pieter Levels (@levelsio): 혼자서 AI와 GitHub로 연 $5M 수익 창출
+- GitHub와 AI의 결합으로 어떻게 성공할 수 있었는지 탐구
 
-- Pieter Levels(@levelsio)는 혼자서 AI를 이용해 연 수익 $5M(약 65억원)짜리 서비스를 만들었다.
-- 그의 도구? GitHub + AI.
-- 지금 이 환경을 세팅한다.
+# Git 워크플로우 {background="#1F4E79"}
 
-# 이 강의에서 배우는 것 {.section-title}
+## Git 워크플로우 개요
+- Working Directory → Staging Area → Local Repository → Remote Repository
 
-## 학습 목표
+```{r}
+#| echo: false
+#| fig-width: 9
+#| fig-height: 4.5
+library(ggplot2)
 
-- GitHub 계정 + Claude Code 실행 환경 완성
-- Git과 GitHub의 핵심 개념 이해
-- GitHub를 취업 포트폴리오로 활용하는 전략
+# 예시 데이터 생성
+data <- data.frame(
+  step = c("Working Dir", "Staging", "Local Repo", "Remote"),
+  count = c(100, 80, 60, 40)
+)
 
-# 이론 {.section-title}
-
-## Git vs GitHub — 버전 관리 핵심 개념
-
-- Git: 로컬에서 버전 관리 시스템
-- GitHub: 클라우드 기반 저장소로 협업 지원
-
-## Repository, Commit, Branch, Pull Request
-
-- Repository: 프로젝트의 저장소
-- Commit: 변경 사항의 스냅샷
-- Branch: 독립적인 작업 공간
-- Pull Request: 변경 사항 병합 요청
-
-## GitHub Stars로 보는 인기 프로젝트
-
-- GitHub Stars로 인기 프로젝트 실시간 확인
-- 2024~2025년에 주목해야 할 프로젝트
-
-## Claude Code 소개
-
-- Claude Code: 터미널 기반 AI 코딩 에이전트
-- AI를 활용한 코딩 환경
-
-## CLAUDE.md — AI에게 나를 소개하기
-
-- CLAUDE.md 파일로 AI에게 나의 정보를 제공
-- 디스플레이 관련 정보 포함
-
-## 취업 포트폴리오로서 GitHub 활용 전략
-
-- 프로젝트를 공개하여 실력을 증명
-- 협업 프로젝트 참여로 네트워크 구축
-
-# 실습 {.section-title}
-
-## GitHub 계정 생성 & 첫 Repository 만들기
-
-```bash
-# GitHub에서 계정 생성 후 로그인
-# 첫 번째 Repository 생성
+# 워크플로우 시각화
+ggplot(data, aes(x = step, y = count, fill = step)) +
+  geom_bar(stat = "identity") +
+  theme_minimal() +
+  labs(title = "Git 워크플로우", x = "단계", y = "작업 수")
 ```
 
-## Claude Code 설치
+# GitHub 포트폴리오 전략
 
-```bash
-# Claude Code 설치 명령어
-npm install -g @anthropic-ai/claude-code
-```
+## GitHub 포트폴리오 최적화 {.smaller}
+- Contribution Graph 활용
+- README 파일의 중요성
+- Pinned Repos 설정
 
-## 나만의 CLAUDE.md 작성
+::: {.panel-tabset}
+### Contribution Graph
+- 일일 커밋을 통해 프로필을 풍부하게
+### README
+- 프로젝트의 첫인상
+### Pinned Repos
+- 대표 프로젝트를 고정
+:::
 
-```markdown
+# Claude Code란 무엇인가?
+
+## Claude Code 개념 {.smaller}
+- 터미널 기반 AI 에이전트
+- CLAUDE.md 컨텍스트 파일 작성
+
+::: {.columns}
+::: {.column width="45%"}
+### CLAUDE.md의 역할
+- 사용자 정보 제공
+- AI 응답 품질 향상
+:::
+::: {.column width="55%"}
+```python
 # CLAUDE.md 예시
-이름: 홍길동
-전공: 디스플레이 공학
-목표: 디스플레이 소프트웨어 엔지니어
+"""
+나는 디스플레이 공학과 4학년
+Python/R 가능
+수율 분석 관심
+"""
+```
+:::
+:::
+
+# 디스플레이 취업 준비생 포트폴리오
+
+## 포트폴리오 예시 분석
+- Star 100+ repos 유형 분석
+
+::: {.callout-tip title="팁"}
+- 인기 있는 프로젝트 유형을 분석하여 트렌드 파악
+:::
+
+# 실습: GitHub 저장소 생성
+
+## GitHub 계정 생성 및 설정
+- New Repo 생성
+- README 작성
+
+::: {.callout-warning title="주의"}
+- README 파일은 프로젝트의 첫인상입니다.
+:::
+
+# 실습: Claude Code 첫 실행
+
+## Claude Code 설치 및 실행
+- npm install -g @anthropic-ai/claude-code
+
+```python
+# 설치 및 실행 예시
+npm install -g @anthropic-ai/claude-code
+claude
+``` {code-line-numbers="1-2|3"}
+
+# CLAUDE.md 응답 품질 비교 {auto-animate="true"}
+
+## CLAUDE.md 없는 상태에서의 응답
+
+- AI의 기본 응답 품질 평가
+
+# CLAUDE.md 응답 품질 비교 {auto-animate="true"}
+
+## CLAUDE.md 있는 상태에서의 응답
+
+- AI의 향상된 응답 품질 평가
+
+# Git 브랜치 전략 시각화
+
+## Git 브랜치 전략
+- main/dev/feature 브랜치 흐름
+
+```{r}
+#| echo: false
+#| fig-width: 9
+#| fig-height: 4.5
+library(ggplot2)
+
+# 예시 데이터 생성
+branches <- data.frame(
+  branch = c("main", "dev", "feature"),
+  commits = c(5, 10, 15)
+)
+
+# 브랜치 전략 시각화
+ggplot(branches, aes(x = branch, y = commits, fill = branch)) +
+  geom_bar(stat = "identity") +
+  theme_minimal() +
+  labs(title = "Git 브랜치 전략", x = "브랜치", y = "커밋 수")
 ```
 
-## 첫 commit + push
+# Git 명령어 치트시트
 
-```bash
-git init
-git add CLAUDE.md
-git commit -m "Add CLAUDE.md for display"
-git push origin main
+## Git 명령어 표 {.smaller}
+
+```{r}
+#| echo: false
+knitr::kable(data.frame(
+  명령어 = c("git init", "git add", "git commit", "git push"),
+  기능 = c("저장소 초기화", "파일 추가", "커밋 생성", "원격 저장소로 푸시"),
+  예시 = c("git init", "git add .", "git commit -m '메시지'", "git push origin main")
+), caption="Git 명령어 치트시트", align=c("l","r","r"))
 ```
 
-# 실습 앱 결과 / 데모 {.section-title}
+# Q&A 및 마무리
 
-## GitHub에서의 첫 Repository
+## 질문 및 피드백
+- 강의 내용에 대한 질문
+- 피드백 및 추가 논의
 
-- 첫 Repository에 CLAUDE.md 파일 확인
-- GitHub 페이지에서 변경 사항 확인 가능
-
-# 핵심 정리 / 다음 강의 예고 {.section-title}
-
-## 핵심 정리
-
-- GitHub와 Claude Code로 코딩 환경 세팅
-- Git의 기본 명령어 이해 및 실습
-
-## 다음 강의 예고
-
-- PART 2: 클론 코딩과 협업 프로젝트 시작
-- GitHub를 활용한 팀 프로젝트 관리 방법
+::: {.fragment .fade-in}
+- 강의에 대한 피드백은 언제나 환영합니다.
+:::
+::: {.fragment .highlight-red}
+- 다음 강의를 기대해 주세요!
+:::

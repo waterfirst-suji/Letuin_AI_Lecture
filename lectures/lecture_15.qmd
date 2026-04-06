@@ -1,119 +1,211 @@
 ---
 title: "종합 통합 실습 — 모든 것을 하나로"
-subtitle: "Streamlit + Gemini AI + 텔레그램 알람 — 풀스택 완성"
-author: "렛유인 KDC 강의"
+subtitle: "Streamlit + Gemini AI + 텔레그램 알람 풀스택 완성 (60분)"
+author: "렛유인 KDC"
 date: today
+engine: knitr
 execute:
   echo: true
   warning: false
-lightbox: true
+  message: false
+  fig-width: 9
+  fig-height: 4.5
 format:
   revealjs:
-    theme: moon
-    controls: true
-    slide-number: true
+    theme: [moon, ../custom.scss]
+    slide-number: c/t
     show-slide-number: all
+    controls: true
+    progress: true
     center: false
-    incremental: true
+    incremental: false
     transition: slide
     background-transition: fade
-    transition-speed: slow
-    highlight-style: github
-    footer: "KDC AI 바이브 코딩 실전 | 15강"
-    css: ../styles.css
+    chalkboard: true
+    preview-links: auto
+    highlight-style: dracula
+    code-line-numbers: true
+    footer: "렛유인 KDC | AI 바이브 코딩 실전 | 15강"
     width: 1280
     height: 720
+    margin: 0.1
 ---
 
-# 종합 통합 실습 — 모든 것을 하나로 {.section-title}
+# PART 6: 시스템 구성 및 시뮬레이션 {background="#1F4E79"}
 
-## 이 강의에서 배우는 것
+## 강의 목표
+- 시스템 아키텍처 이해
+- 코드 생성 및 실행
+- 연결 테스트 및 디버깅
+- GitHub와 Streamlit 배포
 
-- 전체 스택 통합을 통한 디스플레이 수율 모니터링 시스템 구축
-- Claude Code를 활용한 시스템 아키텍처 설계
-- Streamlit, Gemini AI, 텔레그램 알람의 연계 구현
-- GitHub Actions를 통한 자동 배포
+## 전체 시스템 아키텍처
 
-## 시스템 구성도 {.section-title}
+```{r}
+#| echo: false
+#| fig-width: 9
+#| fig-height: 4.5
+library(ggplot2)
 
-::: {.columns}
-::: {.column width="50%"}
-- **수율 데이터 시뮬레이션** → 실시간 수율 데이터 생성
-- **Streamlit 대시보드** ← Gemini AI 분석과 연동
-- **이상 감지 시 텔레그램 알람** → 즉시 알림 전송
-- **GitHub에 자동 저장** → Actions로 자동 배포
-:::
-::: {.column width="50%"}
-![시스템 구성도](images/system_diagram.png)
-:::
-:::
+nodes <- data.frame(
+  x = c(1, 3, 5, 7),
+  y = c(2, 2, 2, 2),
+  name = c("Data\nSimulator", "Streamlit\nApp", "Telegram\nBot", "GitHub\nActions")
+)
+edges <- data.frame(
+  x    = c(1.5, 3.5, 5.5),
+  xend = c(2.5, 4.5, 6.5),
+  y    = c(2, 2, 2),
+  yend = c(2, 2, 2)
+)
 
-## 전체 아키텍처 설계 요청 {.smaller}
-
-- **프롬프트**: "디스플레이 수율 모니터링 시스템을 만들어줘. Streamlit 대시보드 + Gemini AI 분석 + 텔레그램 알람이 연결된 구조로."
-- Claude에게 아키텍처 설계 요청
-
-## Claude Code로 각 파트 코드 생성
-
-::: {.panel-tabset}
-### data_simulator.py
-
-```python
-def simulate_yield_data():
-    import random
-    return random.uniform(85, 100)
+ggplot() +
+  geom_segment(data=edges, aes(x=x, xend=xend, y=y, yend=yend),
+               arrow=arrow(length=unit(0.15,"inches"), type="closed"),
+               color="#2E75B6", linewidth=1.2) +
+  geom_point(data=nodes, aes(x=x, y=y), size=18, color="#1F4E79") +
+  geom_text(data=nodes, aes(x=x, y=y, label=name),
+            color="white", size=3.5, fontface="bold") +
+  xlim(0, 8.5) + ylim(1, 3) +
+  theme_void() +
+  labs(title="전체 시스템 아키텍처")
 ```
 
-### app.py
+## 시뮬레이션 수율 데이터 실시간 트렌드
+
+```{r}
+#| echo: false
+#| fig-width: 9
+#| fig-height: 4.5
+library(ggplot2); library(dplyr); library(scales)
+
+set.seed(123)
+time <- seq(1, 100, by=1)
+yield <- cumsum(runif(100, min=-0.5, max=0.5)) + 50
+ai_analysis <- yield + rnorm(100, mean=0, sd=2)
+
+data <- data.frame(time, yield, ai_analysis)
+
+ggplot(data, aes(x=time)) +
+  geom_line(aes(y=yield, color="Yield")) +
+  geom_line(aes(y=ai_analysis, color="AI Analysis")) +
+  scale_color_manual(values=c("blue", "red")) +
+  labs(x="Time", y="Value", color="Legend") +
+  theme_minimal()
+```
+
+## 파일 역할 정리표
+
+```{r}
+#| echo: false
+knitr::kable(
+  data.frame(
+    파일명 = c("data_simulator.py", "app.py", "alert_bot.py"),
+    역할 = c("데이터 시뮬레이션", "대시보드 앱", "텔레그램 알람"),
+    핵심코드 = c("시뮬레이션 로직", "Streamlit UI", "텔레그램 API 연동")
+  ),
+  caption = "파일별 역할 정리",
+  align = c("l", "l", "l")
+)
+```
+
+## 코드 생성: data_simulator.py {auto-animate="true"}
+
+```python
+import numpy as np
+
+def simulate_yield():
+    """수율 데이터 시뮬레이션"""
+    np.random.seed(123)
+    return np.cumsum(np.random.uniform(-0.5, 0.5, 100)) + 50
+```
+
+## 코드 생성: data_simulator.py + app.py {auto-animate="true"}
 
 ```python
 import streamlit as st
 
-def display_dashboard():
-    st.title("수율 모니터링 대시보드")
-    # Gemini AI 분석 결과를 포함
+def simulate_yield():
+    """수율 데이터 시뮬레이션"""
+    np.random.seed(123)
+    return np.cumsum(np.random.uniform(-0.5, 0.5, 100)) + 50
+
+st.title("시뮬레이션 수율 데이터")
+st.line_chart(simulate_yield())
 ```
 
-### alert_bot.py
+## 연결 테스트 & 디버깅
 
+::: {.columns}
+::: {.column width="45%"}
+- 데이터 시뮬레이션 테스트
+- 대시보드 연결 확인
+:::
+::: {.column width="55%"}
+- 텔레그램 알람 테스트
+- GitHub Actions 설정 점검
+:::
+:::
+
+## GitHub push + Streamlit 배포
+
+::: {.fragment .fade-in}
+1. GitHub에 코드 푸시
+:::
+::: {.fragment .highlight-red}
+2. Streamlit에서 앱 배포
+:::
+
+## 코드 살펴보기
+
+::: {.panel-tabset}
+### data_simulator.py
 ```python
-from telegram import Bot
+import numpy as np
+
+def simulate_yield():
+    """수율 데이터 시뮬레이션"""
+    np.random.seed(123)
+    return np.cumsum(np.random.uniform(-0.5, 0.5, 100)) + 50
+```
+### app.py
+```python
+import streamlit as st
+
+def simulate_yield():
+    """수율 데이터 시뮬레이션"""
+    np.random.seed(123)
+    return np.cumsum(np.random.uniform(-0.5, 0.5, 100)) + 50
+
+st.title("시뮬레이션 수율 데이터")
+st.line_chart(simulate_yield())
+```
+### alert_bot.py
+```python
+import telegram
 
 def send_alert(message):
-    bot = Bot(token='YOUR_TELEGRAM_TOKEN')
+    """텔레그램 알람 전송"""
+    bot = telegram.Bot(token='YOUR_TELEGRAM_TOKEN')
     bot.send_message(chat_id='YOUR_CHAT_ID', text=message)
 ```
 :::
 
-## 연결 테스트 & 디버깅 {.smaller}
+## 팁과 주의사항
 
-- 에러 발생 시 Claude에게 "이 에러 고쳐줘" 프롬프트 사용
-- 예: ImportError, SyntaxError 등
-
-## GitHub Push + Streamlit 배포
-
-```bash
-git add .
-git commit -m "Add integrated monitoring system"
-git push origin main
-```
-
-- Streamlit에서 배포 상태 확인
-- GitHub Actions 설정 검토
-
-## 완성 시스템 기능 {.section-title}
-
-- 실시간 수율 데이터 시뮬레이션
-- Streamlit에서 시각화 + Gemini AI 이상 원인 분석
-- 수율 95% 미만 → 텔레그램 자동 경고
-- GitHub Actions로 자동 배포
-
-## 다음 강의 예고: 프로젝트 3 시작
-
-::: {.callout-note}
-- **프로젝트 3**: 나만의 AI 디스플레이 도구 개발
-- **학습 목표**: 전체 스택 통합, 풀스택 AI 앱 완성
+::: {.callout-tip title="팁"}
+코드 변경 시, GitHub Actions를 통해 자동 배포를 설정하세요.
 :::
 
-- 자유 주제로 진행
-- 기존 프로젝트의 경험을 바탕으로 창의적인 도전
+::: {.callout-warning title="주의"}
+텔레그램 API 토큰과 채팅 ID는 보안에 유의하세요.
+:::
+
+## 요약
+- 시스템 구성 요소 이해
+- 코드 생성 및 연결 테스트
+- Streamlit 배포 및 GitHub 연동
+
+## 감사합니다! {background="#1F4E79"}
+
+질문이 있으시면 언제든지 문의하세요.

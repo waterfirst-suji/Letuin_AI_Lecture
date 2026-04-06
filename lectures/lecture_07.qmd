@@ -1,122 +1,177 @@
 ---
-title: "Quarto 공정 분석 보고서 & GitHub Pages 배포"
-subtitle: "PPT 수정 지옥에서 탈출 — 코드+글+차트가 하나로"
-author: "렛유인 KDC 강의"
+title: "Quarto 공정 분석 보고서 & GitHub Pages"
+subtitle: "PPT 수정 지옥 탈출 — 코드+글+차트가 하나로"
+author: "렛유인 KDC"
 date: today
+engine: knitr
 execute:
   echo: true
   warning: false
-lightbox: true
+  message: false
+  fig-width: 9
+  fig-height: 4.5
 format:
   revealjs:
-    theme: moon
-    controls: true
-    slide-number: true
+    theme: [moon, ../custom.scss]
+    slide-number: c/t
     show-slide-number: all
+    controls: true
+    progress: true
     center: false
-    incremental: true
+    incremental: false
     transition: slide
     background-transition: fade
-    transition-speed: slow
-    highlight-style: github
-    footer: "KDC AI 바이브 코딩 실전 | 7강"
-    css: ../styles.css
+    chalkboard: true
+    preview-links: auto
+    highlight-style: dracula
+    code-line-numbers: true
+    footer: "렛유인 KDC | AI 바이브 코딩 실전 | 7강"
     width: 1280
     height: 720
+    margin: 0.1
 ---
 
-# Quarto 공정 분석 보고서 & GitHub Pages 배포 {.section-title}
+# PART 3: Quarto와 데이터 시각화 {background="#1F4E79"}
 
-## "PowerPoint 보고서는 수정이 지옥이다. Quarto는 코드 + 글 + 차트가 하나로 묶인 '살아있는 보고서'. AI가 코드를 바꾸면 차트가 자동으로 바뀐다."
+## 오프닝: PPT 수정 지옥
+"PPT 수정 지옥. 데이터 바뀌면 차트도 다시, 표도 다시, 번호도 다시."
 
-## 이 강의에서 배우는 것
-- Quarto의 기본 개념 이해
-- 다양한 출력 형식 활용법
-- Quarto와 기존 도구의 비교
-- .qmd 파일 작성 및 구조
-- GitHub Pages를 통한 자동 배포
-- RevealJS 슬라이드 생성 및 활용
+## Quarto .qmd 구조
+- YAML 헤더
+- 마크다운
+- 코드 청크
 
-# Quarto란 무엇인가? {.section-title}
+## 출력 형식 비교
+::: {.panel-tabset}
+### HTML
+- 웹 기반
+- 인터랙티브 가능
 
-## Quarto란?
-- R/Python 통합 문서 시스템
-- 데이터, 코드, 텍스트가 결합된 문서 생성
-- 여러 출력 형식을 지원
+### PDF
+- 인쇄 최적화
+- 고정 레이아웃
 
-## 출력 형식
-- HTML 보고서
-- PDF 문서
-- RevealJS 슬라이드
-- 웹사이트
+### Slides
+- 발표용
+- 인터랙티브 가능
 
-## Quarto vs Jupyter Notebook vs PPT
-- Quarto: 통합 보고서 시스템
-- Jupyter Notebook: 코드 중심
-- PPT: 시각적 발표 자료
-- → Quarto는 코드와 문서의 완벽한 통합을 제공
+### Website
+- 전체 웹사이트
+- 네비게이션 포함
+:::
 
-# .qmd 파일 구조 {.section-title}
-
-## .qmd 파일의 구성 요소
-- YAML 헤더: 문서 메타데이터
-- 마크다운: 텍스트와 서식
-- 코드 청크: 코드 실행 및 결과 포함
+## Quarto vs Jupyter vs PPT
+```{r}
+#| echo: false
+df <- data.frame(
+  Platform = c("Quarto", "Jupyter", "PPT"),
+  Dynamic = c("Yes", "Yes", "No"),
+  Reproducible = c("Yes", "Limited", "No")
+)
+knitr::kable(df, caption="Quarto vs Jupyter vs PPT 비교", align=c("l","r","r"))
+```
 
 ## GitHub Pages 자동 배포
 - gh-pages 브랜치 활용
-- 푸시 후 자동 웹사이트 업데이트
-- → 코드 변경 시 보고서와 웹사이트가 자동으로 동기화
+- 푸시 후 자동 빌드
 
-# RevealJS 슬라이드 {.section-title}
+## 슬라이드 자체가 Quarto RevealJS!
+::: {.fragment .fade-in}
+- Quarto의 강력한 기능
+:::
 
-## 이 강의가 바로 Quarto RevealJS!
-- 슬라이드도 .qmd 파일로 작성
-- 코드 한 줄로 발표 자료 생성
-- → 강력한 데이터 시각화 및 발표 도구
+## 실습: 디스플레이 공정 분석 보고서
+- 샘플 수율 데이터 활용
+- ggplot2 차트 자동 생성
 
-# 실습: 디스플레이 공정 분석 보고서 {.section-title}
-
-## 샘플 수율 데이터 + 차트 생성 {.smaller}
-```r
+## 수율 데이터 예시
+```{r}
+#| echo: false
+#| fig-width: 9
+#| fig-height: 4.5
 library(ggplot2)
+set.seed(123)
 data <- data.frame(
-  process = c("A", "B", "C", "D"),
-  yield = c(85, 90, 78, 92)
+  Parameter = rep(letters[1:5], each=20),
+  Yield = rnorm(100, mean=75, sd=10)
 )
-ggplot(data, aes(x = process, y = yield)) +
-  geom_bar(stat = "identity")
+ggplot(data, aes(x=Parameter, y=Yield)) +
+  geom_point() +
+  geom_smooth(method='lm') +
+  labs(title="파라미터별 수율 상관관계")
 ```
 
-## Claude Code로 .qmd 파일 생성
-- AI 도구 활용하여 문서 자동 생성
-- 효율적으로 코드 작성 및 수정
+## Quarto render → HTML 보고서
+```bash
+quarto render report.qmd --to html
+```
 
-## quarto render → HTML 보고서 생성
-- Quarto 명령어로 HTML 출력
-- 자동화된 보고서 생성 프로세스
+## GitHub Pages 배포
+```bash
+git add .
+git commit -m "Update report"
+git push origin main
+```
 
-## GitHub Pages에 HTML 보고서 배포
-- 버전 관리 및 배포 자동화
-- 언제 어디서나 접근 가능한 보고서
+## Quarto 작성 → render → 배포
+::: {.fragment .highlight-red}
+1. Quarto 작성
+:::
+::: {.fragment .highlight-red}
+2. render
+:::
+::: {.fragment .highlight-red}
+3. 배포
+:::
 
-# Quarto Slides — 발표 자료 전환 {.section-title}
+## auto-animate 예시 {auto-animate="true"}
+단계 1: 데이터 준비
 
-## 발표 자료도 코드 한 줄로!
-- Quarto 슬라이드 작성
-- RevealJS로 멋진 발표 자료 생성
-- → 코드 기반의 효율적인 발표 준비
+## auto-animate 예시 {auto-animate="true"}
+단계 1: 데이터 준비 + 시각화 추가
 
-# 핵심 정리 / 다음 강의 예고 {.section-title}
+## R ggplot2: 수율 분석
+```{r}
+#| echo: false
+#| fig-width: 9
+#| fig-height: 4.5
+ggplot(data, aes(x=Yield, fill=Parameter)) +
+  geom_histogram(binwidth=2) +
+  labs(title="수율 분포")
+```
 
-## 핵심 정리
-- Quarto의 장점과 활용법 이해
-- 코드 기반의 유연한 보고서 작성
-- GitHub Pages를 통한 손쉬운 배포
+## 코드 하이라이트 예시
+```python
+import matplotlib.pyplot as plt
+# 데이터 준비
+data = [1, 2, 3, 4]
+# 차트 생성
+plt.plot(data)  # {code-line-numbers="1-2|3|5-7"}
+plt.show()
+```
 
-## 다음 강의 예고
-- 데이터 시각화 고급 기법
-- 인터랙티브 대시보드 제작
-- 실시간 데이터 분석 앱 개발
+## 팁과 주의사항
+::: {.callout-tip title="팁"}
+Quarto는 효율적입니다!
+:::
+::: {.callout-warning title="주의"}
+데이터 변동 시 업데이트 필요
+:::
 
-- 학습 목표: Quarto 보고서 작성, GitHub Pages 배포
+## 컬럼 레이아웃
+::: {.columns}
+::: {.column width="45%"}
+Quarto 특징
+:::
+::: {.column width="55%"}
+자동화 및 재현성
+:::
+:::
+
+## 마무리 {.smaller}
+- Quarto의 강력한 시각화 및 자동화 기능
+- GitHub Pages를 통한 쉽게 배포 가능
+- 데이터 분석 및 보고서 작성의 효율성 증대
+
+## Q&A {.smaller}
+- 질문을 받습니다.

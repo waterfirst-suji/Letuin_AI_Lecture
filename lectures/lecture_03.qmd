@@ -1,156 +1,150 @@
 ---
 title: "Claude Code Skills & 커스텀 자동화"
-subtitle: "반복 작업을 슬래시 명령어 하나로 — Skills & 프롬프트 패턴"
-author: "렛유인 KDC 강의"
+subtitle: "반복 작업을 슬래시 명령어 하나로"
+author: "렛유인 KDC"
 date: today
+engine: knitr
 execute:
   echo: true
   warning: false
-lightbox: true
+  message: false
+  fig-width: 9
+  fig-height: 4.5
 format:
   revealjs:
-    theme: moon
-    controls: true
-    slide-number: true
+    theme: [moon, ../custom.scss]
+    slide-number: c/t
     show-slide-number: all
+    controls: true
+    progress: true
     center: false
-    incremental: true
+    incremental: false
     transition: slide
     background-transition: fade
-    transition-speed: slow
-    highlight-style: github
-    footer: "KDC AI 바이브 코딩 실전 | 3강"
-    css: ../styles.css
+    chalkboard: true
+    preview-links: auto
+    highlight-style: dracula
+    code-line-numbers: true
+    footer: "렛유인 KDC | AI 바이브 코딩 실전 | 3강"
     width: 1280
     height: 720
+    margin: 0.1
 ---
 
-# Claude Code Skills & 커스텀 자동화 {.section-title}
+# PART 2: AI 활용의 진화 {background="#1F4E79"}
 
-## "유명 개발자 Simon Willison이 말했다: '나는 하루에 10개의 작은 앱을 만든다. AI 덕분에.' 오늘 우리도 30분 안에 하나 만든다."
+## 오프닝
+"나는 하루 10개 앱을 만든다. AI 덕분에." - Simon Willison
 
----
+## Claude Code Skills
 
-## 이 강의에서 배우는 것
+### 내장 스킬 vs 커스텀 스킬
+- /commit, /review, /test
+- 커스텀 스킬의 유연성
 
-- Skills — 반복 작업을 슬래시 명령어로 저장하는 방법
-- 좋은 프롬프트 vs 나쁜 프롬프트 실제 비교
-- CLAUDE.md 고급 설정 — 프로젝트별 맞춤화
-- cokacdir — Rust로 만든 AI 터미널 파일 매니저 사용법
-- 프롬프트 패턴 4가지 습득
+## 프롬프트 품질 비교
 
----
+### 나쁜 예 vs 좋은 예
+- 역할, 맥락, 형식, 제약 4요소
 
-## Skills — 반복 작업을 슬래시 명령어로 저장하는 방법 {.smaller}
+::: {.panel-tabset}
+### 나쁜 예
+- 불명확한 역할
+- 부족한 맥락 제공
 
-- 반복적인 작업을 간편하게 수행
-- 슬래시 명령어로 빠르게 접근 가능
-- 생산성 향상 및 오류 감소
+### 좋은 예
+- 명확한 역할 설정
+- 풍부한 맥락 제공
 
----
-
-## 좋은 프롬프트 vs 나쁜 프롬프트 실제 비교 {.smaller}
-
-::: {.columns}
-::: {.column width="50%"}
-- 좋은 프롬프트
-  - 명확하고 구체적
-  - 필요한 정보를 모두 제공
-:::
-::: {.column width="50%"}
-- 나쁜 프롬프트
-  - 모호하고 불명확
-  - 부족한 정보 제공
-:::
+### 결과 비교
+- 응답 품질 차이
 :::
 
----
+## 프롬프트 요소 설명표
 
-## CLAUDE.md 고급 설정 — 프로젝트별 맞춤화
-
-- 다양한 프로젝트에 맞춘 설정 가능
-- 효율적인 관리 및 유지보수
-
----
-
-## [특별 소개] cokacdir — Rust로 만든 AI 터미널 파일 매니저
-
-- 자연어로 파일 관리
-- 예시: "수율 데이터 파일 찾아서 열어줘"
-- [GitHub 링크](https://github.com/waterfirst/cokacdir)
-
----
-
-## 프롬프트 패턴 4가지
-
-1. 역할부여
-2. 맥락제공
-3. 출력형식지정
-4. 제약조건
-
----
-
-## /commit 스킬 사용해보기
-
-```bash
-/commit "Update README with project details"
+```{r}
+#| echo: false
+#| results: 'asis'
+df <- data.frame(
+  요소 = c("역할", "맥락", "작업", "출력형식"),
+  설명 = c("AI의 역할 정의", "관련 정보 제공", "수행할 작업", "결과의 형식 설정")
+)
+knitr::kable(df, caption="4대 프롬프트 요소 설명표", align=c("l","r"))
 ```
 
-- 깃 커밋을 간단하게 수행
+## CLAUDE.md 고급 설정
 
----
+- 프로젝트별 AI 행동 커스터마이즈
 
-## 나만의 /analyze-yield 커스텀 스킬 만들기
+::: {.callout-tip title="팁"}
+AI 설정을 통해 프로젝트 요구에 맞춤 대응
+:::
+
+## cokacdir 소개
+
+- Rust 기반 AI 터미널 파일 매니저
+- 자연어 명령 지원
+
+## R ggplot2 차트: 프롬프트 응답 품질
+
+```{r}
+#| echo: false
+#| fig-width: 9
+#| fig-height: 4.5
+library(ggplot2)
+data <- data.frame(
+  Prompt = c("나쁜 예", "좋은 예"),
+  Quality = c(60, 90)
+)
+
+ggplot(data, aes(x=Prompt, y=Quality, fill=Prompt)) +
+  geom_bar(stat="identity") +
+  labs(title="프롬프트 응답 품질 비교", y="품질 점수") +
+  theme_minimal()
+```
+
+## 실습: /analyze-yield 커스텀 스킬 작성
+
+### 프롬프트 패턴 실습
+- 디스플레이 수율 데이터 분석 요청
+
+::: {.fragment .fade-in}
+분석 결과를 통해 개선안 도출
+:::
+
+## auto-animate 슬라이드 쌍
+
+## 슬라이드A {auto-animate="true"}
+커스텀 스킬의 필요성
+
+## 슬라이드B {auto-animate="true"}
+커스텀 스킬의 필요성 + 적용 사례
+
+## 코드 예시
 
 ```python
 def analyze_yield(data):
-    # 데이터 분석 코드 작성
-    import pandas as pd
-    import plotly.express as px
-    df = pd.read_csv(data)
-    fig = px.line(df, x='Time', y='Yield')
-    return fig
-```
+    # 데이터 분석 로직
+    result = process(data)
+    return result
+``` {code-line-numbers="1-2|3|5-7"}
 
-- 나만의 분석 스킬로 생산성 향상
+## 결론
 
----
+### AI 활용의 미래
+- AI와 함께하는 혁신의 가능성
 
-## 프롬프트 패턴 실습
+::: {.callout-warning title="주의"}
+AI 의존성 증가에 따른 윤리적 고려 필요
+:::
 
-```python
-# 역할: 디스플레이 공정 데이터 분석 전문가
-# 맥락: [배경 정보 입력]
-# 작업: [구체적 요청]
-# 출력형식: Python Streamlit 앱 코드
-# 제약: pandas, plotly만 사용
+## Q&A 및 토론
 
-import streamlit as st
-import pandas as pd
-import plotly.express as px
-
-st.title('Display Process Data Analysis')
-# [이하 상세 코드 작성]
-```
-
----
-
-## cokacdir 터미널 실습
-
-- 터미널에서 자연어 명령어 실행
-- 실습: 파일 검색 및 관리
-
-```bash
-cokacdir "Find and open yield data file"
-```
-
----
-
-## 핵심 정리 / 다음 강의 예고
-
-- Skills와 프롬프트 패턴으로 자동화 작업 효율 향상
-- 다음 강의: "AI와 데이터 시각화의 만남"에서 심화 학습
-
----
-
-이로써 강의가 마무리되었습니다. 다음 강의에서 더욱 심화된 내용을 다룹니다. 질문이 있으면 언제든지 제게 문의하세요!
+::: {.columns}
+::: {.column width="45%"}
+질문 및 답변
+:::
+::: {.column width="55%"}
+토론 주제
+:::
+:::

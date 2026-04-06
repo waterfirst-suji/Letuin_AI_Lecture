@@ -1,136 +1,173 @@
 ---
 title: "Gemini 봇 + 설비 알람 시스템"
-subtitle: "AI 봇이 수율을 감시한다 — 자동 알람 시스템 구축"
-author: "렛유인 KDC 강의"
+subtitle: "AI 봇이 수율을 24시간 감시한다"
+author: "렛유인 KDC"
 date: today
+engine: knitr
 execute:
   echo: true
   warning: false
-lightbox: true
+  message: false
+  fig-width: 9
+  fig-height: 4.5
 format:
   revealjs:
-    theme: moon
-    controls: true
-    slide-number: true
+    theme: [moon, ../custom.scss]
+    slide-number: c/t
     show-slide-number: all
+    controls: true
+    progress: true
     center: false
-    incremental: true
+    incremental: false
     transition: slide
     background-transition: fade
-    transition-speed: slow
-    highlight-style: github
-    footer: "KDC AI 바이브 코딩 실전 | 14강"
-    css: ../styles.css
+    chalkboard: true
+    preview-links: auto
+    highlight-style: dracula
+    code-line-numbers: true
+    footer: "렛유인 KDC | AI 바이브 코딩 실전 | 14강"
     width: 1280
     height: 720
+    margin: 0.1
 ---
 
-# Gemini 봇 + 설비 알람 시스템 {.section-title}
+# gemini_telebot: AI 비서의 시대 {background="#1F4E79"}
 
-## 오프닝 훅
+## gemini_telebot 구조 {.smaller}
 
-"gemini_telebot 레포를 보면 텔레그램 봇이 Gmail 읽고, 캘린더 관리하고, GitHub에 자동 커밋까지 한다. AI 봇이 비서가 되는 시대. → [github.com/waterfirst/gemini_telebot](https://github.com/waterfirst/gemini_telebot)"
+- **PDCA 워크플로우**: Plan-Do-Check-Act
+- **Google Workspace 연동**: Gmail, 캘린더, GitHub
+- **설비 알람 패턴**:
+  - CSV 읽기
+  - 임계값 판단
+  - 텔레그램 전송
 
----
+## schedule 라이브러리 {.smaller}
 
-## 이 강의에서 배우는 것 {.smaller}
+- **주기적 자동 실행**:
+  - Python `schedule` 라이브러리
+  - **APScheduler vs schedule 비교**
 
-- Gemini 봇의 기본 구조 이해
-- 설비 알람 봇의 설계 패턴 학습
-- 실시간 알람 시스템 구축 방법
-- Gemini API와 텔레그램 통합 실습
+::: {.panel-tabset}
+### APScheduler
+- 다양한 트리거 옵션
+- 복잡한 스케줄링 가능
 
----
+### schedule
+- 간단한 사용법
+- Pythonic 코드 스타일
+:::
 
-## gemini_telebot 레포 구조 탐색
+## 실습: 수율 모니터링 알람 봇 {.smaller}
 
-- PDCA 워크플로우 봇
-  - /pdca plan
-  - /pdca do
-  - /pdca report
-
-- Google Workspace 연동
-  - Gmail
-  - Calendar
-  - Drive
-
-- 550+ AI 스킬 라이브러리
-
----
-
-## 설비 알람 봇 설계 패턴
-
-- 데이터 수집 (CSV/DB/API)
-- 임계값 판단 (수율 < 95%?)
-- 텔레그램 알람 전송
-
----
-
-## 실습 봇: 디스플레이 수율 모니터링 알람 봇
-
-- 샘플 수율 데이터(CSV) 주기적 읽기
-- 수율 95% 미만 → 경고 알람 자동 전송
-- /status → 현재 수율 현황 리포트
-- /ai [질문] → Gemini가 답변
-- /summary → 오늘의 수율 요약 (Gemini 자동 작성)
-
----
-
-## 핵심 알람 코드
+- **샘플 수율 CSV**: 95% 미만 시 경고 알람
+- **명령어**: `/status`, `/summary`
 
 ```python
 import schedule
 import time
-import pandas as pd
 
-def check_yield():
-    data = pd.read_csv("yield_data.csv")
-    current_yield = data.iloc[-1]["yield"]
-    if current_yield < 95:
-        send_telegram_alert(f"⚠️ 수율 경고: {current_yield}% (기준: 95%)")
+def job():
+    print("수율 모니터링 중...")
 
-schedule.every(1).hours.do(check_yield)
+schedule.every(10).minutes.do(job)
+
+while True:
+    schedule.run_pending()
+    time.sleep(1)
 ```
 
----
+## 수율 데이터 시각화 {.smaller}
 
-## 실습 앱 결과 / 데모 슬라이드
+```{r}
+#| echo: false
+#| fig-width: 9
+#| fig-height: 4.5
+library(ggplot2)
+set.seed(123)
+time <- seq(1, 100, by=1)
+yield <- rnorm(100, mean=96, sd=2)
+df <- data.frame(time, yield)
+
+ggplot(df, aes(x=time, y=yield)) +
+  geom_line(color="blue") +
+  geom_hline(yintercept=95, linetype="dashed", color="red") +
+  labs(title="시간별 수율 데이터", x="시간", y="수율(%)") +
+  theme_minimal()
+```
+
+## 알람 발생 포인트 표시 {.smaller}
+
+```{r}
+#| echo: false
+#| fig-width: 9
+#| fig-height: 4.5
+df$alarm <- ifelse(df$yield < 95, "발생", "정상")
+
+ggplot(df, aes(x=time, y=yield, color=alarm)) +
+  geom_line() +
+  geom_point(data=subset(df, alarm=="발생"), size=2) +
+  geom_hline(yintercept=95, linetype="dashed", color="red") +
+  labs(title="수율 데이터 및 알람 포인트", x="시간", y="수율(%)") +
+  scale_color_manual(values=c("blue", "red")) +
+  theme_minimal()
+```
+
+## 알람 봇 설계 패턴 {.smaller}
+
+```{r}
+#| echo: false
+knitr::kable(data.frame(
+  단계=c("데이터 수집", "임계값 판단", "알람 전송"),
+  설명=c("CSV 파일에서 데이터 로드", "95% 미만 판단", "경고 메시지 전송")
+), caption="알람 봇 설계 패턴", align=c("l","r"))
+```
+
+## 데이터 수집 → 판단 → 알람 {auto-animate="true"}
+
+### 데이터 수집 단계
+- CSV 파일에서 데이터 로드
+
+## 데이터 판단 단계 {auto-animate="true"}
+
+### 판단 및 알람
+- 임계값 판단 후 경고 메시지 전송
+
+## fragment 애니메이션 예시
+
+::: {.fragment .fade-in}
+수율 모니터링의 중요성
+:::
+::: {.fragment .highlight-red}
+임계값 이하 시 즉각 알림
+:::
+
+## 컬럼 레이아웃 예시
 
 ::: {.columns}
-::: {.column width="50%"}
-- 데이터 수집 및 분석
-- 알람 전송 테스트
+::: {.column width="45%"}
+### 왼쪽
+수율 데이터 분석
 :::
-::: {.column width="50%"}
-- 실시간 수율 모니터링
-- Gemini와의 상호작용 데모
+::: {.column width="55%"}
+### 오른쪽
+알람 시스템 설계
 :::
-:::
-
----
-
-## ::: {.callout-tip}
-### 팁: 텔레그램 봇 개발 팁
-
-- BotFather를 통해 봇 생성 및 토큰 발급
-- Python 텔레그램 API 활용
-- Gemini API와의 연동으로 기능 확장
 :::
 
----
+## 팁과 주의사항
 
-## 핵심 정리
+::: {.callout-tip title="팁"}
+gemini_telebot으로 자동화된 워크플로우 구축
+:::
+::: {.callout-warning title="주의"}
+임계값 설정은 환경에 맞게 조정하세요.
+:::
 
-- Gemini 봇은 다양한 업무 자동화 가능
-- 설비 알람 봇은 실시간 모니터링의 핵심 도구
-- API 연동을 통한 기능 확장 및 자동화의 중요성
+## 마무리 {.smaller}
 
----
+- gemini_telebot의 구조 이해
+- 수율 모니터링 알람 봇 실습
+- 자동화의 중요성 및 활용 방안
 
-## 다음 강의 예고
-
-- PART 7 — 실시간 데이터 대시보드 설계
-- 데이터 시각화 툴 활용법
-- 대시보드와 알람 시스템의 통합
-
----
+감사합니다!

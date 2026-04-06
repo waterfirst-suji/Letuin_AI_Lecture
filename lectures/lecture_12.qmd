@@ -1,157 +1,142 @@
 ---
 title: "환경 관리 & 보안 & GitHub Actions CI/CD"
-subtitle: "API Key를 GitHub에 올리면 요금 폭탄 — 보안 필수 지식"
-author: "렛유인 KDC 강의"
+subtitle: "API Key를 GitHub에 올리면 요금 폭탄"
+author: "렛유인 KDC"
 date: today
+engine: knitr
 execute:
   echo: true
   warning: false
-lightbox: true
+  message: false
+  fig-width: 9
+  fig-height: 4.5
 format:
   revealjs:
-    theme: moon
-    controls: true
-    slide-number: true
+    theme: [moon, ../custom.scss]
+    slide-number: c/t
     show-slide-number: all
+    controls: true
+    progress: true
     center: false
-    incremental: true
+    incremental: false
     transition: slide
     background-transition: fade
-    transition-speed: slow
-    highlight-style: github
-    footer: "KDC AI 바이브 코딩 실전 | 12강"
-    css: ../styles.css
+    chalkboard: true
+    preview-links: auto
+    highlight-style: dracula
+    code-line-numbers: true
+    footer: "렛유인 KDC | AI 바이브 코딩 실전 | 12강"
     width: 1280
     height: 720
+    margin: 0.1
 ---
 
-# 환경 관리 & 보안 & GitHub Actions CI/CD {.section-title}
+# PART 5: 안전한 코드 관리 {background="#1F4E79"}
 
-## 오프닝 훅
+## 2023년 삼성 직원 ChatGPT 사내 코드 유출 사건 {.smaller}
+- API Key 노출로 하루 $500 청구된 개발자
 
-"2023년 삼성전자 직원들이 ChatGPT에 사내 코드를 올렸다가 내부 데이터가 유출됐다. API Key를 GitHub에 올렸다가 하루 만에 요금 폭탄 맞은 개발자들. 이런 사고를 방지하는 법을 배운다."
+## .env 파일의 중요성
+.env 파일을 통해 API Key를 분리 관리하여 보안을 강화할 수 있습니다.
 
----
-
-## 이 강의에서 배우는 것
-
-- API Key와 환경변수 안전하게 관리하기
-- .env 파일 및 .gitignore 설정 방법
-- GitHub Actions를 활용한 CI/CD 파이프라인 구축
-- 보안 체크리스트로 사고 예방
-
----
-
-# 환경변수 & API Key 관리 {.section-title}
-
-## .env 파일 예시 {.smaller}
-
-```plaintext
-GEMINI_API_KEY=AIza...
-ANTHROPIC_API_KEY=sk-ant-...
-TELEGRAM_BOT_TOKEN=123456:ABC...
+```python
+API_KEY="your_api_key_here"
 ```
 
-- 환경변수 파일을 통해 민감한 정보를 관리합니다.
-- 파일명은 `.env`로 하고, `.gitignore`에 추가하여 Git에 올리지 않습니다.
+## .gitignore 필수 항목
+### .env, __pycache__, .DS_Store
 
----
+```{r}
+#| echo: false
+df <- data.frame(
+  파일 = c(".env", "__pycache__", ".DS_Store"),
+  이유 = c("환경변수 보호", "캐시 디렉토리", "MacOS 시스템 파일"),
+  위험도 = c("높음", "중간", "낮음")
+)
+knitr::kable(df, caption="gitignore 필수 항목", align=c("l","r","r"))
+```
 
-## Python에서 불러오기
+## dotenv 패턴: Python load_dotenv()
 
 ```python
 from dotenv import load_dotenv
+load_dotenv()  # .env 파일의 환경변수를 로드합니다.
+```
+
+## GitHub Secrets를 활용한 안전한 환경변수 사용 {.smaller}
+
+## GitHub Actions 워크플로우
+### push → 자동 테스트 → 자동 배포
+
+::: {.panel-tabset}
+### 워크플로우 개요
+- 코드를 커밋하면 자동으로 테스트 및 배포가 진행됩니다.
+### GitHub Actions 설정
+- yml 파일을 통해 워크플로우를 정의합니다.
+:::
+
+## .env 없는 코드 {auto-animate="true"}
+```python
+# API Key가 코드 내에 하드코딩되어 있습니다.
+api_key = "your_api_key_here"
+```
+
+## .env 있는 안전한 코드 {auto-animate="true"}
+```python
+# API Key를 .env 파일로 분리 관리합니다.
 import os
-
-load_dotenv()
-api_key = os.getenv("GEMINI_API_KEY")
+api_key = os.getenv("API_KEY")
 ```
 
-- `dotenv` 라이브러리를 사용하여 환경변수를 로드합니다.
-- `os.getenv`를 통해 환경변수를 코드에서 불러옵니다.
+## 실습: .env + .gitignore 설정
+- .env 파일 생성 후, .gitignore에 추가하여 보안을 강화합니다.
 
----
-
-## .gitignore 필수 설정
-
-```plaintext
-.env
-__pycache__/
-.DS_Store
-*.pyc
-~$*.xlsx
-```
-
-- `.env` 파일 및 기타 불필요한 파일들을 `.gitignore`에 포함시킵니다.
-- 코드를 깔끔하게 유지하고, 중요한 정보가 유출되지 않도록 합니다.
-
----
-
-# GitHub Actions 기초 {.section-title}
-
-## GitHub Actions 워크플로우 예시
+## Claude Code로 GitHub Actions deploy.yml 생성
 
 ```yaml
-.github/workflows/deploy.yml:
-name: Deploy to Streamlit
-on:
-  push:
-    branches: [main]
+name: Deploy
+on: [push]
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-```
-
-- GitHub Actions를 통해 자동 배포 파이프라인을 설정합니다.
-- 특정 브랜치에 코드가 푸시되면 워크플로우가 실행됩니다.
-
----
-
-## 보안 체크리스트 {.smaller}
-
-- .env 파일은 절대 Git에 올리지 않는다
-- API Key를 코드에 직접 넣지 않는다
-- GitHub Secrets 활용
-- .gitignore 설정 확인
-
-- 위의 체크리스트를 통해 기본적인 보안 실수를 예방합니다.
-- GitHub Secrets를 사용해 안전하게 API Key를 관리합니다.
-
----
-
-# 실습 시간 {.section-title}
-
-## .env 파일 설정 + .gitignore 적용
-
-- `.env` 파일을 생성하고, 민감한 정보를 저장합니다.
-- `.gitignore` 파일에 `.env`를 추가하여 Git에 포함되지 않도록 합니다.
-
----
-
-## Claude Code로 GitHub Actions 워크플로우 생성
-
-- GitHub에서 새로운 워크플로우를 생성하고, 원하는 작업을 자동화합니다.
-- `deploy.yml` 예시를 참고하여 Streamlit 배포를 자동화합니다.
-
----
+    - name: Checkout code
+      uses: actions/checkout@v2
+``` {code-line-numbers="1-2|3|5-7"}
 
 ## GitHub Secrets 설정
+- GitHub 저장소의 설정에서 Secrets 탭을 통해 환경변수를 설정합니다.
 
-- GitHub Repository의 Settings에서 Secrets 설정
-- Actions에서 API Key를 안전하게 사용하기 위해 Secrets를 활용합니다.
+## CI/CD 파이프라인 흐름도
+```{r}
+#| echo: false
+#| fig-width: 9
+#| fig-height: 4.5
+library(ggplot2)
+pipeline_data <- data.frame(
+  단계 = c("push", "test", "build", "deploy"),
+  시간 = c(1, 2, 3, 4)
+)
+ggplot(pipeline_data, aes(x=단계, y=시간)) +
+  geom_point(size=3) +
+  geom_line() +
+  ggtitle("CI/CD 파이프라인 흐름도") +
+  theme_minimal()
+```
 
----
+## 주의사항: 보안 강화 {.smaller}
+::: {.callout-warning title="주의"}
+API Key와 같은 민감한 정보를 코드에 직접 포함하지 마세요.
+:::
 
-# 핵심 정리 & 다음 강의 예고 {.section-title}
+## 팁: GitHub Secrets 활용
+::: {.callout-tip title="팁"}
+GitHub Secrets를 사용하여 배포 시 환경변수를 안전하게 관리하세요.
+:::
 
-## 핵심 정리
+## 강의 요약 {.smaller}
+- .env 파일과 .gitignore를 통해 보안을 강화합니다.
+- GitHub Actions와 Secrets를 활용하여 안전한 CI/CD 환경을 구축합니다.
 
-- 환경변수와 API Key를 안전하게 관리하는 방법 학습
-- GitHub Actions를 활용한 CI/CD 파이프라인 구축
-- 보안 체크리스트로 코드 유출 방지
-
-## 다음 강의 예고
-
-"다음 강의에서는 더 복잡한 CI/CD 파이프라인을 구현하고, 테스트 자동화 방법에 대해 배워봅니다."
+## Q&A {.smaller}
+질문이 있으시면 언제든지 말씀해 주세요!

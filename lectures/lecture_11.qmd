@@ -1,134 +1,175 @@
 ---
 title: "배포 플랫폼 10종 총정리"
-subtitle: "내 앱을 세상에 — 10개 플랫폼 비교 완전 정리"
-author: "렛유인 KDC 강의"
+subtitle: "내 앱을 세상에 — 10개 플랫폼 완전 정리"
+author: "렛유인 KDC"
 date: today
+engine: knitr
 execute:
   echo: true
   warning: false
-lightbox: true
+  message: false
+  fig-width: 9
+  fig-height: 4.5
 format:
   revealjs:
-    theme: moon
-    controls: true
-    slide-number: true
+    theme: [moon, ../custom.scss]
+    slide-number: c/t
     show-slide-number: all
+    controls: true
+    progress: true
     center: false
-    incremental: true
+    incremental: false
     transition: slide
     background-transition: fade
-    transition-speed: slow
-    highlight-style: github
-    footer: "KDC AI 바이브 코딩 실전 | 11강"
-    css: ../styles.css
+    chalkboard: true
+    preview-links: auto
+    highlight-style: dracula
+    code-line-numbers: true
+    footer: "렛유인 KDC | AI 바이브 코딩 실전 | 11강"
     width: 1280
     height: 720
+    margin: 0.1
 ---
 
-# 배포 플랫폼 10종 총정리 {.section-title}
+# PART 5: 앱을 만들었는데 내 컴퓨터에서만 돌아간다면? {background="#1F4E79"}
 
-## 오프닝 훅
+## 11강: 플랫폼 소개
 
-- "앱을 만들었는데 내 컴퓨터에서만 돌아간다면 의미가 없다."
-- "10개 플랫폼 비교하고, 상황에 맞는 선택을 배운다."
+### 10개 플랫폼 개요
 
-## 이 강의에서 배우는 것 {.smaller}
+- GitHub Pages: HTML/정적, 무료
+- Streamlit Cloud: Python, 무료
+- shinyapps.io: R Shiny, 제한무료
 
-- 10개 배포 플랫폼의 장단점 비교
-- 프로젝트에 맞는 배포 플랫폼 선택 방법
-- 무료 배포 전략 및 실습
-
-# 플랫폼 비교 {.section-title}
-
-## 10개 플랫폼 전체 비교 (1/2)
-
-::: {.columns}
-::: {.column width="50%"}
-1. **GitHub Pages**
-   - HTML/정적 사이트
-   - 완전 무료
-   - 난이도 ⭐
-2. **Streamlit Cloud**
-   - Python 앱
-   - 무료
-   - 난이도 ⭐
-3. **shinyapps.io**
-   - R Shiny 앱
-   - 제한 무료
-   - 난이도 ⭐
-4. **Netlify**
-   - 정적 + 서버리스
-   - 무료
-   - 난이도 ⭐⭐
-5. **Vercel**
-   - Next.js/React
-   - 무료
-   - 난이도 ⭐⭐
-:::
-::: {.column width="50%"}
-6. **Firebase Hosting**
-   - 웹앱+DB
-   - 무료
-   - 난이도 ⭐⭐
-7. **Render**
-   - 풀스택 앱
-   - 무료
-   - 난이도 ⭐⭐
-8. **Fly.io**
-   - 컨테이너 앱
-   - 제한 무료
-   - 난이도 ⭐⭐⭐
-9. **HuggingFace Spaces**
-   - AI/ML 앱
-   - 무료
-   - 난이도 ⭐⭐
-10. **Google Cloud Run**
-    - 프로덕션급
-    - 유료
-    - 난이도 ⭐⭐⭐
-:::
+::: {.fragment .fade-in}
+- Netlify: 정적+서버리스, 무료
+- Vercel: Next.js/React, 무료
 :::
 
-## 결정 가이드 (2/2)
+::: {.fragment .highlight-red}
+- Firebase: 웹앱+DB, 무료
+- Render: 풀스택, 무료
+:::
 
-- HTML 파일 → **GitHub Pages** (가장 먼저 시도)
-- Python 데이터 앱 → **Streamlit Cloud** (가장 쉬움)
-- R 앱 → **shinyapps.io**
-- AI/ML 모델 → **HuggingFace Spaces**
-- 빠른 배포 → **Netlify/Vercel** (drag & drop)
+### 플랫폼 개요 (계속)
 
-# 실습: Netlify 배포 {.section-title}
+- Fly.io: 컨테이너, 제한무료
+- HuggingFace Spaces: AI/ML, 무료
 
-## 프로젝트 1 결과물을 Netlify에 배포
+::: {.fragment .fade-in}
+- Google Cloud Run: 프로덕션, 유료
+:::
 
-```bash
-# Netlify에 정적 사이트 배포
-1. Netlify에 로그인
-2. "New site from Git" 클릭
-3. GitHub 연결하여 저장소 선택
-4. "Deploy site" 클릭
+## 플랫폼 난이도 vs 무료한도
+
+```{r}
+#| echo: false
+#| fig-width: 9
+#| fig-height: 4.5
+library(ggplot2)
+platforms <- data.frame(
+  Platform = c("GitHub Pages", "Streamlit Cloud", "shinyapps.io", "Netlify", "Vercel", 
+               "Firebase", "Render", "Fly.io", "HuggingFace Spaces", "Google Cloud Run"),
+  Difficulty = c(1, 2, 3, 2, 3, 3, 3, 4, 2, 5),
+  FreeLimit = c(5, 4, 3, 4, 4, 4, 4, 3, 4, 2),
+  Features = c(10, 8, 7, 9, 9, 8, 8, 6, 8, 5)
+)
+ggplot(platforms, aes(x=Difficulty, y=FreeLimit, size=Features, label=Platform)) +
+  geom_point(alpha=0.7) +
+  geom_text(vjust=1.5, size=3) +
+  scale_size(range=c(3,10)) +
+  labs(x="난이도", y="무료 한도", title="플랫폼 난이도 vs 무료한도")
 ```
 
-- URL을 통해 배포 확인 가능
+## 플랫폼 비교표
 
-## 배포 URL 비교
+```{r}
+#| echo: false
+knitr::kable(platforms, caption="플랫폼 전체 비교", align=c("l","r","r","r"))
+```
+
+## 플랫폼 추천 {auto-animate="true"}
 
 ::: {.panel-tabset}
-### GitHub Pages
-- GitHub Pages URL 예시: `https://username.github.io/project`
-
-### Netlify
-- Netlify URL 예시: `https://project-netlify.netlify.app`
+### 입문자 추천
+- GitHub Pages
+- Streamlit Cloud
+- HuggingFace Spaces
 :::
 
-# 핵심 정리 & 다음 강의 예고 {.section-title}
+### 중급자 추천
+- Netlify
+- Vercel
+- Firebase
+:::
 
-## 핵심 정리
+### 고급자 추천
+- Fly.io
+- Google Cloud Run
+:::
+  
+## 플랫폼 추천 {auto-animate="true"}
 
-- 다양한 배포 플랫폼의 활용법 학습
-- 상황에 맞는 플랫폼 선택 능력 강화
-- 무료 배포 전략 이해 및 실습
+::: {.panel-tabset}
+### 입문자 추천
+- GitHub Pages
+- Streamlit Cloud
+- HuggingFace Spaces
+:::
 
-## 다음 강의 예고
+### 중급자 추천
+- Netlify
+- Vercel
+- Firebase
+:::
 
-- **PART 6**: "보안과 스케일링"에서 웹앱의 보안을 강화하고 확장성 있는 배포 방법을 알아봅니다.
+### 고급자 추천
+- Fly.io
+- Google Cloud Run
+- Render
+:::
+
+## Netlify 배포 실습
+
+- Netlify의 drag & drop 기능으로 손쉽게 배포
+
+::: {.callout-tip title="팁"}
+Netlify는 정적 사이트 배포에 최적화되어 있습니다.
+:::
+
+## 배포 시 주의사항
+
+::: {.callout-warning title="주의"}
+유료 플랜을 선택하기 전에 무료 한도를 반드시 확인하세요.
+:::
+
+## 플랫폼 기능 요약
+
+::: {.columns}
+::: {.column width="45%"}
+### 장점
+- 다양한 무료 옵션
+- 쉬운 배포
+:::
+
+::: {.column width="55%"}
+### 단점
+- 한정된 기능
+- 유료 플랜 필요 시 비용 증가
+:::
+:::
+
+## 코드 예시: Netlify 배포
+
+```python
+# Netlify CLI 설치
+npm install -g netlify-cli
+
+# 프로젝트 디렉토리에서 배포
+netlify deploy --prod
+``` {code-line-numbers="1-2|3"}
+
+## 마무리
+
+- 다양한 플랫폼을 통해 앱을 손쉽게 배포하세요.
+- 각 플랫폼의 장단점을 고려하여 선택하세요.

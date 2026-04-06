@@ -1,0 +1,160 @@
+---
+title: "KDC AI 강의"
+format: 
+  html:
+    theme: cosmo
+    toc: false
+---
+
+<style>
+  body {
+    background-color: #1F4E79;
+    color: white;
+    font-family: 'Arial', sans-serif;
+  }
+  .hero {
+    text-align: center;
+    padding: 2em 0;
+  }
+  .hero h1 {
+    font-size: 3em;
+    margin: 0.5em 0;
+  }
+  .hero h2 {
+    margin: 0.5em 0;
+  }
+  .badge-row {
+    margin: 1em 0;
+  }
+  .badge {
+    display: inline-block;
+    background-color: #fff;
+    color: #1F4E79;
+    padding: 0.5em 1em;
+    margin: 0.5em;
+    border-radius: 0.5em;
+  }
+  .section-title {
+    margin-top: 2em;
+    font-size: 2em;
+  }
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1em;
+    margin: 2em 0;
+  }
+  .card {
+    background-color: #fff;
+    color: #1F4E79;
+    padding: 1em;
+    border-radius: 0.5em;
+    text-align: center;
+  }
+  .card h3 {
+    margin: 0.5em 0;
+  }
+  .part-badge {
+    padding: 0.2em 0.5em;
+    border-radius: 0.3em;
+    color: white;
+  }
+  .part-1 { background-color: blue; }
+  .part-2 { background-color: green; }
+  .part-3 { background-color: orange; }
+  .part-4 { background-color: purple; }
+  .part-5 { background-color: red; }
+  .part-6 { background-color: teal; }
+  table {
+    width: 100%;
+    margin-top: 1em;
+    border-collapse: collapse;
+  }
+  th, td {
+    padding: 0.5em;
+    border: 1px solid #fff;
+  }
+  th {
+    background-color: #333;
+  }
+</style>
+
+<div class="hero">
+  <h1>KDC AI 강의</h1>
+  <h2>인공지능의 모든 것</h2>
+  <div class="badge-row">
+    <span class="badge">16강</span>
+    <span class="badge">8.5시간</span>
+    <span class="badge">Claude Pro 제공</span>
+    <span class="badge">디스플레이 특화</span>
+  </div>
+</div>
+
+<div class="section-title">강의 철학</div>
+<ul>
+  <li>AI 마인드셋 🌟</li>
+  <li>실전 중심 학습 📚</li>
+  <li>최신 기술 습득 🚀</li>
+  <li>창의적 문제 해결 🎨</li>
+</ul>
+
+<div class="section-title">커리큘럼</div>
+<table>
+  <tr>
+    <th>PART 1 <span class="part-badge part-1">블루</span></th>
+    <td><a href="lecture_01.html">1강 AI 마인드셋+Claude Pro</a></td>
+    <td><a href="lecture_02.html">2강 GitHub+Claude Code</a></td>
+  </tr>
+  <tr>
+    <th>PART 2 <span class="part-badge part-2">그린</span></th>
+    <td><a href="lecture_03.html">3강 Claude Code Skills</a></td>
+    <td><a href="lecture_04.html">4강 Claude Agent+CLI-Anything</a></td>
+  </tr>
+  <tr>
+    <th>PART 3 <span class="part-badge part-3">오렌지</span></th>
+    <td><a href="lecture_05.html">5강 Python Streamlit</a></td>
+    <td><a href="lecture_06.html">6강 R Shiny</a></td>
+    <td><a href="lecture_07.html">7강 Quarto</a></td>
+  </tr>
+  <tr>
+    <th>PART 4 <span class="part-badge part-4">퍼플</span></th>
+    <td><a href="lecture_08.html">8강 Gemini API</a></td>
+    <td><a href="lecture_09.html">9강 AI 시뮬레이션</a></td>
+    <td><a href="lecture_10.html">10강 배포심화</a></td>
+  </tr>
+  <tr>
+    <th>PART 5 <span class="part-badge part-5">레드</span></th>
+    <td><a href="lecture_11.html">11강 배포10종</a></td>
+    <td><a href="lecture_12.html">12강 보안&CI/CD</a></td>
+  </tr>
+  <tr>
+    <th>PART 6 <span class="part-badge part-6">틸</span></th>
+    <td><a href="lecture_13.html">13강 텔레그램봇+Claude</a></td>
+    <td><a href="lecture_14.html">14강 Gemini봇+알람</a></td>
+    <td><a href="lecture_15.html">15강 종합실습60분</a></td>
+    <td><a href="lecture_16.html">16강 AI트렌드&수료</a></td>
+  </tr>
+</table>
+
+<div class="section-title">프로젝트 3종</div>
+<div class="card-grid">
+  <div class="card">
+    <h3>프로젝트 1</h3>
+    <p>상급 프로젝트</p>
+  </div>
+  <div class="card">
+    <h3>프로젝트 2</h3>
+    <p>중급 프로젝트</p>
+  </div>
+  <div class="card">
+    <h3>프로젝트 3</h3>
+    <p>하급 프로젝트</p>
+  </div>
+</div>
+
+<div class="section-title">준비물</div>
+<ul>
+  <li>개인 노트북 💻</li>
+  <li>인터넷 연결 🌐</li>
+  <li>열정과 호기심 ❤️</li>
+</ul>

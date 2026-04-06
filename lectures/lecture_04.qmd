@@ -1,126 +1,145 @@
 ---
 title: "Claude Agent 모드 + CLI-Anything"
-subtitle: "AI가 20개 파일을 알아서 만든다 — 에이전트 모드의 세계"
-author: "렛유인 KDC 강의"
+subtitle: "AI가 20개 파일을 알아서 만든다"
+author: "렛유인 KDC"
 date: today
+engine: knitr
 execute:
   echo: true
   warning: false
-lightbox: true
+  message: false
+  fig-width: 9
+  fig-height: 4.5
 format:
   revealjs:
-    theme: moon
-    controls: true
-    slide-number: true
+    theme: [moon, ../custom.scss]
+    slide-number: c/t
     show-slide-number: all
+    controls: true
+    progress: true
     center: false
-    incremental: true
+    incremental: false
     transition: slide
     background-transition: fade
-    transition-speed: slow
-    highlight-style: github
-    footer: "KDC AI 바이브 코딩 실전 | 4강"
-    css: ../styles.css
+    chalkboard: true
+    preview-links: auto
+    highlight-style: dracula
+    code-line-numbers: true
+    footer: "렛유인 KDC | AI 바이브 코딩 실전 | 4강"
     width: 1280
     height: 720
+    margin: 0.1
 ---
 
-# 오프닝 훅 {.section-title}
+# PART 2: 에이전트 모드와 일반 모드 비교 {background="#1F4E79"}
 
-## 
-"Claude에게 '앱 만들어줘'라고 하면 1개의 파일을 만든다. 에이전트 모드로 '앱 만들어줘'라고 하면 20개의 파일을, 테스트까지 하면서 만든다."
+## 오프닝
+"일반모드: 1개 파일. 에이전트 모드: 20개 파일 + 테스트까지"
 
-# 이 강의에서 배우는 것 {.section-title}
+## 에이전트 모드 구조
+- Orchestrator와 Subagent의 병렬 실행 다이어그램
 
-## 학습 목표
-- 에이전트 모드와 일반 대화 모드의 차이점 이해
-- CLI-Anything을 통해 AI 에이전트용 CLI 자동 변환
-- Claude for Work를 통한 기업 AI 활용 전략
-- 멀티 에이전트 구조의 이해
+::: {.columns}
+::: {.column width="45%"}
+![Orchestrator 다이어그램](img/orchestrator.png)
+:::
+::: {.column width="55%"}
+에이전트 모드는 Orchestrator가 Subagent를 병렬로 실행하여 작업을 분산합니다.
+:::
+:::
 
-# 이론: 에이전트 모드 vs 일반 대화 모드 {.section-title}
+## 워크플로우 4단계
+Plan → Explore → Code → Review
 
-## 에이전트 모드 vs 일반 대화 모드
-- 에이전트 모드는 더 많은 파일과 테스트를 포함
-- 일반 대화 모드는 단일 파일 생성
+::: {.panel-tabset}
+### Plan
+계획 수립 단계
+### Explore
+탐색과 데이터 수집
+### Code
+코드 작성 및 구현
+### Review
+결과 검토 및 피드백 수집
+:::
 
-## 에이전트 모드 시연 {.smaller}
-1. "앱 만들어줘" 요청 시 데모
-   - 일반 모드: 1개의 파일 생성
-   - 에이전트 모드: 20개의 파일 및 테스트 생성
+## CLI-Anything: 7단계 파이프라인
 
-# CLI-Anything 소개 {.section-title}
+## 단계 1: Analyze {auto-animate="true"}
+Analyze 단계에서는 데이터의 특성을 이해하고 문제를 정의합니다.
 
-## CLI-Anything
-- 어떤 소프트웨어든 AI 에이전트용 CLI로 자동 변환
-- 7단계 파이프라인:
-  ① Analyze → ② Design → ③ Implement → ④ Test
-  → ⑤ Document → ⑥ Publish
+## 단계 2: Design {auto-animate="true"}
+Analyze + Design 단계에서는 솔루션을 설계합니다.
 
-## CLI-Anything GitHub 페이지
-- GitHub Repository: [CLI-Anything](https://github.com/waterfirst/CLI-Anything)
+## 단계 3: Implement {auto-animate="true"}
+Design + Implement 단계에서는 설계된 솔루션을 구현합니다.
 
-# Claude for Work {.section-title}
+## 멀티 에이전트 vs 단일 에이전트 성능 비교
 
-## Claude for Work — 기업 환경에서의 AI 활용 전략
-- 사내 AI 제한 현실
-  - 보안 및 데이터 유출 우려
-- Claude Pro의 개인 활용법
+```{r}
+#| echo: false
+#| fig-width: 9
+#| fig-height: 4.5
+library(ggplot2); library(dplyr); library(scales)
 
-## 멀티 에이전트 구조
-- 오케스트레이터 + 서브에이전트
-  - 여러 에이전트가 협력하여 작업 수행
+# 샘플 데이터
+data <- data.frame(
+  Agent_Type = c("멀티 에이전트", "단일 에이전트"),
+  Completion_Time = c(5, 10)
+)
 
-# 실습: /feature-dev 워크플로우 체험 {.section-title}
+ggplot(data, aes(x=Agent_Type, y=Completion_Time, fill=Agent_Type)) +
+  geom_bar(stat="identity") +
+  theme_minimal() +
+  labs(title="작업 완료 시간 비교", x="에이전트 유형", y="시간 (분)") +
+  scale_fill_manual(values=c("#2E86C1", "#F39C12"))
+```
 
-## 워크플로우 체험
-- 프롬프트: "디스플레이 수율 분석 대시보드 만들어줘"
-- Plan → Explore → Code → Review 과정 관찰
+## 에이전트 모드 vs 일반 모드 비교표
 
-## 생성된 코드 구조 이해
+```{r}
+#| echo: false
+df <- data.frame(
+  Mode = c("에이전트 모드", "일반 모드"),
+  File_Count = c(20, 1),
+  Includes_Test = c("Yes", "No")
+)
+
+knitr::kable(df, caption="에이전트 모드와 일반 모드 비교", align=c("l", "r", "r"))
+```
+
+## "디스플레이 수율 분석 대시보드" 생성
+
+::: {.fragment .fade-in}
+"디스플레이 수율 분석 대시보드 만들어줘"라는 요청에 따라 생성 과정을 실시간으로 관찰합니다.
+:::
+::: {.fragment .highlight-red}
+대시보드 생성 과정에서 자동화의 중요성을 강조합니다.
+:::
+
+## CLI-Anything으로 나만의 AI 도구 만들기
+- 실습을 통해 CLI-Anything의 기능을 활용하여 나만의 AI 도구를 만들어봅니다.
+
+## 생성된 코드 구조 분석
+
 ```python
-# 코드 예제
-def analyze_yield(data):
-    # 수율 분석 로직
-    pass
+def analyze_data(data):
+    # 데이터 분석 수행
+    return analysis_result
 
-def create_dashboard(data):
-    # 대시보드 생성 로직
-    pass
-```
+def generate_dashboard(analysis_result):
+    # 대시보드 생성
+    return dashboard
+``` {code-line-numbers="1-2|3|5-7"}
 
-# CLI-Anything으로 AI 도구 만들기 {.section-title}
+## 팁과 주의사항
 
-## 나만의 AI 도구 만들기
-- CLI-Anything을 활용하여 CLI 도구 생성
+::: {.callout-tip title="팁"}
+워크플로우를 명확히 정의하여 효율성을 높이세요.
+:::
 
-## GitHub에 코드 푸시
-```bash
-git add .
-git commit -m "Add AI tool for display analysis"
-git push origin main
-```
+::: {.callout-warning title="주의"}
+에이전트 모드 사용 시, 병렬 실행에 따른 자원 관리에 주의하세요.
+:::
 
-# 프로젝트 1 예고 {.section-title}
-
-## 나의 디스플레이 관심 분야 소개 웹페이지
-- GitHub Pages를 통한 배포
-- 프로젝트 목표: 에이전트 방식 이해 및 CLI 도구 AI 전환
-
-## 다음 강의 예고
-- GitHub Pages 설정 및 웹페이지 기본 구조 작성
-
-# 핵심 정리 {.section-title}
-
-## 오늘의 핵심 정리
-- 에이전트 모드의 우수성 확인
-- CLI-Anything을 통해 AI 도구 제작 가능성 탐색
-- 기업 환경에서의 AI 활용법 이해
-
-## 다음 강의 미리보기
-- GitHub Pages로 웹페이지 실습
-- 디스플레이 관심 분야의 웹사이트 제작 시작
-
----
-
-이렇게 구성된 4강은 Claude의 에이전트 모드와 CLI-Anything을 통한 AI 도구 제작의 심화된 내용을 다루게 됩니다. 
+## 강의 요약
+에이전트 모드의 구조와 성능을 이해하고, CLI-Anything을 활용한 실제 구현을 경험합니다.
