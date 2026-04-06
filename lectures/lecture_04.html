@@ -29,6 +29,72 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #f8f8f2; background-color: #282a36; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #f8f8f2; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #ff79c6; } /* Annotation */
+    code span.at { color: #ff79c6; } /* Attribute */
+    code span.bn { color: #bd93f9; } /* BaseN */
+    code span.bu { color: #8be9fd; } /* BuiltIn */
+    code span.cf { color: #ff79c6; } /* ControlFlow */
+    code span.ch { color: #f1fa8c; } /* Char */
+    code span.cn { color: #bd93f9; font-weight: bold; } /* Constant */
+    code span.co { color: #6272a4; } /* Comment */
+    code span.cv { color: #8be9fd; } /* CommentVar */
+    code span.do { color: #ffb86c; } /* Documentation */
+    code span.dt { color: #8be9fd; font-style: italic; } /* DataType */
+    code span.dv { color: #bd93f9; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #8be9fd; } /* Extension */
+    code span.fl { color: #bd93f9; } /* Float */
+    code span.fu { color: #50fa7b; } /* Function */
+    code span.im { color: #ff79c6; } /* Import */
+    code span.in { color: #f1fa8c; } /* Information */
+    code span.kw { color: #ff79c6; } /* Keyword */
+    code span.op { color: #f8f8f2; } /* Operator */
+    code span.ot { color: #50fa7b; } /* Other */
+    code span.pp { color: #ff79c6; } /* Preprocessor */
+    code span.re { color: #8be9fd; } /* RegionMarker */
+    code span.sc { color: #ff79c6; } /* SpecialChar */
+    code span.ss { color: #f1fa8c; } /* SpecialString */
+    code span.st { color: #f1fa8c; } /* String */
+    code span.va { color: #8be9fd; } /* Variable */
+    code span.vs { color: #f1fa8c; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
   </style>
   <link rel="stylesheet" href="lecture_04_files/libs/revealjs/dist/theme/quarto-329acd3abe71bdd3a4ec42a5a574c26f.css">
   <link href="lecture_04_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -131,7 +197,7 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Claude Agent 모드 + CLI-Anything</h1>
-  <p class="subtitle">AI가 20개 파일을 알아서 만든다</p>
+  <p class="subtitle">AI가 스스로 일한다 — 에이전트의 시대</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -144,147 +210,488 @@
   <p class="date">2026-04-06</p>
 </section>
 <section>
-<section id="part-2-에이전트-모드와-일반-모드-비교" class="title-slide slide level1 center" data-background="#1F4E79">
-<h1>PART 2: 에이전트 모드와 일반 모드 비교</h1>
-
-</section>
-<section id="오프닝" class="slide level2">
-<h2>오프닝</h2>
-<p>“일반모드: 1개 파일. 에이전트 모드: 20개 파일 + 테스트까지”</p>
-</section>
-<section id="에이전트-모드-구조" class="slide level2">
-<h2>에이전트 모드 구조</h2>
-<ul>
-<li>Orchestrator와 Subagent의 병렬 실행 다이어그램</li>
-</ul>
-<div class="columns">
-<div class="column" style="width:45%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="img/orchestrator.png"></p>
-<figcaption>Orchestrator 다이어그램</figcaption>
-</figure>
+<section id="ai가-스스로-파일을-열고-분석하고-수정하고-커밋한다" class="title-slide slide level1 center" data-background="#1F4E79">
+<h1>AI가 스스로 파일을 열고, 분석하고, 수정하고, 커밋한다</h1>
+<div style="margin-top: 35px; font-size: 1.0em; color: #CBD5E0;">
+<p>당신이 말한다:</p>
+<p><em>“OLED 수율 데이터 분석하고 보고서 만들어줘”</em></p>
 </div>
-</div><div class="column" style="width:55%;">
-<p>에이전트 모드는 Orchestrator가 Subagent를 병렬로 실행하여 작업을 분산합니다.</p>
+<div style="margin-top: 25px; font-size: 0.9em; color: #A0AEC0;">
+<p>AI가 혼자서:</p>
+<p>CSV 파일을 열고 → 통계 분석 → ggplot2 차트 생성 → Quarto 보고서 작성 → GitHub push</p>
+<p><strong>당신이 한 것: 문장 하나.</strong></p>
+</div>
+<div style="margin-top: 30px; font-size: 1.2em; color: #F6E05E;">
+<p>이게 에이전트 모드다.</p>
+</div>
+<div style="margin-top: 20px; font-size: 0.85em; color: #718096;">
+<p>1강: Claude Pro로 대화 | 2강: GitHub + 첫 배포 | 3강: Skills 자동화 | <strong>4강: Agent가 스스로 실행</strong></p>
+</div>
+</section>
+<section id="에이전트-vs-챗봇-근본적인-차이" class="slide level2">
+<h2>에이전트 vs 챗봇 — 근본적인 차이</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<section id="챗봇" style="background: #2A1515; padding: 20px; border-radius: 10px; border-top: 4px solid #C0392B;">
+<h3>챗봇</h3>
+<p>대화한다.</p>
+<p>당신이 모든 것을 <strong>직접 실행</strong>한다.</p>
+<pre><code>당신: 수율 계산 코드 써줘
+AI: [코드 출력]
+당신: 코드를 직접 복사
+당신: 파일에 붙여넣기
+당신: 직접 실행
+당신: 에러 → 다시 AI에게
+당신: 또 복사, 붙여넣기...</code></pre>
+<p>AI는 <strong>말만</strong> 한다.</p>
+</section>
+</div><div class="column" style="width:50%;">
+<section id="에이전트" style="background: #153A15; padding: 20px; border-radius: 10px; border-top: 4px solid #27AE60;">
+<h3>에이전트</h3>
+<p>목표를 주면 <strong>스스로 계획하고 실행</strong>한다.</p>
+<pre><code>당신: 수율 데이터 분석해서
+      보고서 만들어줘
+
+AI: 파일 목록 확인 중...
+AI: yield_2026.csv 발견
+AI: 분석 실행 중...
+AI: 차트 생성 완료
+AI: 보고서 작성 완료
+AI: GitHub push 완료
+AI: 완료! URL: [링크]</code></pre>
+<p>AI가 <strong>직접 실행</strong>한다.</p>
+</section>
+</div></div>
+<div style="margin-top: 20px; text-align: center; font-size: 1.0em; color: #F6E05E;">
+<p>Chat = 도우미. Agent = <strong>대리인</strong>.</p>
+</div>
+</section>
+<section id="에이전트-vs-챗봇-패턴-시각화" class="slide level2">
+<h2>에이전트 vs 챗봇 — 패턴 시각화</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb3-2"><a href=""></a></span>
+<span id="cb3-3"><a href=""></a>chat_steps <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb3-4"><a href=""></a>  <span class="at">x     =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>),</span>
+<span id="cb3-5"><a href=""></a>  <span class="at">y     =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>),</span>
+<span id="cb3-6"><a href=""></a>  <span class="at">who   =</span> <span class="fu">c</span>(<span class="st">"Human"</span>, <span class="st">"AI"</span>, <span class="st">"Human"</span>, <span class="st">"AI"</span>, <span class="st">"Human"</span>, <span class="st">"AI"</span>, <span class="st">"Human"</span>, <span class="st">"AI"</span>),</span>
+<span id="cb3-7"><a href=""></a>  <span class="at">label =</span> <span class="fu">c</span>(<span class="st">"질문1"</span>, <span class="st">"답변1"</span>, <span class="st">"질문2"</span>, <span class="st">"답변2"</span>, <span class="st">"질문3"</span>, <span class="st">"답변3"</span>, <span class="st">"질문4"</span>, <span class="st">"답변4"</span>)</span>
+<span id="cb3-8"><a href=""></a>)</span>
+<span id="cb3-9"><a href=""></a></span>
+<span id="cb3-10"><a href=""></a><span class="fu">ggplot</span>(chat_steps, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">color =</span> who)) <span class="sc">+</span></span>
+<span id="cb3-11"><a href=""></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">8</span>) <span class="sc">+</span></span>
+<span id="cb3-12"><a href=""></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">xend =</span> x, <span class="at">yend =</span> <span class="dv">0</span>), <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">linewidth =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb3-13"><a href=""></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> label),</span>
+<span id="cb3-14"><a href=""></a>            <span class="at">vjust =</span> <span class="fu">ifelse</span>(chat_steps<span class="sc">$</span>y <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="fl">2.5</span>, <span class="sc">-</span><span class="fl">1.8</span>), <span class="at">size =</span> <span class="fl">3.5</span>, <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
+<span id="cb3-15"><a href=""></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Human"</span> <span class="ot">=</span> <span class="st">"#3498DB"</span>, <span class="st">"AI"</span> <span class="ot">=</span> <span class="st">"#E67E22"</span>),</span>
+<span id="cb3-16"><a href=""></a>                     <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Human"</span> <span class="ot">=</span> <span class="st">"사람"</span>, <span class="st">"AI"</span> <span class="ot">=</span> <span class="st">"AI"</span>)) <span class="sc">+</span></span>
+<span id="cb3-17"><a href=""></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">"gray50"</span>, <span class="at">linewidth =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb3-18"><a href=""></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="fl">4.5</span>, <span class="at">y =</span> <span class="fl">0.08</span>, <span class="at">label =</span> <span class="st">"시간 흐름 →"</span>,</span>
+<span id="cb3-19"><a href=""></a>           <span class="at">color =</span> <span class="st">"gray60"</span>, <span class="at">size =</span> <span class="fl">3.5</span>) <span class="sc">+</span></span>
+<span id="cb3-20"><a href=""></a>  <span class="fu">theme_void</span>(<span class="at">base_size =</span> <span class="dv">13</span>) <span class="sc">+</span></span>
+<span id="cb3-21"><a href=""></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"챗봇 패턴: 왕복 대화 (8번 교환으로 1개 결과물)"</span>, <span class="at">color =</span> <span class="st">""</span>) <span class="sc">+</span></span>
+<span id="cb3-22"><a href=""></a>  <span class="fu">theme</span>(</span>
+<span id="cb3-23"><a href=""></a>    <span class="at">plot.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"#1E2A3A"</span>, <span class="at">color =</span> <span class="cn">NA</span>),</span>
+<span id="cb3-24"><a href=""></a>    <span class="at">plot.title      =</span> <span class="fu">element_text</span>(<span class="at">color =</span> <span class="st">"white"</span>, <span class="at">size =</span> <span class="dv">13</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb3-25"><a href=""></a>    <span class="at">legend.text     =</span> <span class="fu">element_text</span>(<span class="at">color =</span> <span class="st">"white"</span>),</span>
+<span id="cb3-26"><a href=""></a>    <span class="at">legend.position =</span> <span class="st">"bottom"</span></span>
+<span id="cb3-27"><a href=""></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+</div>
+<img data-src="lecture_04_files/figure-revealjs/chatbot-vs-agent-1.png" width="864" class="r-stretch"><div style="font-size: 0.85em; color: #A0AEC0; margin-top: 5px; text-align: center;">
+<p>에이전트 모드: 당신이 목표 1번 말함 → AI가 필요한 모든 단계를 스스로 실행</p>
+</div>
+</section>
+<section id="claude-agent가-할-수-있는-것들" class="slide level2">
+<h2>Claude Agent가 할 수 있는 것들</h2>
+<div style="font-size: 0.95em; color: #CBD5E0; margin-bottom: 25px;">
+<p>에이전트 모드에서 Claude Code는 단순한 “답변 기계”가 아니다. 실제 컴퓨터 작업을 수행한다.</p>
+</div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div style="background: #1A2942; padding: 18px; border-radius: 10px; margin-bottom: 12px;">
+<div class="fragment">
+<h3 id="파일-읽기쓰기">1. 파일 읽기/쓰기</h3>
+<p>CSV, JSON, Python, R 파일을 직접 열고 수정한다.</p>
+<p>수율 데이터 CSV → 파싱 → 분석 결과 파일 저장</p>
+</div>
+</div>
+<div style="background: #1A3A2A; padding: 18px; border-radius: 10px; margin-bottom: 12px;">
+<div class="fragment">
+<h3 id="코드-실행">2. 코드 실행</h3>
+<p>Python, R, bash 스크립트를 직접 실행한다.</p>
+<p>분석 코드 작성 → 바로 실행 → 결과 확인</p>
+</div>
+</div>
+<div style="background: #2A1A3A; padding: 18px; border-radius: 10px;">
+<div class="fragment">
+<h3 id="웹-검색">3. 웹 검색</h3>
+<p>최신 정보를 실시간으로 검색한다.</p>
+<p>“삼성 디스플레이 최신 채용 공고 찾아줘”</p>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div style="background: #3A2A1A; padding: 18px; border-radius: 10px; margin-bottom: 12px;">
+<div class="fragment">
+<h3 id="도구-호출-tool-use">4. 도구 호출 (Tool Use)</h3>
+<p>Git, GitHub CLI, 패키지 매니저 등 외부 도구를 호출한다.</p>
+<p><code>git commit</code>, <code>gh pr create</code>, <code>pip install</code> 자동 실행</p>
+</div>
+</div>
+<div style="background: #1A3A3A; padding: 18px; border-radius: 10px;">
+<div class="fragment">
+<h3 id="멀티스텝-계획-실행">5. 멀티스텝 계획 &amp; 실행</h3>
+<p>복잡한 목표를 단계별로 분해하고, 각 단계를 순서대로 실행한다.</p>
+<p>“포트폴리오 웹사이트 만들고 배포해줘” → 12개 자동 실행</p>
+</div>
+</div>
 </div></div>
 </section>
-<section id="워크플로우-4단계" class="slide level2">
-<h2>워크플로우 4단계</h2>
-<p>Plan → Explore → Code → Review</p>
-<div class="panel-tabset">
-<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Plan</a></li></ul>
-<div class="tab-content">
-<div id="tabset-1-1">
-<p>계획 수립 단계 ### Explore 탐색과 데이터 수집 ### Code 코드 작성 및 구현 ### Review 결과 검토 및 피드백 수집</p>
+<section id="cli-anything-모든-도구에-ai-인터페이스를" class="slide level2">
+<h2>CLI-Anything — 모든 도구에 AI 인터페이스를</h2>
+<div style="font-size: 0.9em; color: #CBD5E0; margin-bottom: 20px;">
+<p>강사 직접 제작 프로젝트: “어떤 소프트웨어든 AI 에이전트 CLI로 변환”</p>
 </div>
-</div>
-</div>
-</section>
-<section id="cli-anything-7단계-파이프라인" class="slide level2">
-<h2>CLI-Anything: 7단계 파이프라인</h2>
-</section>
-<section id="단계-1-analyze" class="slide level2" data-auto-animate="true">
-<h2 data-id="quarto-animate-title">단계 1: Analyze</h2>
-<p>Analyze 단계에서는 데이터의 특성을 이해하고 문제를 정의합니다.</p>
-</section>
-<section id="단계-2-design" class="slide level2" data-auto-animate="true">
-<h2 data-id="quarto-animate-title">단계 2: Design</h2>
-<p>Analyze + Design 단계에서는 솔루션을 설계합니다.</p>
-</section>
-<section id="단계-3-implement" class="slide level2" data-auto-animate="true">
-<h2 data-id="quarto-animate-title">단계 3: Implement</h2>
-<p>Design + Implement 단계에서는 설계된 솔루션을 구현합니다.</p>
-</section>
-<section id="멀티-에이전트-vs-단일-에이전트-성능-비교" class="slide level2">
-<h2>멀티 에이전트 vs 단일 에이전트 성능 비교</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p><strong>개념</strong>: 기존 CLI 도구를 자연어로 제어</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href=""></a><span class="co"># 기존 방식: 명령어를 외워야 함</span></span>
+<span id="cb4-2"><a href=""></a><span class="ex">ffmpeg</span> <span class="at">-i</span> input.mp4 <span class="at">-vf</span> scale=1920:1080 <span class="dt">\</span></span>
+<span id="cb4-3"><a href=""></a>  <span class="at">-c:v</span> libx264 <span class="at">-crf</span> 23 output.mp4</span>
+<span id="cb4-4"><a href=""></a></span>
+<span id="cb4-5"><a href=""></a><span class="co"># CLI-Anything 방식: 자연어로</span></span>
+<span id="cb4-6"><a href=""></a><span class="ex">cli-anything</span> ffmpeg</span>
+<span id="cb4-7"><a href=""></a><span class="op">&gt;</span> <span class="st">"input.mp4를 1080p로 변환해줘"</span></span>
+<span id="cb4-8"><a href=""></a><span class="op">&gt;</span> ffmpeg <span class="ex">실행</span> 중...</span>
+<span id="cb4-9"><a href=""></a><span class="op">&gt;</span> 완료: <span class="ex">output.mp4</span> <span class="er">(</span><span class="ex">23.4MB</span><span class="kw">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div style="margin-top: 15px;">
 
-<img data-src="lecture_04_files/figure-revealjs/unnamed-chunk-1-1.png" width="864" class="r-stretch"></section>
-<section id="에이전트-모드-vs-일반-모드-비교표" class="slide level2">
-<h2>에이전트 모드 vs 일반 모드 비교표</h2>
-<div class="cell">
-<div class="cell-output-display">
-<table class="caption-top">
-<caption>에이전트 모드와 일반 모드 비교</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">Mode</th>
-<th style="text-align: right;">File_Count</th>
-<th style="text-align: right;">Includes_Test</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">에이전트 모드</td>
-<td style="text-align: right;">20</td>
-<td style="text-align: right;">Yes</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">일반 모드</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">No</td>
-</tr>
-</tbody>
-</table>
 </div>
-</div>
-</section>
-<section id="디스플레이-수율-분석-대시보드-생성" class="slide level2">
-<h2>“디스플레이 수율 분석 대시보드” 생성</h2>
-<div class="fragment fade-in">
-<p>“디스플레이 수율 분석 대시보드 만들어줘”라는 요청에 따라 생성 과정을 실시간으로 관찰합니다.</p>
-</div>
-<div class="fragment highlight-red">
-<p>대시보드 생성 과정에서 자동화의 중요성을 강조합니다.</p>
-</div>
-</section>
-<section id="cli-anything으로-나만의-ai-도구-만들기" class="slide level2">
-<h2>CLI-Anything으로 나만의 AI 도구 만들기</h2>
-<ul>
-<li>실습을 통해 CLI-Anything의 기능을 활용하여 나만의 AI 도구를 만들어봅니다.</li>
-</ul>
-</section>
-<section id="생성된-코드-구조-분석" class="slide level2">
-<h2>생성된 코드 구조 분석</h2>
-<p>```python def analyze_data(data): # 데이터 분석 수행 return analysis_result</p>
-<p>def generate_dashboard(analysis_result): # 대시보드 생성 return dashboard ``` {code-line-numbers=“1-2|3|5-7”}</p>
-</section>
-<section id="팁과-주의사항" class="slide level2">
-<h2>팁과 주의사항</h2>
-<div title="팁">
-<div class="callout callout-tip callout-titled callout-style-default">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href=""></a><span class="co"># 디스플레이 분석 도구에 적용</span></span>
+<span id="cb5-2"><a href=""></a><span class="ex">cli-anything</span> yield-tool</span>
+<span id="cb5-3"><a href=""></a><span class="op">&gt;</span> <span class="st">"3월 2주차 수율 이상값 분석해줘"</span></span>
+<span id="cb5-4"><a href=""></a><span class="op">&gt;</span> 데이터 <span class="ex">로드</span> 중...</span>
+<span id="cb5-5"><a href=""></a><span class="op">&gt;</span> 이상값 <span class="ex">3건</span> 발견 <span class="er">(</span><span class="ex">라인</span> 7, 12, 19<span class="kw">)</span></span>
+<span id="cb5-6"><a href=""></a><span class="op">&gt;</span> 보고서 <span class="ex">생성</span> 완료</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:45%;">
+<div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>팁</strong></p>
+<p><strong>이 프로젝트의 의미</strong></p>
 </div>
 <div class="callout-content">
-<p>워크플로우를 명확히 정의하여 효율성을 높이세요.</p>
+<p>복잡한 CLI 도구를 배울 필요가 없다.</p>
+<p>자연어로 말하면 AI가 올바른 명령어로 번역하고 실행한다.</p>
+<p><strong>디스플레이 현업에서</strong>: - 수율 분석 도구 - 공정 데이터 파이프라인 - 품질 검사 스크립트</p>
+<p>모두 자연어로 제어 가능하게 만들 수 있다.</p>
 </div>
 </div>
 </div>
+<div style="background: #2D3748; padding: 12px; border-radius: 8px; margin-top: 10px; font-size: 0.85em;">
+<p>이것 자체가 훌륭한 포트폴리오다.</p>
+<p>기존 사내 도구 하나를 자연어 인터페이스로 감싸는 프로젝트 → 취업 면접에서 최강 소재</p>
 </div>
-<div title="주의">
+</div></div>
+</section>
+<section id="에이전트-실습-시나리오-수율-데이터-분석-자동화" class="slide level2">
+<h2>에이전트 실습 시나리오 — 수율 데이터 분석 자동화</h2>
+<div style="font-size: 0.9em; color: #CBD5E0; margin-bottom: 20px;">
+<p><strong>시나리오</strong>: OLED 라인 30일치 수율 데이터(CSV)가 있다. 에이전트에게 단 한 줄로 지시한다.</p>
+</div>
+<p><strong>당신의 지시 (단 한 줄)</strong>:</p>
+<pre><code>"yield_data.csv 분석해서 이상 구간 찾고,
+ ggplot2 차트 포함한 Quarto 보고서 만들어서
+ GitHub에 push해줘."</code></pre>
+<div style="margin-top: 15px;">
+
+</div>
+<p><strong>에이전트가 자동으로 수행하는 5단계</strong>:</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Step 1</strong>: <code>yield_data.csv</code> 파일 열어서 파싱</p>
+<p>→ 30일 × 12개 라인 = 360행 데이터 처리</p>
+<p><strong>Step 2</strong>: R로 통계 분석 실행</p>
+<p>→ 평균 수율 94.2%, 이상값 3건 탐지</p>
+</div><div class="column" style="width:50%;">
+<p><strong>Step 3</strong>: ggplot2 차트 생성 (R 코드 작성 + 실행)</p>
+<p><strong>Step 4</strong>: Quarto 보고서 <code>.qmd</code> 작성 + <code>quarto render</code></p>
+<p><strong>Step 5</strong>: <code>git add . &amp;&amp; git commit &amp;&amp; git push</code></p>
+<p>→ GitHub Pages 자동 업데이트</p>
+</div></div>
+</section>
+<section id="에이전트-실행-타임라인" class="slide level2">
+<h2>에이전트 실행 타임라인</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb7-2"><a href=""></a></span>
+<span id="cb7-3"><a href=""></a>tasks_agent <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb7-4"><a href=""></a>  <span class="at">Task =</span> <span class="fu">factor</span>(</span>
+<span id="cb7-5"><a href=""></a>    <span class="fu">c</span>(<span class="st">"CSV 파싱"</span>, <span class="st">"이상값 탐지"</span>, <span class="st">"차트 생성"</span>, <span class="st">"보고서 작성"</span>, <span class="st">"GitHub push"</span>),</span>
+<span id="cb7-6"><a href=""></a>    <span class="at">levels =</span> <span class="fu">rev</span>(<span class="fu">c</span>(<span class="st">"CSV 파싱"</span>, <span class="st">"이상값 탐지"</span>, <span class="st">"차트 생성"</span>, <span class="st">"보고서 작성"</span>, <span class="st">"GitHub push"</span>))</span>
+<span id="cb7-7"><a href=""></a>  ),</span>
+<span id="cb7-8"><a href=""></a>  <span class="at">Start  =</span> <span class="fu">c</span>(<span class="dv">0</span>,  <span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">35</span>, <span class="dv">55</span>),</span>
+<span id="cb7-9"><a href=""></a>  <span class="at">End    =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">35</span>, <span class="dv">55</span>, <span class="dv">65</span>),</span>
+<span id="cb7-10"><a href=""></a>  <span class="at">Status =</span> <span class="fu">c</span>(<span class="st">"완료"</span>, <span class="st">"완료"</span>, <span class="st">"완료"</span>, <span class="st">"진행중"</span>, <span class="st">"대기"</span>)</span>
+<span id="cb7-11"><a href=""></a>)</span>
+<span id="cb7-12"><a href=""></a></span>
+<span id="cb7-13"><a href=""></a><span class="fu">ggplot</span>(tasks_agent,</span>
+<span id="cb7-14"><a href=""></a>       <span class="fu">aes</span>(<span class="at">xmin =</span> Start, <span class="at">xmax =</span> End,</span>
+<span id="cb7-15"><a href=""></a>           <span class="at">ymin =</span> <span class="fu">as.numeric</span>(Task) <span class="sc">-</span> <span class="fl">0.4</span>, <span class="at">ymax =</span> <span class="fu">as.numeric</span>(Task) <span class="sc">+</span> <span class="fl">0.4</span>,</span>
+<span id="cb7-16"><a href=""></a>           <span class="at">fill =</span> Status)) <span class="sc">+</span></span>
+<span id="cb7-17"><a href=""></a>  <span class="fu">geom_rect</span>(<span class="at">color =</span> <span class="st">"white"</span>, <span class="at">linewidth =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb7-18"><a href=""></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"완료"</span> <span class="ot">=</span> <span class="st">"#27AE60"</span>, <span class="st">"진행중"</span> <span class="ot">=</span> <span class="st">"#F39C12"</span>, <span class="st">"대기"</span> <span class="ot">=</span> <span class="st">"#5D6D7E"</span>)) <span class="sc">+</span></span>
+<span id="cb7-19"><a href=""></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">13</span>) <span class="sc">+</span></span>
+<span id="cb7-20"><a href=""></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="at">labels =</span> <span class="fu">levels</span>(tasks_agent<span class="sc">$</span>Task)) <span class="sc">+</span></span>
+<span id="cb7-21"><a href=""></a>  <span class="fu">theme</span>(</span>
+<span id="cb7-22"><a href=""></a>    <span class="at">plot.background    =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"#1E2A3A"</span>, <span class="at">color =</span> <span class="cn">NA</span>),</span>
+<span id="cb7-23"><a href=""></a>    <span class="at">panel.background   =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"#1E2A3A"</span>, <span class="at">color =</span> <span class="cn">NA</span>),</span>
+<span id="cb7-24"><a href=""></a>    <span class="at">text               =</span> <span class="fu">element_text</span>(<span class="at">color =</span> <span class="st">"white"</span>),</span>
+<span id="cb7-25"><a href=""></a>    <span class="at">axis.text          =</span> <span class="fu">element_text</span>(<span class="at">color =</span> <span class="st">"#CBD5E0"</span>),</span>
+<span id="cb7-26"><a href=""></a>    <span class="at">panel.grid.major.x =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">"#2D3748"</span>),</span>
+<span id="cb7-27"><a href=""></a>    <span class="at">panel.grid.minor   =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb7-28"><a href=""></a>    <span class="at">panel.grid.major.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb7-29"><a href=""></a>    <span class="at">legend.background  =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"#1E2A3A"</span>, <span class="at">color =</span> <span class="cn">NA</span>)</span>
+<span id="cb7-30"><a href=""></a>  ) <span class="sc">+</span></span>
+<span id="cb7-31"><a href=""></a>  <span class="fu">labs</span>(</span>
+<span id="cb7-32"><a href=""></a>    <span class="at">title =</span> <span class="st">"Claude Agent: 수율 분석 작업 자동 실행 타임라인"</span>,</span>
+<span id="cb7-33"><a href=""></a>    <span class="at">subtitle =</span> <span class="st">"사람의 개입 없이 65초 만에 5단계 완료"</span>,</span>
+<span id="cb7-34"><a href=""></a>    <span class="at">x =</span> <span class="st">"시간 (초)"</span>, <span class="at">y =</span> <span class="st">""</span>, <span class="at">fill =</span> <span class="st">"상태"</span></span>
+<span id="cb7-35"><a href=""></a>  ) <span class="sc">+</span></span>
+<span id="cb7-36"><a href=""></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">x =</span> (Start <span class="sc">+</span> End) <span class="sc">/</span> <span class="dv">2</span>, <span class="at">y =</span> <span class="fu">as.numeric</span>(Task),</span>
+<span id="cb7-37"><a href=""></a>                <span class="at">label =</span> <span class="fu">paste0</span>(End <span class="sc">-</span> Start, <span class="st">"초"</span>)),</span>
+<span id="cb7-38"><a href=""></a>            <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">fontface =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">4</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+</div>
+<img data-src="lecture_04_files/figure-revealjs/agent-gantt-chart-1.png" width="864" class="r-stretch"></section>
+<section id="에이전트-모드-실전-직접-해보기" class="slide level2">
+<h2>에이전트 모드 실전 — 직접 해보기</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p><strong>준비물</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href=""></a><span class="co"># 1. 가상 수율 데이터 생성 (Claude에게 시킴)</span></span>
+<span id="cb8-2"><a href=""></a><span class="ex">claude</span></span>
+<span id="cb8-3"><a href=""></a><span class="op">&gt;</span> <span class="st">"OLED 수율 분석용 가상 CSV 데이터를</span></span>
+<span id="cb8-4"><a href=""></a><span class="st">&gt;  data/yield_2026.csv로 생성해줘.</span></span>
+<span id="cb8-5"><a href=""></a><span class="st">&gt;  30일 × 10개 공정 라인, 수율 85~99%</span></span>
+<span id="cb8-6"><a href=""></a><span class="st">&gt;  중간에 이상값 3~5개 포함해줘."</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>에이전트 지시 (1줄로 전체 파이프라인)</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href=""></a><span class="op">&gt;</span> <span class="st">"yield_2026.csv를 읽어서</span></span>
+<span id="cb9-2"><a href=""></a><span class="st">&gt;  1) 공정별 수율 트렌드 분석</span></span>
+<span id="cb9-3"><a href=""></a><span class="st">&gt;  2) 이상값 탐지 (평균-2SD 기준)</span></span>
+<span id="cb9-4"><a href=""></a><span class="st">&gt;  3) ggplot2 차트 3종 생성</span></span>
+<span id="cb9-5"><a href=""></a><span class="st">&gt;  4) reports/yield_report.qmd 작성</span></span>
+<span id="cb9-6"><a href=""></a><span class="st">&gt;  5) git commit &amp; push</span></span>
+<span id="cb9-7"><a href=""></a><span class="st">&gt;  까지 전부 해줘."</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:45%;">
+<section id="에이전트-실행-중-화면" style="background: #1A2942; padding: 18px; border-radius: 10px;">
+<h3>에이전트 실행 중 화면</h3>
+<pre><code>Claude Code v1.x.x
+
+Reading: data/yield_2026.csv
+Lines: 300 rows loaded
+
+Running R analysis...
+Mean yield: 93.7%
+Anomalies found: 4
+
+Generating charts...
+chart_trend.png: done
+chart_anomaly.png: done
+chart_heatmap.png: done
+
+Writing report...
+reports/yield_report.qmd: done
+Running quarto render...
+
+Committing...
+git add .
+git commit -m "feat: 4월 수율 분석 보고서"
+git push origin main
+
+Done! View at: https://...</code></pre>
+</section>
+</div></div>
+</section>
+<section id="에이전트의-한계-알아야-잘-쓴다" class="slide level2">
+<h2>에이전트의 한계 — 알아야 잘 쓴다</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<section id="에이전트가-잘-못하는-것" style="background: #3D1515; padding: 20px; border-radius: 10px; border-top: 4px solid #C0392B;">
+<h3>에이전트가 잘 못하는 것</h3>
+<ul>
+<li><strong>불명확한 목표</strong>: “잘 만들어줘”는 실패한다</li>
+<li><strong>창의적 판단</strong>: “어떤 색이 예쁜가?” → 사람이 결정</li>
+<li><strong>도메인 상식</strong>: 수율 95%가 좋은지 나쁜지 → 당신이 판단</li>
+<li><strong>보안 관련</strong>: 실제 내부 데이터, API 키 노출 위험</li>
+<li><strong>긴 작업의 일관성</strong>: 100파일 이상 수정 시 맥락 손실</li>
+</ul>
+</section>
+</div><div class="column" style="width:50%;">
+<section id="에이전트를-잘-쓰는-방법" style="background: #153A15; padding: 20px; border-radius: 10px; border-top: 4px solid #27AE60;">
+<h3>에이전트를 잘 쓰는 방법</h3>
+<ul>
+<li><strong>명확한 목표</strong>: 입력/출력/기준 명시</li>
+<li><strong>작은 단위로 쪼개기</strong>: 한 번에 5단계 이내</li>
+<li><strong>결과 검증</strong>: AI 출력을 맹신하지 말것</li>
+<li><strong>도메인 지식 투입</strong>: 수율 기준, 이상값 정의는 당신이</li>
+<li><strong>반복</strong>: 처음엔 실패해도 괜찮다. 피드백으로 개선</li>
+</ul>
+</section>
+</div></div>
+<div style="margin-top: 20px; background: #1A2942; padding: 15px; border-radius: 10px; text-align: center; font-size: 0.95em;">
+<p><strong>핵심</strong>: AI는 실행을 담당. <strong>당신은 방향과 판단을 담당.</strong></p>
+<p>디스플레이 도메인 전문가인 당신이 방향을 잡으면, AI가 실행한다.</p>
+</div>
+</section>
+<section id="프로젝트-1-최종-안내" class="slide level2">
+<h2>프로젝트 1 최종 안내</h2>
 <div class="callout callout-warning callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>주의</strong></p>
+<p><strong>이번 주까지! 나의 디스플레이 관심 분야 소개 웹페이지</strong></p>
 </div>
 <div class="callout-content">
-<p>에이전트 모드 사용 시, 병렬 실행에 따른 자원 관리에 주의하세요.</p>
+<p><strong>GitHub Pages에 배포하고 URL 제출</strong></p>
+<p><strong>Claude Agent를 활용하세요</strong>:</p>
+<pre><code>"나의 디스플레이 엔지니어 포트폴리오 웹사이트를
+ 만들고 GitHub Pages에 배포해줘.
+ 내용:
+ - 자기소개 (OLED/LCD 관심 분야)
+ - 이 강의에서 배운 기술 스택
+ - 목표: 삼성/LG 디스플레이 취업
+
+ 다크 테마, 모바일 반응형,
+ GitHub Actions 자동 배포까지 설정해줘."</code></pre>
+<p><strong>에이전트가 전부 알아서 한다.</strong> 당신은 내용만 확인하면 된다.</p>
 </div>
 </div>
 </div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="평가-기준">평가 기준</h3>
+<ul>
+<li>동작 여부 (GitHub Pages URL 접속 가능): 50%</li>
+<li>내용의 진정성 (나만의 이야기): 30%</li>
+<li>디자인 완성도: 20%</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3 id="제출-방법">제출 방법</h3>
+<ul>
+<li>구글 폼에 GitHub Pages URL 입력</li>
+<li>마감: 5강 시작 전</li>
+<li>늦은 제출: -20점</li>
+</ul>
+<p><strong>막히면</strong>: 강의 카카오톡 채널에 에러 메시지 올리기</p>
+</div></div>
+</section>
+<section id="part-1-2-마무리-정리" class="slide level2">
+<h2>PART 1 &amp; 2 마무리 정리</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a>summary_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb12-2"><a href=""></a>  강의    <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"1강"</span>, <span class="st">"2강"</span>, <span class="st">"3강"</span>, <span class="st">"4강"</span>),</span>
+<span id="cb12-3"><a href=""></a>  핵심_도구 <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"Claude Pro + Artifacts"</span>,</span>
+<span id="cb12-4"><a href=""></a>               <span class="st">"GitHub + Claude Code"</span>,</span>
+<span id="cb12-5"><a href=""></a>               <span class="st">"Skills + CLAUDE.md Hooks"</span>,</span>
+<span id="cb12-6"><a href=""></a>               <span class="st">"Agent 모드 + CLI-Anything"</span>),</span>
+<span id="cb12-7"><a href=""></a>  핵심_개념 <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"바이브 코딩 마인드셋"</span>,</span>
+<span id="cb12-8"><a href=""></a>               <span class="st">"Git + 자동 배포 파이프라인"</span>,</span>
+<span id="cb12-9"><a href=""></a>               <span class="st">"반복 작업 자동화"</span>,</span>
+<span id="cb12-10"><a href=""></a>               <span class="st">"멀티스텝 자율 실행"</span>),</span>
+<span id="cb12-11"><a href=""></a>  결과물   <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"첫 Claude 프롬프트"</span>,</span>
+<span id="cb12-12"><a href=""></a>               <span class="st">"GitHub Pages 배포"</span>,</span>
+<span id="cb12-13"><a href=""></a>               <span class="st">"커스텀 /display-report 스킬"</span>,</span>
+<span id="cb12-14"><a href=""></a>               <span class="st">"에이전트 수율 분석 보고서"</span>)</span>
+<span id="cb12-15"><a href=""></a>)</span>
+<span id="cb12-16"><a href=""></a></span>
+<span id="cb12-17"><a href=""></a>knitr<span class="sc">::</span><span class="fu">kable</span>(</span>
+<span id="cb12-18"><a href=""></a>  summary_df,</span>
+<span id="cb12-19"><a href=""></a>  <span class="at">caption =</span> <span class="st">"PART 1-2 (1~4강) 핵심 정리"</span>,</span>
+<span id="cb12-20"><a href=""></a>  <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"강의"</span>, <span class="st">"핵심 도구"</span>, <span class="st">"핵심 개념"</span>, <span class="st">"결과물"</span>),</span>
+<span id="cb12-21"><a href=""></a>  <span class="at">align =</span> <span class="fu">c</span>(<span class="st">"c"</span>, <span class="st">"l"</span>, <span class="st">"l"</span>, <span class="st">"l"</span>)</span>
+<span id="cb12-22"><a href=""></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top">
+<caption>PART 1-2 (1~4강) 핵심 정리</caption>
+<colgroup>
+<col style="width: 6%">
+<col style="width: 29%">
+<col style="width: 31%">
+<col style="width: 32%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">강의</th>
+<th style="text-align: left;">핵심 도구</th>
+<th style="text-align: left;">핵심 개념</th>
+<th style="text-align: left;">결과물</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">1강</td>
+<td style="text-align: left;">Claude Pro + Artifacts</td>
+<td style="text-align: left;">바이브 코딩 마인드셋</td>
+<td style="text-align: left;">첫 Claude 프롬프트</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">2강</td>
+<td style="text-align: left;">GitHub + Claude Code</td>
+<td style="text-align: left;">Git + 자동 배포 파이프라인</td>
+<td style="text-align: left;">GitHub Pages 배포</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">3강</td>
+<td style="text-align: left;">Skills + CLAUDE.md Hooks</td>
+<td style="text-align: left;">반복 작업 자동화</td>
+<td style="text-align: left;">커스텀 /display-report 스킬</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">4강</td>
+<td style="text-align: left;">Agent 모드 + CLI-Anything</td>
+<td style="text-align: left;">멀티스텝 자율 실행</td>
+<td style="text-align: left;">에이전트 수율 분석 보고서</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div style="margin-top: 20px; font-size: 0.85em; color: #A0AEC0;">
+<p><strong>1강</strong>: 왜 바이브 코딩인가 → <strong>2강</strong>: 환경 세팅 → <strong>3강</strong>: 자동화 → <strong>4강</strong>: 에이전트</p>
+<p>이 4강이 전체 커리큘럼의 기반이다. 5강부터는 이 기반 위에 실전 앱을 만든다.</p>
 </div>
 </section>
-<section id="강의-요약" class="slide level2">
-<h2>강의 요약</h2>
-<p>에이전트 모드의 구조와 성능을 이해하고, CLI-Anything을 활용한 실제 구현을 경험합니다.</p>
+<section id="앞으로의-여정-part-3-4-예고" class="slide level2">
+<h2>앞으로의 여정 — PART 3 &amp; 4 예고</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<section id="part-3-58강-실전-앱-개발" style="background: #1A2942; padding: 20px; border-radius: 10px;">
+<h3>PART 3 (5~8강): 실전 앱 개발</h3>
+<p><strong>5강</strong>: Streamlit으로 수율 대시보드 만들기</p>
+<p><strong>6강</strong>: R Shiny 앱 + 데이터 시각화</p>
+<p><strong>7강</strong>: Python + pandas 분석 파이프라인</p>
+<p><strong>8강</strong>: 완성된 포트폴리오 앱 배포 &amp; 발표</p>
+<p>결과물: <strong>실제로 동작하는 웹 앱</strong> → 포트폴리오 주력 아이템</p>
+</section>
+</div><div class="column" style="width:50%;">
+<section id="part-4-912강-취업-직결" style="background: #1A3A2A; padding: 20px; border-radius: 10px;">
+<h3>PART 4 (9~12강): 취업 직결</h3>
+<p><strong>9강</strong>: 삼성/LG 디스플레이 채용 분석</p>
+<p><strong>10강</strong>: GitHub 포트폴리오 최종 정리</p>
+<p><strong>11강</strong>: 기술 면접 대비 (AI로 연습)</p>
+<p><strong>12강</strong>: 최종 발표 &amp; 수료</p>
+<p>결과물: <strong>취업 포트폴리오 완성본</strong> + 면접 준비 완료</p>
+</section>
+</div></div>
+<div style="margin-top: 20px; text-align: center; font-size: 1.1em; color: #F6E05E;">
+<p><strong>오늘 배운 에이전트 모드가 5강 이후 모든 것의 핵심이다.</strong></p>
+<p>다음 강의에서 만나요!</p>
+</div>
 
 </section></section>
     </div>

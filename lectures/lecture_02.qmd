@@ -1,6 +1,6 @@
 ---
 title: "GitHub + Claude Code 환경 세팅"
-subtitle: "취업 포트폴리오의 시작 — Git, GitHub, Claude Code"
+subtitle: "1인 스타트업의 비밀 — 코드 없이 $5M 버는 사람의 도구"
 author: "렛유인 KDC"
 date: today
 engine: knitr
@@ -31,164 +31,592 @@ format:
     margin: 0.1
 ---
 
-# 오프닝 {background="#1F4E79"}
+# Pieter Levels {background="#1F4E79"}
 
-## Pieter Levels의 성공 사례
-- Pieter Levels (@levelsio): 혼자서 AI와 GitHub로 연 $5M 수익 창출
-- GitHub와 AI의 결합으로 어떻게 성공할 수 있었는지 탐구
-
-# Git 워크플로우 {background="#1F4E79"}
-
-## Git 워크플로우 개요
-- Working Directory → Staging Area → Local Repository → Remote Repository
-
-```{r}
-#| echo: false
-#| fig-width: 9
-#| fig-height: 4.5
-library(ggplot2)
-
-# 예시 데이터 생성
-data <- data.frame(
-  step = c("Working Dir", "Staging", "Local Repo", "Remote"),
-  count = c(100, 80, 60, 40)
-)
-
-# 워크플로우 시각화
-ggplot(data, aes(x = step, y = count, fill = step)) +
-  geom_bar(stat = "identity") +
-  theme_minimal() +
-  labs(title = "Git 워크플로우", x = "단계", y = "작업 수")
-```
-
-# GitHub 포트폴리오 전략
-
-## GitHub 포트폴리오 최적화 {.smaller}
-- Contribution Graph 활용
-- README 파일의 중요성
-- Pinned Repos 설정
-
-::: {.panel-tabset}
-### Contribution Graph
-- 일일 커밋을 통해 프로필을 풍부하게
-### README
-- 프로젝트의 첫인상
-### Pinned Repos
-- 대표 프로젝트를 고정
+::: {style="margin-top: 40px; font-size: 1.4em; color: #FFD700;"}
+혼자. **1명.** 연 수익 **$5,000,000** (약 67억 원).
 :::
 
-# Claude Code란 무엇인가?
+::: {style="margin-top: 30px; font-size: 0.95em; color: #CBD5E0;"}
+nomadlist.com, remoteok.com, photoAI.com — 전부 혼자 만들었다.
 
-## Claude Code 개념 {.smaller}
-- 터미널 기반 AI 에이전트
-- CLAUDE.md 컨텍스트 파일 작성
+직원 없음. 투자자 없음. 사무실 없음.
+
+**AI 없이는 불가능했다.**
+:::
+
+::: {style="margin-top: 35px; font-size: 1.0em; color: #A0AEC0;"}
+그의 모든 도구 중 핵심 두 가지:
+
+**GitHub** + **AI 코딩 어시스턴트**
+
+오늘 이 두 가지를 설치하고, 직접 써본다.
+:::
+
+---
+
+## Pieter Levels가 혼자서 $5M을 버는 방법
 
 ::: {.columns}
-::: {.column width="45%"}
-### CLAUDE.md의 역할
-- 사용자 정보 제공
-- AI 응답 품질 향상
-:::
-::: {.column width="55%"}
-```python
-# CLAUDE.md 예시
-"""
-나는 디스플레이 공학과 4학년
-Python/R 가능
-수율 분석 관심
-"""
-```
-:::
+
+::: {.column width="50%"}
+::: {style="background: #1A2942; padding: 20px; border-radius: 10px; margin-bottom: 15px;"}
+### 제품 개발 방식
+
+1. 아이디어 발견 (트위터/커뮤니티)
+2. **하루 만에 MVP** — Claude/ChatGPT로 코딩
+3. 공개 배포 — GitHub Pages 또는 Netlify
+4. 유저 피드백 → 즉시 수정
+5. 수익화 시작 (Stripe 결제 연동)
 :::
 
-# 디스플레이 취업 준비생 포트폴리오
+::: {style="background: #1A3A2A; padding: 20px; border-radius: 10px;"}
+### 핵심 도구 스택
 
-## 포트폴리오 예시 분석
-- Star 100+ repos 유형 분석
-
-::: {.callout-tip title="팁"}
-- 인기 있는 프로젝트 유형을 분석하여 트렌드 파악
+- **GitHub**: 코드 저장 + 배포
+- **Claude/ChatGPT**: 코드 작성
+- **Netlify/Vercel**: 자동 배포
+- **Stripe**: 결제
+- **Twitter**: 마케팅
+:::
 :::
 
-# 실습: GitHub 저장소 생성
+::: {.column width="50%"}
+::: {style="background: #2D3748; padding: 20px; border-radius: 10px;"}
+### 당신과 Pieter의 차이
 
-## GitHub 계정 생성 및 설정
-- New Repo 생성
-- README 작성
+| 항목 | Pieter | 당신 (현재) |
+|------|--------|------------|
+| 코딩 경험 | 20년 | 적음 |
+| AI 활용 | 최대 | 시작 |
+| 도메인 지식 | 일반 | **디스플레이 전문** |
+| GitHub | 완숙 | **오늘 시작** |
 
-::: {.callout-warning title="주의"}
-- README 파일은 프로젝트의 첫인상입니다.
+::: {style="margin-top: 15px; color: #F6E05E; font-size: 0.9em;"}
+디스플레이 산업 도메인 지식은 Pieter가 가지지 못한 것.
+
+**그게 당신의 무기다.**
+:::
+:::
 :::
 
-# 실습: Claude Code 첫 실행
+:::
 
-## Claude Code 설치 및 실행
-- npm install -g @anthropic-ai/claude-code
+---
 
-```python
-# 설치 및 실행 예시
-npm install -g @anthropic-ai/claude-code
-claude
-``` {code-line-numbers="1-2|3"}
+## Git이 뭔데 이렇게 중요해?
 
-# CLAUDE.md 응답 품질 비교 {auto-animate="true"}
+::: {style="font-size: 1.0em; color: #F6E05E; margin-bottom: 20px;"}
+"파일 이름에 \_최종, \_최종2, \_진짜최종 붙여본 적 있나요?"
+:::
 
-## CLAUDE.md 없는 상태에서의 응답
-
-- AI의 기본 응답 품질 평가
-
-# CLAUDE.md 응답 품질 비교 {auto-animate="true"}
-
-## CLAUDE.md 있는 상태에서의 응답
-
-- AI의 향상된 응답 품질 평가
-
-# Git 브랜치 전략 시각화
-
-## Git 브랜치 전략
-- main/dev/feature 브랜치 흐름
+::: {style="font-size: 0.9em; color: #CBD5E0; margin-bottom: 20px;"}
+그게 바로 Git이 해결하는 문제다. Git은 파일의 모든 변경 이력을 추적한다.
+:::
 
 ```{r}
-#| echo: false
-#| fig-width: 9
-#| fig-height: 4.5
+#| label: git-branch-chart
 library(ggplot2)
 
-# 예시 데이터 생성
-branches <- data.frame(
-  branch = c("main", "dev", "feature"),
-  commits = c(5, 10, 15)
+commits <- data.frame(
+  x     = c(1, 2, 3, 4, 3, 4, 5, 6),
+  y     = c(0, 0, 0, 0, -1, -1, 0, 0),
+  label = c("init", "add\nfeature", "bug\nfix", "main\nv1.0",
+            "branch\nstart", "실험\n기능", "merge", "deploy\nv2.0"),
+  type  = c("main", "main", "main", "main", "branch", "branch", "main", "main")
 )
 
-# 브랜치 전략 시각화
-ggplot(branches, aes(x = branch, y = commits, fill = branch)) +
-  geom_bar(stat = "identity") +
-  theme_minimal() +
-  labs(title = "Git 브랜치 전략", x = "브랜치", y = "커밋 수")
+edges <- data.frame(
+  x    = c(1, 2, 3, 3, 4, 5),
+  xend = c(2, 3, 4, 3, 5, 6),
+  y    = c(0, 0, 0, 0, -1, 0),
+  yend = c(0, 0, 0, -1, -1, 0)
+)
+
+ggplot() +
+  geom_segment(data = edges,
+               aes(x = x, xend = xend, y = y, yend = yend),
+               color = "#2E75B6", linewidth = 1.8, lineend = "round") +
+  geom_point(data = commits, aes(x = x, y = y, color = type), size = 8) +
+  geom_text(data = commits,
+            aes(x = x, y = y + 0.2 * ifelse(type == "branch", -2, 1), label = label),
+            size = 3.2, color = "white") +
+  scale_color_manual(values = c("main" = "#2E75B6", "branch" = "#E67E22"),
+                     labels = c("main" = "메인 브랜치", "branch" = "실험 브랜치")) +
+  xlim(0.5, 6.5) + ylim(-1.9, 0.9) +
+  theme_void(base_size = 13) +
+  labs(title = "Git 브랜치 전략: main + feature branch", color = "") +
+  theme(
+    plot.background = element_rect(fill = "#1E2A3A", color = NA),
+    plot.title      = element_text(color = "white", size = 14, hjust = 0.5, face = "bold"),
+    legend.text     = element_text(color = "white"),
+    legend.position = "bottom"
+  )
 ```
 
-# Git 명령어 치트시트
+---
 
-## Git 명령어 표 {.smaller}
+## Git 핵심 개념 3가지만 알면 된다
+
+::: {.columns}
+
+::: {.column width="33%"}
+::: {style="background: #1A2942; padding: 20px; border-radius: 10px; text-align: center; border-top: 4px solid #3B82F6; height: 220px;"}
+### commit
+변경사항을 저장하는 스냅샷.
+
+"이 시점의 코드를 기록해둬"
+
+```
+git add .
+git commit -m "수율 분석 추가"
+```
+:::
+:::
+
+::: {.column width="33%"}
+::: {style="background: #1A3A2A; padding: 20px; border-radius: 10px; text-align: center; border-top: 4px solid #10B981; height: 220px;"}
+### push / pull
+로컬 → GitHub 업로드 (push)
+
+GitHub → 로컬 다운로드 (pull)
+
+```
+git push origin main
+git pull origin main
+```
+:::
+:::
+
+::: {.column width="33%"}
+::: {style="background: #2A1A3A; padding: 20px; border-radius: 10px; text-align: center; border-top: 4px solid #A855F7; height: 220px;"}
+### branch
+실험적 기능을 안전하게 개발.
+
+메인 코드에 영향 없이 테스트.
+
+```
+git checkout -b new-feature
+git merge new-feature
+```
+:::
+:::
+
+:::
+
+::: {style="margin-top: 20px; background: #1A2942; padding: 15px; border-radius: 10px; text-align: center;"}
+실무에서 70%는 이 세 가지만 쓴다. 나머지는 필요할 때 AI한테 물어보면 된다.
+:::
+
+---
+
+## Claude Code 설치 — AI 코딩 어시스턴트를 터미널에
+
+::: {style="font-size: 0.9em; color: #CBD5E0; margin-bottom: 20px;"}
+Claude Code는 터미널에서 동작하는 AI 코딩 어시스턴트다. 프로젝트 전체를 이해하고, 파일을 직접 수정한다.
+:::
+
+::: {.columns}
+
+::: {.column width="55%"}
+**설치 순서**
+
+```bash
+# Step 1: Node.js LTS 설치 확인
+node --version
+# v18 이상이어야 함
+
+# Step 2: Claude Code 전역 설치
+npm install -g @anthropic-ai/claude-code
+
+# Step 3: 설치 확인
+claude --version
+
+# Step 4: 프로젝트 폴더에서 첫 실행
+cd my-display-project
+claude
+```
+:::
+
+::: {.column width="45%"}
+::: {.callout-tip}
+## Node.js 없으면?
+
+nodejs.org → LTS 버전 다운로드 → 설치
+
+설치 후 터미널(PowerShell) 재시작 필수!
+
+Windows: `winget install OpenJS.NodeJS`
+
+Mac: `brew install node`
+:::
+
+::: {style="background: #1A2942; padding: 12px; border-radius: 8px; margin-top: 10px; font-size: 0.85em;"}
+Claude Code = 전 세계 개발자들이 가장 많이 쓰는 AI 코딩 도구 중 하나. GitHub Stars 수만 개.
+:::
+:::
+
+:::
+
+---
+
+## CLAUDE.md — AI의 두뇌를 프로젝트에 세팅하라
+
+::: {.callout-tip}
+## CLAUDE.md란?
+
+Claude Code가 프로젝트를 시작할 때 **가장 먼저 읽는 파일**.
+
+여기에 "이 프로젝트는 디스플레이 수율 분석 앱이야"라고 쓰면 AI가 맥락을 이해한다.
+
+매번 설명하지 않아도 된다. 한 번 써두면 영원히 작동한다.
+:::
+
+::: {style="margin-top: 20px;"}
+:::
+
+**디스플레이 엔지니어 프로젝트용 CLAUDE.md 예시**
+
+```markdown
+# 프로젝트: 삼성 디스플레이 수율 분석 포트폴리오
+
+## 배경
+이 프로젝트는 삼성 디스플레이 취업을 위한 포트폴리오입니다.
+OLED/LCD 패널 수율 데이터를 분석하고 시각화합니다.
+
+## 기술 스택
+- Python 3.11 + pandas + matplotlib
+- R + ggplot2 (데이터 시각화)
+- GitHub Pages (배포)
+
+## 코딩 규칙
+- 한국어 주석 사용
+- 함수마다 docstring 작성
+- 수율(Yield Rate) = 양품 수 / 전체 생산 수 * 100
+
+## 금지 사항
+- 실제 삼성 내부 데이터 사용 금지 (가상 데이터만)
+```
+
+---
+
+## GitHub Actions 맛보기 — 코드 push 하면 자동 배포
 
 ```{r}
-#| echo: false
-knitr::kable(data.frame(
-  명령어 = c("git init", "git add", "git commit", "git push"),
-  기능 = c("저장소 초기화", "파일 추가", "커밋 생성", "원격 저장소로 푸시"),
-  예시 = c("git init", "git add .", "git commit -m '메시지'", "git push origin main")
-), caption="Git 명령어 치트시트", align=c("l","r","r"))
+#| label: cicd-pipeline-chart
+library(ggplot2)
+
+steps <- data.frame(
+  x     = c(1, 2, 3, 4, 5),
+  label = c("코드 작성\n(Claude Code)", "git push\n(GitHub)",
+            "자동 테스트\n(Actions)", "빌드\n(Docker)", "배포\n(Pages/Cloud)"),
+  color = c("#3498DB", "#2ECC71", "#F39C12", "#9B59B6", "#E74C3C")
+)
+
+arrows_df <- data.frame(x = 1:4, xend = 2:5, y = 0, yend = 0)
+
+ggplot() +
+  geom_segment(data = arrows_df,
+               aes(x = x + 0.22, xend = xend - 0.22, y = y, yend = yend),
+               arrow = arrow(length = unit(0.2, "inches"), type = "closed"),
+               color = "gray60", linewidth = 1.2) +
+  geom_point(data = steps, aes(x = x, y = 0, color = color), size = 18) +
+  scale_color_identity() +
+  geom_text(data = steps, aes(x = x, y = 0, label = label),
+            color = "white", size = 2.9, fontface = "bold") +
+  xlim(0.5, 5.5) + ylim(-0.6, 0.6) +
+  theme_void(base_size = 13) +
+  labs(title = "코드 한 줄 push → 배포까지 자동화 파이프라인") +
+  theme(
+    plot.background = element_rect(fill = "#1E2A3A", color = NA),
+    plot.title      = element_text(color = "white", size = 14, hjust = 0.5, face = "bold")
+  )
 ```
 
-# Q&A 및 마무리
+::: {style="font-size: 0.85em; color: #A0AEC0; margin-top: 10px;"}
+GitHub Actions: `.github/workflows/deploy.yml` 파일 하나로 CI/CD 파이프라인 완성.
 
-## 질문 및 피드백
-- 강의 내용에 대한 질문
-- 피드백 및 추가 논의
-
-::: {.fragment .fade-in}
-- 강의에 대한 피드백은 언제나 환영합니다.
+Pieter Levels는 이걸로 하루에 수십 번 배포한다.
 :::
-::: {.fragment .highlight-red}
-- 다음 강의를 기대해 주세요!
+
+---
+
+## GitHub Pages로 배포 — 무료 호스팅
+
+::: {.columns}
+
+::: {.column width="50%"}
+### 왜 GitHub Pages인가?
+
+- **완전 무료** — 영구 무료 호스팅
+- **자동 배포** — push하면 바로 반영
+- **취업에 유리** — 포트폴리오 URL이 곧 GitHub URL
+- **커스텀 도메인** — 나중에 연결 가능
+
+### 배포 URL 형식
+
+```
+https://[사용자명].github.io/[저장소명]/
+```
+
+예시:
+```
+https://park-display.github.io/yield-analyzer/
+```
+:::
+
+::: {.column width="50%"}
+### 배포 설정 (단 3단계)
+
+**① Settings → Pages**
+
+GitHub 저장소 → Settings → Pages
+
+**② Source 선택**
+
+Deploy from a branch → main → /(root)
+
+**③ Save 클릭**
+
+2분 후 URL 자동 생성!
+
+::: {.callout-note}
+## Claude Code에게 맡기기
+
+```
+이 HTML 파일을 GitHub Pages에
+배포하는 방법을 알려줘.
+workflow 파일도 같이 만들어줘.
+```
+:::
+:::
+
+:::
+
+---
+
+## 실습 타임 — 지금 바로 따라하기
+
+::: {.columns}
+
+::: {.column width="50%"}
+### Step 1-3: 저장소 생성 & 첫 commit
+
+```bash
+# GitHub에서 새 저장소 생성 후
+# 로컬에 clone
+git clone https://github.com/[내아이디]/display-portfolio.git
+cd display-portfolio
+
+# CLAUDE.md 생성 (Claude에게 시키기!)
+claude
+
+# 첫 파일 추가 & commit
+git add .
+git commit -m "첫 번째 커밋: 포트폴리오 초기 설정"
+git push origin main
+```
+:::
+
+::: {.column width="50%"}
+### Step 4-6: Claude Code로 웹페이지 생성
+
+Claude Code 실행 후 입력:
+
+```
+CLAUDE.md를 읽고, 나의 디스플레이
+엔지니어 포트폴리오 index.html을
+만들어줘.
+
+요구사항:
+- 모바일 반응형
+- OLED/LCD 공정 지식 강조
+- 다크 테마
+- 깔끔한 디자인
+```
+
+결과 확인 후 push!
+:::
+
+:::
+
+::: {style="margin-top: 20px; background: #2A1A1A; padding: 15px; border-radius: 10px; border-left: 5px solid #E74C3C; font-size: 0.9em;"}
+**흔한 실수**: `git push`가 안 될 때 → Personal Access Token 설정 필요. Claude에게 "GitHub Personal Access Token 설정하는 방법 알려줘"라고 물어보자.
+:::
+
+---
+
+## Git 워크플로우 시각화 — 하루 작업 흐름
+
+```{r}
+#| label: git-workflow-chart
+library(ggplot2)
+library(dplyr)
+
+workflow <- data.frame(
+  step    = 1:7,
+  label   = c("아이디어\n구상", "Claude Code\n코드 생성", "로컬\n테스트",
+               "git add\n& commit", "git push\n(GitHub)", "Actions\n자동 테스트", "Pages\n자동 배포"),
+  success = c(TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE),
+  x       = 1:7,
+  y       = c(0, 0, 0, 0, 0, 0, 0),
+  time_min = c(10, 30, 15, 2, 1, 5, 3)
+)
+
+ggplot(workflow, aes(x = step, y = time_min, fill = factor(step))) +
+  geom_bar(stat = "identity", width = 0.65) +
+  scale_fill_manual(values = c("#3498DB","#2ECC71","#F39C12",
+                                "#E74C3C","#9B59B6","#1ABC9C","#E67E22")) +
+  scale_x_continuous(breaks = 1:7, labels = workflow$label) +
+  theme_minimal(base_size = 12) +
+  theme(
+    plot.background    = element_rect(fill = "#1E2A3A", color = NA),
+    panel.background   = element_rect(fill = "#1E2A3A", color = NA),
+    text               = element_text(color = "white"),
+    axis.text          = element_text(color = "#CBD5E0"),
+    panel.grid.major.y = element_line(color = "#2D3748"),
+    panel.grid.minor   = element_blank(),
+    panel.grid.major.x = element_blank(),
+    legend.position    = "none"
+  ) +
+  labs(
+    title = "하루 작업 흐름: 아이디어에서 배포까지 소요 시간 (분)",
+    y = "소요 시간 (분)", x = ""
+  ) +
+  geom_text(aes(label = paste0(time_min, "분")), vjust = -0.4,
+            color = "white", fontface = "bold", size = 3.8)
+```
+
+---
+
+## GitHub 프로필 — 취업에 직결되는 포트폴리오
+
+::: {.columns}
+
+::: {.column width="50%"}
+### 삼성/LG 채용 담당자가 보는 것
+
+::: {style="background: #1A2942; padding: 15px; border-radius: 10px; font-size: 0.9em;"}
+1. **Contribution 잔디밭** — 꾸준함을 보여줌
+2. **README.md 품질** — 프로젝트 설명 능력
+3. **코드 품질** — 주석, 구조, 가독성
+4. **스타 수** — 다른 개발자들의 인정
+5. **배포된 URL** — 실제로 동작하는가
+:::
+
+::: {style="margin-top: 15px; background: #1A3A2A; padding: 15px; border-radius: 10px; font-size: 0.9em;"}
+**Claude Code로 README 작성**
+
+```
+이 프로젝트의 README.md를
+삼성 디스플레이 채용 담당자가
+보기 좋게 작성해줘.
+기술 스택, 결과, 배운 점 포함.
+```
+:::
+:::
+
+::: {.column width="50%"}
+### 좋은 GitHub 프로필의 조건
+
+::: {style="font-size: 0.88em;"}
+| 항목 | 나쁜 예 | 좋은 예 |
+|------|---------|---------|
+| 아이디 | user123 | kim-oled-eng |
+| README | 없음 | 상세 설명 + 이미지 |
+| 프로젝트 수 | 0개 | 3개 이상 |
+| 커밋 빈도 | 월 1회 | 주 3회 이상 |
+| 배포 | 없음 | GitHub Pages URL |
+:::
+
+::: {style="margin-top: 15px; color: #F6E05E; font-size: 0.9em; background: #2D2A15; padding: 10px; border-radius: 8px;"}
+취업 면접에서 "GitHub 주소 있나요?" 라고 물어보는 회사가 늘고 있다.
+
+지금 시작하면 충분하다.
+:::
+:::
+
+:::
+
+---
+
+## 숙제 — 프로젝트 1 안내
+
+::: {.callout-important}
+## 4강까지 제출: 나의 디스플레이 관심 분야 소개 웹페이지
+
+**GitHub Pages에 배포하고 URL 제출**
+
+요구사항:
+1. **index.html** — 반응형 웹페이지
+2. **내용**: 디스플레이 산업 관심 분야 (OLED/LCD/마이크로LED 중 선택)
+3. **포함 요소**: 자기소개, 관심 기술, 배우고 싶은 것
+4. **URL**: `https://[아이디].github.io/display-intro/`
+
+**코드를 직접 짜지 마세요!** Claude Code에게 시키면 됩니다.
+
+평가 기준: 동작 여부(50%) + 내용의 진정성(30%) + 디자인(20%)
+:::
+
+::: {.columns}
+::: {.column width="50%"}
+### Claude Code 프롬프트 예시
+
+```
+OLED 디스플레이 기술에 관심 있는
+취업 준비생의 자기소개 웹페이지를
+만들어줘. 다크 테마, 모바일 반응형,
+애니메이션 효과 포함.
+```
+:::
+::: {.column width="50%"}
+### 제출 방법
+
+- 구글 폼에 GitHub Pages URL 입력
+- 마감: 4강 시작 30분 전
+- 문의: 강의 카카오톡 채널
+:::
+:::
+
+---
+
+## 2강 정리 — 오늘 배운 것
+
+::: {.columns}
+
+::: {.column width="50%"}
+### 오늘의 성과
+
+Pieter Levels가 $5M을 버는 비밀은 단순하다:
+
+**빠르게 만들고, 빠르게 배포하고, 빠르게 수정한다.**
+
+Git + GitHub + AI가 그것을 가능하게 한다.
+
+오늘 여러분은:
+- Git의 핵심 개념 이해
+- Claude Code 설치
+- CLAUDE.md 작성법 습득
+- GitHub Pages 배포 체험
+:::
+
+::: {.column width="50%"}
+### 다음 강의 예고
+
+::: {style="background: #1A2942; padding: 20px; border-radius: 10px;"}
+### 3강: Claude Code Skills & 커스텀 자동화
+
+*"/commit 한 번으로 PR까지"*
+
+- 슬래시 명령어(/commit, /review-pr)
+- 나만의 자동화 스킬 만들기
+- CLAUDE.md 심화: hooks 설정
+- 디스플레이 수율 보고서 자동 생성
+
+**질문**: 지금 가장 반복적으로 하는 작업이 뭔가요?
+
+그게 다음 강의에서 자동화할 것입니다.
+:::
+:::
+
 :::

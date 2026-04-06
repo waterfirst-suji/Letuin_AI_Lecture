@@ -197,7 +197,7 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Quarto 공정 분석 보고서 &amp; GitHub Pages</h1>
-  <p class="subtitle">PPT 수정 지옥 탈출 — 코드+글+차트가 하나로</p>
+  <p class="subtitle">PPT 수정 지옥에서 탈출 — 코드·글·차트가 하나의 파일로</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -209,221 +209,465 @@
 
   <p class="date">2026-04-06</p>
 </section>
-<section>
-<section id="part-3-quarto와-데이터-시각화" class="title-slide slide level1 center" data-background="#1F4E79">
-<h1>PART 3: Quarto와 데이터 시각화</h1>
-
+<section id="데이터가-바뀌었습니다.-보고서도-다시-만드세요." class="slide level2" data-background="#1F4E79">
+<h2>데이터가 바뀌었습니다. 보고서도 다시 만드세요.</h2>
+<p><br></p>
+<p>매주 반복되는 악몽:</p>
+<div class="fragment">
+<p>엑셀 업데이트 → 차트 복붙 → 숫자 수동 입력 → 검토 요청</p>
+</div>
+<div class="fragment">
+<p>→ <strong>“이 숫자 맞아요?”</strong> → 다시 처음부터</p>
+</div>
+<p><br></p>
+<div class="fragment">
+<p><strong>Quarto가 이 지옥을 끝냅니다.</strong></p>
+<p>데이터가 바뀌면 <code>quarto render</code> 한 번.</p>
+<p>차트, 표, 숫자 — <strong>전부 자동으로 업데이트.</strong></p>
+</div>
+<p><br></p>
+<div class="fragment">
+<blockquote>
+<p>지금 보고 있는 <strong>이 슬라이드 자체</strong>가 Quarto RevealJS로 만들어진 것입니다.</p>
+</blockquote>
+</div>
 </section>
-<section id="오프닝-ppt-수정-지옥" class="slide level2">
-<h2>오프닝: PPT 수정 지옥</h2>
-<p>“PPT 수정 지옥. 데이터 바뀌면 차트도 다시, 표도 다시, 번호도 다시.”</p>
-</section>
-<section id="quarto-.qmd-구조" class="slide level2">
-<h2>Quarto .qmd 구조</h2>
+<section id="quarto란" class="slide level2">
+<h2>Quarto란?</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<h3 id="rmarkdown의-진화형">RMarkdown의 진화형</h3>
+<p>RMarkdown을 알고 있다면? Quarto는 그 다음 세대입니다. 모르더라도 괜찮습니다 — 오늘부터 시작하면 됩니다.</p>
+<p><strong>하나의 <code>.qmd</code> 파일 → 여러 출력 형식:</strong></p>
 <ul>
-<li>YAML 헤더</li>
-<li>마크다운</li>
-<li>코드 청크</li>
+<li>HTML 보고서</li>
+<li>PDF 문서</li>
+<li><strong>RevealJS 슬라이드</strong> (지금 이것!)</li>
+<li>웹사이트 / 블로그</li>
+<li>Word 문서</li>
+<li>학술 논문 (LaTeX)</li>
 </ul>
+</div><div class="column" style="width:45%;">
+<h3 id="작동-방식">작동 방식</h3>
+<pre><code>.qmd 파일
+    │
+    ▼
+knitr / jupyter
+(코드 실행)
+    │
+    ▼
+Pandoc
+(문서 변환)
+    │
+    ▼
+HTML / PDF / RevealJS</code></pre>
+<p><code>quarto render report.qmd</code> 명령 하나로 전체 파이프라인 실행.</p>
+</div></div>
 </section>
-<section id="출력-형식-비교" class="slide level2">
-<h2>출력 형식 비교</h2>
-<div class="panel-tabset">
-<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">HTML</a></li><li><a href="#tabset-1-2">PDF</a></li><li><a href="#tabset-1-3">Slides</a></li><li><a href="#tabset-1-4">Website</a></li></ul>
-<div class="tab-content">
-<div id="tabset-1-1">
-<ul>
-<li>웹 기반</li>
-<li>인터랙티브 가능</li>
-</ul>
-</div>
-<div id="tabset-1-2">
-<ul>
-<li>인쇄 최적화</li>
-<li>고정 레이아웃</li>
-</ul>
-</div>
-<div id="tabset-1-3">
-<ul>
-<li>발표용</li>
-<li>인터랙티브 가능</li>
-</ul>
-</div>
-<div id="tabset-1-4">
-<ul>
-<li>전체 웹사이트</li>
-<li>네비게이션 포함</li>
-</ul>
-</div>
-</div>
-</div>
-</section>
-<section id="quarto-vs-jupyter-vs-ppt" class="slide level2">
-<h2>Quarto vs Jupyter vs PPT</h2>
-<div class="cell">
-<div class="cell-output-display">
-<table class="caption-top">
-<caption>Quarto vs Jupyter vs PPT 비교</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">Platform</th>
-<th style="text-align: right;">Dynamic</th>
-<th style="text-align: right;">Reproducible</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Quarto</td>
-<td style="text-align: right;">Yes</td>
-<td style="text-align: right;">Yes</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Jupyter</td>
-<td style="text-align: right;">Yes</td>
-<td style="text-align: right;">Limited</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">PPT</td>
-<td style="text-align: right;">No</td>
-<td style="text-align: right;">No</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</section>
-<section id="github-pages-자동-배포" class="slide level2">
-<h2>GitHub Pages 자동 배포</h2>
-<ul>
-<li>gh-pages 브랜치 활용</li>
-<li>푸시 후 자동 빌드</li>
-</ul>
-</section>
-<section id="슬라이드-자체가-quarto-revealjs" class="slide level2">
-<h2>슬라이드 자체가 Quarto RevealJS!</h2>
-<div class="fragment fade-in">
-<ul>
-<li>Quarto의 강력한 기능</li>
-</ul>
-</div>
-</section>
-<section id="실습-디스플레이-공정-분석-보고서" class="slide level2">
-<h2>실습: 디스플레이 공정 분석 보고서</h2>
-<ul>
-<li>샘플 수율 데이터 활용</li>
-<li>ggplot2 차트 자동 생성</li>
-</ul>
-</section>
-<section id="수율-데이터-예시" class="slide level2">
-<h2>수율 데이터 예시</h2>
-
-<img data-src="lecture_07_files/figure-revealjs/unnamed-chunk-2-1.png" width="864" class="r-stretch"></section>
-<section id="quarto-render-html-보고서" class="slide level2">
-<h2>Quarto render → HTML 보고서</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href=""></a><span class="ex">quarto</span> render report.qmd <span class="at">--to</span> html</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="github-pages-배포" class="slide level2">
-<h2>GitHub Pages 배포</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href=""></a><span class="fu">git</span> add .</span>
-<span id="cb2-2"><a href=""></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Update report"</span></span>
-<span id="cb2-3"><a href=""></a><span class="fu">git</span> push origin main</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="quarto-작성-render-배포" class="slide level2">
-<h2>Quarto 작성 → render → 배포</h2>
-<div class="fragment highlight-red">
-<ol type="1">
-<li>Quarto 작성</li>
-</ol>
-</div>
-<div class="fragment highlight-red">
-<ol start="2" type="1">
-<li>render</li>
-</ol>
-</div>
-<div class="fragment highlight-red">
-<ol start="3" type="1">
-<li>배포</li>
-</ol>
-</div>
-</section>
-<section id="auto-animate-예시" class="slide level2" data-auto-animate="true">
-<h2 data-id="quarto-animate-title">auto-animate 예시</h2>
-<p>단계 1: 데이터 준비</p>
-</section>
-<section id="auto-animate-예시-1" class="slide level2" data-auto-animate="true">
-<h2 data-id="quarto-animate-title">auto-animate 예시</h2>
-<p>단계 1: 데이터 준비 + 시각화 추가</p>
-</section>
-<section id="r-ggplot2-수율-분석" class="slide level2">
-<h2>R ggplot2: 수율 분석</h2>
-
-<img data-src="lecture_07_files/figure-revealjs/unnamed-chunk-3-1.png" width="864" class="r-stretch"></section>
-<section id="코드-하이라이트-예시" class="slide level2">
-<h2>코드 하이라이트 예시</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href=""></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb3-2"><a href=""></a><span class="co"># 데이터 준비</span></span>
-<span id="cb3-3"><a href=""></a>data <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>]</span>
-<span id="cb3-4"><a href=""></a><span class="co"># 차트 생성</span></span>
-<span id="cb3-5"><a href=""></a>plt.plot(data)  <span class="co"># {code-line-numbers="1-2|3|5-7"}</span></span>
-<span id="cb3-6"><a href=""></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="팁과-주의사항" class="slide level2">
-<h2>팁과 주의사항</h2>
-<div title="팁">
+<section id="qmd-파일-구조-해부" class="slide level2">
+<h2>.qmd 파일 구조 해부</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href=""></a>---                          ← YAML 헤더 (출력 형식, 제목, 저자 설정)</span>
+<span id="cb2-2"><a href=""></a>title: "월간 수율 분석 보고서"</span>
+<span id="cb2-3"><a href=""></a>author: "공정팀 김엔지니어"</span>
+<span id="cb2-4"><a href=""></a>date: today</span>
+<span id="cb2-5"><a href=""></a>format: html</span>
+<span id="cb2-6"><a href=""></a>---</span>
+<span id="cb2-7"><a href=""></a></span>
+<span id="cb2-8"><a href=""></a><span class="fu"># 1. 개요                    ← 마크다운 텍스트</span></span>
+<span id="cb2-9"><a href=""></a></span>
+<span id="cb2-10"><a href=""></a>이번 달 전체 라인 평균 수율은 **96.2%**로 전월 대비 0.3%p 향상되었습니다.</span>
+<span id="cb2-11"><a href=""></a></span>
+<span id="cb2-12"><a href=""></a><span class="fu">## 1.1 라인별 현황</span></span>
+<span id="cb2-13"><a href=""></a></span>
+<span id="cb2-14"><a href=""></a><span class="in">```{r}                        ← R 코드 청크 (자동 실행)</span></span>
+<span id="cb2-15"><a href=""></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb2-16"><a href=""></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb2-17"><a href=""></a>df <span class="sc">%&gt;%</span></span>
+<span id="cb2-18"><a href=""></a>  <span class="fu">group_by</span>(Line) <span class="sc">%&gt;%</span></span>
+<span id="cb2-19"><a href=""></a>  <span class="fu">summarise</span>(<span class="at">avg =</span> <span class="fu">mean</span>(Yield)) <span class="sc">%&gt;%</span></span>
+<span id="cb2-20"><a href=""></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>Line, <span class="at">y=</span>avg)) <span class="sc">+</span></span>
+<span id="cb2-21"><a href=""></a>  <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">"identity"</span>)</span>
+<span id="cb2-22"><a href=""></a><span class="st">```</span><span class="at">                           ← 차트가 여기에 자동 삽입</span></span>
+<span id="cb2-23"><a href=""></a></span>
+<span id="cb2-24"><a href=""></a><span class="at">분석 결과, Line C가 가장 높은 수율을 기록했습니다.  ← 텍스트 계속</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="callout callout-tip callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>팁</strong></p>
+<p><strong>Tip</strong></p>
 </div>
 <div class="callout-content">
-<p>Quarto는 효율적입니다!</p>
+<p>코드 청크 옵션: <code>#| echo: false</code>로 코드 숨기기, <code>#| eval: false</code>로 실행 안 하기</p>
 </div>
 </div>
 </div>
+</section>
+<section id="quarto-vs-기존-방식-비교" class="slide level2">
+<h2>Quarto vs 기존 방식 비교</h2>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top">
+<caption>Quarto vs 기존 보고서 작성 방식</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">항목</th>
+<th style="text-align: center;">기존방식</th>
+<th style="text-align: center;">Quarto</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">데이터 변경 시</td>
+<td style="text-align: center;">수동 재작업</td>
+<td style="text-align: center;">자동 재렌더링</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">차트 업데이트</td>
+<td style="text-align: center;">복붙 반복</td>
+<td style="text-align: center;">자동 생성</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">숫자 오타</td>
+<td style="text-align: center;">발생 가능</td>
+<td style="text-align: center;">코드로 방지</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">협업</td>
+<td style="text-align: center;">파일 이메일</td>
+<td style="text-align: center;">Git으로 협업</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">버전 관리</td>
+<td style="text-align: center;">파일명_최종2_진짜최종</td>
+<td style="text-align: center;">Git 커밋 이력</td>
+</tr>
+</tbody>
+</table>
 </div>
-<div title="주의">
-<div class="callout callout-warning callout-titled callout-style-default">
+</div>
+<p><br></p>
+<div class="callout callout-important callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>주의</strong></p>
+<p><strong>핵심 차이점</strong></p>
 </div>
 <div class="callout-content">
-<p>데이터 변동 시 업데이트 필요</p>
-</div>
+<p>기존 방식에서 “데이터가 바뀌었습니다”는 <strong>반나절~하루</strong>의 재작업을 의미합니다. Quarto에서는 터미널에서 <code>quarto render</code> 입력 후 <strong>커피 한 잔</strong> 마시면 됩니다.</p>
 </div>
 </div>
 </div>
 </section>
-<section id="컬럼-레이아웃" class="slide level2">
-<h2>컬럼 레이아웃</h2>
+<section id="실습-디스플레이-공정-단계별-불량률-분포" class="slide level2">
+<h2>실습 — 디스플레이 공정 단계별 불량률 분포</h2>
+<p>공정 분석 보고서에 바로 넣을 수 있는 차트:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb3-2"><a href=""></a></span>
+<span id="cb3-3"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">99</span>)</span>
+<span id="cb3-4"><a href=""></a>process_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb3-5"><a href=""></a>  <span class="at">Step =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"포토"</span>, <span class="st">"식각"</span>, <span class="st">"증착"</span>, <span class="st">"세정"</span>, <span class="st">"검사"</span>), <span class="at">each =</span> <span class="dv">30</span>),</span>
+<span id="cb3-6"><a href=""></a>  <span class="at">DefectRate =</span> <span class="fu">c</span>(</span>
+<span id="cb3-7"><a href=""></a>    <span class="fu">rnorm</span>(<span class="dv">30</span>, <span class="fl">2.1</span>, <span class="fl">0.3</span>), <span class="fu">rnorm</span>(<span class="dv">30</span>, <span class="fl">1.8</span>, <span class="fl">0.4</span>),</span>
+<span id="cb3-8"><a href=""></a>    <span class="fu">rnorm</span>(<span class="dv">30</span>, <span class="fl">3.2</span>, <span class="fl">0.6</span>), <span class="fu">rnorm</span>(<span class="dv">30</span>, <span class="fl">0.8</span>, <span class="fl">0.2</span>),</span>
+<span id="cb3-9"><a href=""></a>    <span class="fu">rnorm</span>(<span class="dv">30</span>, <span class="fl">0.5</span>, <span class="fl">0.1</span>)</span>
+<span id="cb3-10"><a href=""></a>  )</span>
+<span id="cb3-11"><a href=""></a>)</span>
+<span id="cb3-12"><a href=""></a></span>
+<span id="cb3-13"><a href=""></a><span class="fu">ggplot</span>(process_data, <span class="fu">aes</span>(<span class="at">x =</span> Step, <span class="at">y =</span> DefectRate, <span class="at">fill =</span> Step)) <span class="sc">+</span></span>
+<span id="cb3-14"><a href=""></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">outlier.color =</span> <span class="st">"#E74C3C"</span>) <span class="sc">+</span></span>
+<span id="cb3-15"><a href=""></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">13</span>) <span class="sc">+</span></span>
+<span id="cb3-16"><a href=""></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">"Set2"</span>) <span class="sc">+</span></span>
+<span id="cb3-17"><a href=""></a>  <span class="fu">labs</span>(</span>
+<span id="cb3-18"><a href=""></a>    <span class="at">title =</span> <span class="st">"공정 단계별 불량률 분포"</span>,</span>
+<span id="cb3-19"><a href=""></a>    <span class="at">subtitle =</span> <span class="st">"증착 공정에서 불량률 가장 높고 변동성도 큼 — 집중 개선 필요"</span>,</span>
+<span id="cb3-20"><a href=""></a>    <span class="at">y =</span> <span class="st">"불량률 (%)"</span>, <span class="at">x =</span> <span class="st">"공정 단계"</span></span>
+<span id="cb3-21"><a href=""></a>  ) <span class="sc">+</span></span>
+<span id="cb3-22"><a href=""></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+</div>
+<img data-src="lecture_07_files/figure-revealjs/unnamed-chunk-2-1.png" width="864" class="r-stretch"></section>
+<section id="디스플레이-불량-원인-파레토-차트" class="slide level2">
+<h2>디스플레이 불량 원인 파레토 차트</h2>
+<p>어느 원인부터 잡아야 할까? 파레토 법칙: 상위 20% 원인이 80% 문제를 만든다.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb4-2"><a href=""></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb4-3"><a href=""></a></span>
+<span id="cb4-4"><a href=""></a>defects <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb4-5"><a href=""></a>  <span class="at">Cause =</span> <span class="fu">c</span>(<span class="st">"이물질"</span>, <span class="st">"스크래치"</span>, <span class="st">"얼라인불량"</span>, <span class="st">"색얼룩"</span>, <span class="st">"단선"</span>, <span class="st">"기타"</span>),</span>
+<span id="cb4-6"><a href=""></a>  <span class="at">Count =</span> <span class="fu">c</span>(<span class="dv">45</span>, <span class="dv">32</span>, <span class="dv">28</span>, <span class="dv">19</span>, <span class="dv">12</span>, <span class="dv">8</span>)</span>
+<span id="cb4-7"><a href=""></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-8"><a href=""></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Count)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-9"><a href=""></a>  <span class="fu">mutate</span>(</span>
+<span id="cb4-10"><a href=""></a>    <span class="at">Cause =</span> <span class="fu">factor</span>(Cause, <span class="at">levels =</span> Cause),</span>
+<span id="cb4-11"><a href=""></a>    <span class="at">CumPct =</span> <span class="fu">cumsum</span>(Count) <span class="sc">/</span> <span class="fu">sum</span>(Count) <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb4-12"><a href=""></a>  )</span>
+<span id="cb4-13"><a href=""></a></span>
+<span id="cb4-14"><a href=""></a><span class="fu">ggplot</span>(defects, <span class="fu">aes</span>(<span class="at">x =</span> Cause)) <span class="sc">+</span></span>
+<span id="cb4-15"><a href=""></a>  <span class="fu">geom_bar</span>(<span class="fu">aes</span>(<span class="at">y =</span> Count), <span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">fill =</span> <span class="st">"#2E75B6"</span>, <span class="at">width =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb4-16"><a href=""></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> CumPct <span class="sc">*</span> <span class="fu">max</span>(Count) <span class="sc">/</span> <span class="dv">100</span>, <span class="at">group =</span> <span class="dv">1</span>),</span>
+<span id="cb4-17"><a href=""></a>            <span class="at">color =</span> <span class="st">"#E74C3C"</span>, <span class="at">linewidth =</span> <span class="fl">1.2</span>) <span class="sc">+</span></span>
+<span id="cb4-18"><a href=""></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y =</span> CumPct <span class="sc">*</span> <span class="fu">max</span>(Count) <span class="sc">/</span> <span class="dv">100</span>),</span>
+<span id="cb4-19"><a href=""></a>             <span class="at">color =</span> <span class="st">"#E74C3C"</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb4-20"><a href=""></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fl">0.8</span> <span class="sc">*</span> <span class="fu">max</span>(defects<span class="sc">$</span>Count),</span>
+<span id="cb4-21"><a href=""></a>             <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"gray50"</span>) <span class="sc">+</span></span>
+<span id="cb4-22"><a href=""></a>  <span class="fu">scale_y_continuous</span>(</span>
+<span id="cb4-23"><a href=""></a>    <span class="at">name =</span> <span class="st">"불량 건수"</span>,</span>
+<span id="cb4-24"><a href=""></a>    <span class="at">sec.axis =</span> <span class="fu">sec_axis</span>(<span class="sc">~</span> . <span class="sc">/</span> <span class="fu">max</span>(defects<span class="sc">$</span>Count) <span class="sc">*</span> <span class="dv">100</span>, <span class="at">name =</span> <span class="st">"누적 비율 (%)"</span>)</span>
+<span id="cb4-25"><a href=""></a>  ) <span class="sc">+</span></span>
+<span id="cb4-26"><a href=""></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">13</span>) <span class="sc">+</span></span>
+<span id="cb4-27"><a href=""></a>  <span class="fu">labs</span>(</span>
+<span id="cb4-28"><a href=""></a>    <span class="at">title =</span> <span class="st">"디스플레이 불량 원인 파레토 차트"</span>,</span>
+<span id="cb4-29"><a href=""></a>    <span class="at">subtitle =</span> <span class="st">"이물질 + 스크래치 + 얼라인불량 = 전체 불량의 73% — 이 3가지가 핵심"</span>,</span>
+<span id="cb4-30"><a href=""></a>    <span class="at">x =</span> <span class="st">"불량 원인"</span></span>
+<span id="cb4-31"><a href=""></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+</div>
+<img data-src="lecture_07_files/figure-revealjs/unnamed-chunk-3-1.png" width="864" class="r-stretch"></section>
+<section id="quarto-출력-형식-전환" class="slide level2" data-auto-animate="true">
+<h2 data-id="quarto-animate-title">Quarto 출력 형식 전환</h2>
+<p>하나의 <code>.qmd</code> 파일, 최소한의 수정으로 여러 형식 출력:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource yaml number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode yaml hljs"><span id="cb5-1" class="hljs-ln-code"><a href=""></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb5-2" class="hljs-ln-code"><a href=""></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span><span class="at"> default</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="quarto-출력-형식-전환-1" class="slide level2" data-auto-animate="true">
+<h2 data-id="quarto-animate-title">Quarto 출력 형식 전환</h2>
+<p>하나의 <code>.qmd</code> 파일, 최소한의 수정으로 여러 형식 출력:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource yaml number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode yaml hljs"><span id="cb6-1" class="hljs-ln-code"><a href=""></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb6-2" class="hljs-ln-code"><a href=""></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span><span class="at"> default</span></span>
+<span id="cb6-3" class="hljs-ln-code"><a href=""></a><span class="at">  </span><span class="fu">pdf</span><span class="kw">:</span><span class="at"> default</span></span>
+<span id="cb6-4" class="hljs-ln-code"><a href=""></a><span class="at">  </span><span class="fu">revealjs</span><span class="kw">:</span><span class="at"> default</span></span>
+<span id="cb6-5" class="hljs-ln-code"><a href=""></a><span class="at">  </span><span class="fu">docx</span><span class="kw">:</span><span class="at"> default</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<p><strong>단 4줄 추가</strong>로 같은 내용이 HTML 보고서, PDF, 슬라이드, Word로 동시 출력됩니다.</p>
+</div>
+</section>
+<section id="github-pages-배포-보고서를-웹에-공개" class="slide level2">
+<h2>GitHub Pages 배포 — 보고서를 웹에 공개</h2>
 <div class="columns">
-<div class="column" style="width:45%;">
-<p>Quarto 특징</p>
-</div><div class="column" style="width:55%;">
-<p>자동화 및 재현성</p>
+<div class="column" style="width:55%;">
+<h3 id="quarto.yml-설정"><code>_quarto.yml</code> 설정</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb7-1"><a href=""></a><span class="fu">project</span><span class="kw">:</span></span>
+<span id="cb7-2"><a href=""></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> website</span></span>
+<span id="cb7-3"><a href=""></a><span class="at">  </span><span class="fu">output-dir</span><span class="kw">:</span><span class="at"> docs</span></span>
+<span id="cb7-4"><a href=""></a></span>
+<span id="cb7-5"><a href=""></a><span class="fu">website</span><span class="kw">:</span></span>
+<span id="cb7-6"><a href=""></a><span class="at">  </span><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"디스플레이 공정 분석 허브"</span></span>
+<span id="cb7-7"><a href=""></a><span class="at">  </span><span class="fu">navbar</span><span class="kw">:</span></span>
+<span id="cb7-8"><a href=""></a><span class="at">    </span><span class="fu">left</span><span class="kw">:</span></span>
+<span id="cb7-9"><a href=""></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">href</span><span class="kw">:</span><span class="at"> index.qmd</span></span>
+<span id="cb7-10"><a href=""></a><span class="at">        </span><span class="fu">text</span><span class="kw">:</span><span class="at"> 홈</span></span>
+<span id="cb7-11"><a href=""></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">href</span><span class="kw">:</span><span class="at"> monthly_report.qmd</span></span>
+<span id="cb7-12"><a href=""></a><span class="at">        </span><span class="fu">text</span><span class="kw">:</span><span class="at"> 월간 보고서</span></span>
+<span id="cb7-13"><a href=""></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">href</span><span class="kw">:</span><span class="at"> yield_analysis.qmd</span></span>
+<span id="cb7-14"><a href=""></a><span class="at">        </span><span class="fu">text</span><span class="kw">:</span><span class="at"> 수율 분석</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<h3 id="렌더링-배포">렌더링 &amp; 배포</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href=""></a><span class="ex">quarto</span> render</span>
+<span id="cb8-2"><a href=""></a><span class="fu">git</span> add docs/</span>
+<span id="cb8-3"><a href=""></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"보고서 업데이트: 2024-12월"</span></span>
+<span id="cb8-4"><a href=""></a><span class="fu">git</span> push</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:45%;">
+<h3 id="github-pages-설정">GitHub Pages 설정</h3>
+<ol type="1">
+<li>GitHub 리포 → <strong>Settings</strong></li>
+<li><strong>Pages</strong> 섹션으로 이동</li>
+<li>Source: <strong>Deploy from branch</strong></li>
+<li>Branch: <code>main</code> / Folder: <code>/docs</code></li>
+<li><strong>Save</strong></li>
+</ol>
+<div class="fragment">
+<pre><code>https://YOUR_ID.github.io/display-report/</code></pre>
+<p><strong>완료. 팀 전체가 URL 하나로 최신 보고서 열람 가능.</strong></p>
+</div>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>GitHub Pages는 <strong>완전 무료</strong>. 공개 레포 기준 무제한 호스팅.</p>
+</div>
+</div>
+</div>
 </div></div>
 </section>
-<section id="마무리" class="slide level2 smaller">
-<h2>마무리</h2>
-<ul>
-<li>Quarto의 강력한 시각화 및 자동화 기능</li>
-<li>GitHub Pages를 통한 쉽게 배포 가능</li>
-<li>데이터 분석 및 보고서 작성의 효율성 증대</li>
-</ul>
+<section id="코드-청크-옵션-마스터하기" class="slide level2">
+<h2>코드 청크 옵션 마스터하기</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb10-1"><a href=""></a><span class="in">```{r}</span></span>
+<span id="cb10-2"><a href=""></a><span class="co">#| label: yield-trend-chart      # 차트 ID (교차 참조에 사용)</span></span>
+<span id="cb10-3"><a href=""></a><span class="co">#| echo: false                   # 코드 숨김, 차트만 출력</span></span>
+<span id="cb10-4"><a href=""></a><span class="co">#| fig-width: 10                 # 너비 설정</span></span>
+<span id="cb10-5"><a href=""></a><span class="co">#| fig-height: 5                 # 높이 설정</span></span>
+<span id="cb10-6"><a href=""></a><span class="co">#| fig-cap: "라인별 월간 수율 트렌드"  # 캡션</span></span>
+<span id="cb10-7"><a href=""></a><span class="co">#| cache: true                   # 결과 캐싱 (느린 계산에 유용)</span></span>
+<span id="cb10-8"><a href=""></a></span>
+<span id="cb10-9"><a href=""></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb10-10"><a href=""></a><span class="co"># 차트 코드...</span></span>
+<span id="cb10-11"><a href=""></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><br></p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>자주 쓰는 옵션:</strong></p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>옵션</th>
+<th>값</th>
+<th>의미</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>echo</code></td>
+<td>true/false</td>
+<td>코드 표시 여부</td>
+</tr>
+<tr class="even">
+<td><code>eval</code></td>
+<td>true/false</td>
+<td>코드 실행 여부</td>
+</tr>
+<tr class="odd">
+<td><code>warning</code></td>
+<td>true/false</td>
+<td>경고 표시</td>
+</tr>
+<tr class="even">
+<td><code>cache</code></td>
+<td>true/false</td>
+<td>결과 캐싱</td>
+</tr>
+</tbody>
+</table>
+</div><div class="column" style="width:50%;">
+<p><strong>보고서용 권장 전역 설정:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb11-1"><a href=""></a><span class="fu">execute</span><span class="kw">:</span></span>
+<span id="cb11-2"><a href=""></a><span class="at">  </span><span class="fu">echo</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span>
+<span id="cb11-3"><a href=""></a><span class="at">  </span><span class="fu">warning</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span>
+<span id="cb11-4"><a href=""></a><span class="at">  </span><span class="fu">message</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span>
+<span id="cb11-5"><a href=""></a><span class="at">  </span><span class="fu">cache</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>모든 청크에 개별로 쓰는 대신 YAML 헤더에 한 번에 설정.</p>
+</div></div>
 </section>
-<section id="qa" class="slide level2 smaller">
-<h2>Q&amp;A</h2>
-<ul>
-<li>질문을 받습니다.</li>
-</ul>
+<section id="인라인-코드-숫자-오타-방지" class="slide level2">
+<h2>인라인 코드 — 숫자 오타 방지</h2>
+<p>보고서에서 숫자가 틀리는 가장 큰 이유: 수동 입력.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>기존 방식 (위험):</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb12-1"><a href=""></a>이번 달 평균 수율은 96.2%이며</span>
+<span id="cb12-2"><a href=""></a>전월 대비 0.3%p 향상되었습니다.</span>
+<span id="cb12-3"><a href=""></a>총 불량 건수는 144건입니다.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>데이터가 바뀌면? 숫자를 찾아서 수동 수정. 실수 필연적.</p>
+</div><div class="column" style="width:50%;">
+<p><strong>Quarto 인라인 코드 (안전):</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb13-1"><a href=""></a>이번 달 평균 수율은</span>
+<span id="cb13-2"><a href=""></a>96.3%이며</span>
+<span id="cb13-3"><a href=""></a>전월 대비</span>
+<span id="cb13-4"><a href=""></a>0.3%p</span>
+<span id="cb13-5"><a href=""></a>향상되었습니다.</span>
+<span id="cb13-6"><a href=""></a>총 불량 건수는</span>
+<span id="cb13-7"><a href=""></a>5건입니다.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>데이터가 바뀌면? <strong>자동으로 숫자도 업데이트.</strong></p>
+</div></div>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Important</strong></p>
+</div>
+<div class="callout-content">
+<p>인라인 코드(backtick r expression backtick)는 Quarto 보고서에서 <strong>가장 강력한 기능</strong> 중 하나입니다. 숫자 한 개도 수동으로 입력하지 마세요.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="마무리-이-슬라이드가-바로-quarto다" class="slide level2">
+<h2>마무리 — 이 슬라이드가 바로 Quarto다</h2>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>지금 보고 있는 것</strong></p>
+</div>
+<div class="callout-content">
+<p>이 강의 자료 자체가 <strong>Quarto RevealJS</strong>로 만들어진 것입니다.</p>
+<p>R 코드 청크 → 차트 자동 생성 마크다운 텍스트 → 슬라이드 레이아웃 YAML 헤더 → RevealJS 테마 설정</p>
+<p><code>quarto render lecture_07.qmd</code> 한 번으로 이 모든 슬라이드가 생성됩니다.</p>
+</div>
+</div>
+</div>
+<p><br></p>
+<div class="columns">
+<div class="column" style="width:60%;">
+<h3 id="오늘-배운-것">오늘 배운 것</h3>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>기능</th>
+<th>활용</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>.qmd 구조</td>
+<td>YAML + 마크다운 + 코드 청크</td>
+</tr>
+<tr class="even">
+<td>코드 청크 옵션</td>
+<td>echo/eval/cache/fig-cap</td>
+</tr>
+<tr class="odd">
+<td>인라인 코드</td>
+<td>자동 숫자 업데이트</td>
+</tr>
+<tr class="even">
+<td>파레토 차트</td>
+<td>불량 원인 우선순위</td>
+</tr>
+<tr class="odd">
+<td>GitHub Pages</td>
+<td>무료 보고서 웹 배포</td>
+</tr>
+</tbody>
+</table>
+</div><div class="column" style="width:40%;">
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>과제</strong></p>
+</div>
+<div class="callout-content">
+<ol type="1">
+<li>월간 수율 보고서 <code>.qmd</code> 작성</li>
+<li><code>quarto render</code>로 HTML 출력</li>
+<li>GitHub Pages 배포 URL 제출</li>
+<li><strong>보너스</strong>: PDF 형식으로도 동시 출력</li>
+</ol>
+</div>
+</div>
+</div>
+<p><strong>다음 강의 예고</strong> — 8강</p>
+<p>Google AI Studio + Gemini API 챗봇</p>
+<p>“하루 1,500회 무료 — AI를 내 앱에 심는 방법”</p>
+</div></div>
 
-</section></section>
+</section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">

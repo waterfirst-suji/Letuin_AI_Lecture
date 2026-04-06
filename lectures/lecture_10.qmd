@@ -1,6 +1,6 @@
 ---
 title: "웹앱 배포 플랫폼 심화"
-subtitle: "같은 앱, 다른 플랫폼 — 선택 기준 마스터"
+subtitle: "GitHub Pages부터 Firebase까지 — 내 앱에 맞는 플랫폼은?"
 author: "렛유인 KDC"
 date: today
 engine: knitr
@@ -31,145 +31,519 @@ format:
     margin: 0.1
 ---
 
-# PART 4: 플랫폼 비교 {background="#1F4E79"}
+# PART 6: 내 앱을 세상에 공개한다 {background="#1F4E79"}
 
-## 같은 앱, 다른 플랫폼 {.smaller}
-- GitHub Pages
-- Streamlit
-- Firebase
-- Render
+## 만든 앱이 내 컴퓨터에만 있으면 아무 의미 없다 {background="#1F4E79"}
 
-## 플랫폼별 특성 {.smaller}
-::: {.panel-tabset}
-### GitHub Pages
-- 정적 사이트 호스팅
-- 무료, 빠른 배포
-
-### Streamlit Cloud
-- 데이터 앱에 적합
-- 인터랙티브 기능 강점
-
-### Firebase
-- Google의 AI 통합
-- Full-stack 지원
-
-### Render
-- 다양한 언어 지원
-- 자동 스케일링
+::: {.r-fit-text}
+**"이거 어떻게 보면 돼요?"**
 :::
 
-## 플랫폼별 배포 난이도 vs 기능
+::: {.fragment}
+"노트북 가져올게요." — 이 대답은 탈락이다.
+:::
+
+::: {.fragment}
+URL 하나로 **전 세계 어디서든** 접속 가능하게 만드는 게 목표.
+
+취업 포트폴리오도, 팀 협업 도구도, 고객 시연도 — 모두 URL 하나면 된다.
+:::
+
+::: {.fragment}
+> "링크 드릴게요." 이 말이 면접관의 눈을 빛나게 한다.
+:::
+
+---
+
+## 배포 플랫폼 선택의 3가지 기준
+
+::: {.columns}
+::: {.column width="33%"}
+::: {.fragment}
+### 1. 비용
+
+무료인가?
+
+- 취업 준비생 = 무료 필수
+- 기업 프로젝트 = 유료 가능
+- 트래픽이 많아지면 → 전환
+:::
+:::
+
+::: {.column width="33%"}
+::: {.fragment}
+### 2. 기술 난이도
+
+쉬운가?
+
+- HTML/CSS만 → GitHub Pages
+- Python 앱 → Streamlit Cloud
+- Full-stack → Firebase / Vercel
+:::
+:::
+
+::: {.column width="33%"}
+::: {.fragment}
+### 3. 용도
+
+무엇을 올리나?
+
+- 정적 페이지 (포트폴리오)
+- 파이썬 앱 (데이터/AI)
+- AI 모델 서빙
+:::
+:::
+:::
+
+::: {.fragment}
+::: {.callout-note title="핵심 원칙"}
+**플랫폼은 앱에 맞게 고른다.** 하나가 모든 걸 해결하지 않는다.
+:::
+:::
+
+---
+
+## 플랫폼 3대장 비교표
 
 ```{r}
-#| echo: false
+#| echo: true
+platforms <- data.frame(
+  플랫폼     = c("GitHub Pages", "Streamlit Cloud", "Firebase Studio"),
+  비용        = c("완전 무료", "완전 무료", "무료 티어 있음"),
+  언어        = c("HTML/CSS/JS", "Python", "Python/JS/Flutter"),
+  장점        = c("정적 사이트/포트폴리오", "데이터 앱/AI 앱", "전체 스택/Firebase 연동"),
+  배포시간    = c("5분", "10분", "20분")
+)
+knitr::kable(platforms,
+             caption="주요 배포 플랫폼 비교",
+             align=c("l","c","c","l","c"))
+```
+
+---
+
+## GitHub Pages — 포트폴리오 필수
+
+::: {.columns}
+::: {.column width="55%"}
+### 왜 GitHub Pages인가?
+
+- **완전 무료** (트래픽 한도 100GB/월)
+- 도메인 자동 제공: `username.github.io`
+- Quarto, Jekyll, Hugo 지원
+- 이력서/포트폴리오 표준 플랫폼
+
+### 배포 방법
+
+```bash
+# 방법 1: /docs 폴더 사용
+# Settings → Pages → Source: /docs
+
+# 방법 2: gh-pages 브랜치
+git checkout -b gh-pages
+git push origin gh-pages
+# Settings → Pages → Source: gh-pages branch
+
+# 배포 주소
+# https://yourusername.github.io/yourrepo
+```
+:::
+
+::: {.column width="45%"}
+### Quarto → GitHub Pages 워크플로
+
+```bash
+# 1. Quarto 렌더링
+quarto render
+
+# 2. docs 폴더에 결과물 확인
+ls docs/
+
+# 3. Git 커밋 & 푸시
+git add docs/
+git commit -m "Update site"
+git push origin main
+
+# 4. 자동 배포 완료!
+# 약 1~2분 후 URL 활성화
+```
+
+::: {.callout-tip title="취업 팁"}
+GitHub Pages 링크를 이력서에 넣으세요. 채용담당자가 바로 확인할 수 있습니다.
+:::
+:::
+:::
+
+---
+
+## Streamlit Cloud 배포 — 단계별 가이드
+
+::: {.panel-tabset}
+
+### 1단계: 준비
+
+```bash
+# 프로젝트 구조
+my_app/
+├── app.py              ← 메인 앱
+├── requirements.txt    ← 의존성
+└── .gitignore
+
+# requirements.txt 예시
+streamlit==1.32.0
+pandas==2.0.3
+plotly==5.18.0
+numpy==1.24.4
+```
+
+### 2단계: GitHub 업로드
+
+```bash
+# 저장소 초기화 (처음 한 번)
+git init
+git remote add origin https://github.com/yourname/yourrepo.git
+
+# 파일 추가 & 커밋
+git add app.py requirements.txt
+git commit -m "Add Streamlit app"
+git push origin main
+```
+
+### 3단계: Streamlit Cloud 연결
+
+```
+1. share.streamlit.io 접속
+2. GitHub 계정으로 로그인
+3. "New app" 클릭
+4. Repository 선택
+5. Main file path: app.py
+6. "Deploy!" 클릭
+```
+
+약 2~3분 후 URL 생성 완료
+
+### 4단계: 공유
+
+```
+생성된 URL 예시:
+https://yourname-yourrepo-app-xxxxx.streamlit.app
+
+이 URL을 이력서, LinkedIn, 포트폴리오에 추가!
+```
+
+:::
+
+---
+
+## Firebase Studio 소개
+
+::: {.columns}
+::: {.column width="55%"}
+### Google의 풀스택 AI 개발 플랫폼
+
+2024년 등장한 **가장 핫한** 플랫폼
+
+**Firebase Studio의 특징:**
+- AI가 앱 아이디어를 듣고 코드 작성
+- Python / JavaScript / Flutter 지원
+- Firebase 인증, 데이터베이스 자동 연동
+- **말하면 앱이 만들어지고 바로 배포까지**
+
+**사용 시나리오:**
+```
+1. "디스플레이 수율 추적 앱 만들어줘"
+2. AI가 코드 생성
+3. 미리보기 확인
+4. Deploy 버튼 클릭
+5. URL 완성
+```
+:::
+
+::: {.column width="45%"}
+### Firebase vs Streamlit 선택 기준
+
+| 상황 | 추천 |
+|------|------|
+| 데이터 분석 앱 | Streamlit |
+| 포트폴리오 사이트 | GitHub Pages |
+| 풀스택 앱 | Firebase |
+| 로그인 기능 필요 | Firebase |
+| AI 모델 서빙 | Streamlit |
+| React/Next.js 앱 | Vercel |
+
+::: {.callout-note title="2024년 트렌드"}
+Firebase Studio는 "vibe coding"의 완성형. 아이디어 → 앱 → 배포까지 수 분.
+:::
+:::
+:::
+
+---
+
+## 플랫폼별 무료 트래픽 처리 능력
+
+```{r}
+#| echo: true
 #| fig-width: 9
 #| fig-height: 4.5
 library(ggplot2)
-data <- data.frame(
-  Platform = c("GitHub Pages", "Streamlit", "Firebase", "Render"),
-  Difficulty = c(1, 2, 3, 2),
-  Features = c(2, 4, 5, 3)
+
+capacity <- data.frame(
+  Platform = factor(
+    c("GitHub\nPages","Streamlit\nCloud (Free)","Firebase\n(Spark)",
+      "Heroku\n(Eco)","Railway\n(Hobby)"),
+    levels=c("GitHub\nPages","Streamlit\nCloud (Free)","Firebase\n(Spark)",
+             "Heroku\n(Eco)","Railway\n(Hobby)")
+  ),
+  Monthly_GB = c(100, 5, 10, 5, 5),
+  Free       = c(TRUE, TRUE, TRUE, FALSE, FALSE)
 )
-ggplot(data, aes(x=Difficulty, y=Features, size=Features, label=Platform)) +
-  geom_point(alpha=0.7) +
-  geom_text(vjust=1.5) +
-  scale_size_area(max_size=15) +
-  labs(title="배포 난이도 vs 기능", x="배포 난이도", y="기능")
+
+ggplot(capacity, aes(x=Platform, y=Monthly_GB, fill=Free)) +
+  geom_bar(stat="identity", width=0.6) +
+  geom_text(aes(label=paste0(Monthly_GB, "GB")),
+            vjust=-0.4, size=4, fontface="bold") +
+  scale_fill_manual(values=c("TRUE"="#27AE60","FALSE"="#E74C3C"),
+                    labels=c("TRUE"="무료","FALSE"="유료"), name="요금") +
+  scale_y_continuous(limits=c(0, 120)) +
+  theme_minimal(base_size=12) +
+  labs(title="배포 플랫폼별 무료 월간 트래픽 한도 비교",
+       subtitle="GitHub Pages가 압도적으로 넉넉 — 정적 사이트라면 최선의 선택",
+       y="월간 트래픽 (GB)", x="")
 ```
 
-## 4대 플랫폼 비교표 {.smaller}
+---
 
-```{r}
-#| echo: false
-library(knitr)
-platforms <- data.frame(
-  Platform = c("GitHub Pages", "Streamlit", "Firebase", "Render"),
-  "Free Tier" = c("예", "예", "예", "예"),
-  "Deployment Speed" = c("빠름", "중간", "중간", "빠름"),
-  "Key Features" = c("정적 호스팅", "데이터 앱", "AI 통합", "자동 스케일링")
-)
-knitr::kable(platforms, caption="플랫폼 상세 비교표", align=c("l","c","c","l"))
-```
+## 실습 — 디스플레이 스펙 비교 웹앱
 
-## 앱 종류별 플랫폼 선택 가이드
-
-::: {.fragment .fade-in}
-1. 웹사이트: GitHub Pages
-:::
-
-::: {.fragment .fade-in}
-2. 데이터 시각화: Streamlit
-:::
-
-::: {.fragment .fade-in}
-3. AI/ML 앱: Firebase
-:::
-
-::: {.fragment .highlight-red}
-4. 다국어 지원: Render
-:::
-
-## Firebase Studio의 특징 {.smaller}
-
-- Google AI 통합
-- Full-stack 개발 환경
-
-## 디스플레이 스펙 비교 웹앱 {auto-animate="true"}
-
-- 주요 기기 데이터 내장
-- PPI, 색역, 밝기 비교
-
-## Streamlit Cloud 배포 {auto-animate="true"}
-
-- 주요 기기 데이터 내장
-- PPI, 색역, 밝기 비교
-- **Streamlit Cloud를 통한 실시간 배포**
-
-## R 코드 예시: PPI 비교
-
-```r
-#| echo: true
-devices <- data.frame(
-  Device = c("Galaxy", "iPhone", "iPad", "TV"),
-  PPI = c(300, 326, 264, 100)
-)
-ggplot(devices, aes(x=Device, y=PPI)) +
-  geom_bar(stat="identity", fill="steelblue") +
-  labs(title="기기별 PPI 비교", x="기기", y="PPI")
-```
-
-## 코드: Streamlit 배포 {.smaller}
-
+::: {.columns}
+::: {.column width="55%"}
 ```python
 import streamlit as st
+import pandas as pd
+import plotly.express as px
 
-st.title("디스플레이 스펙 비교")
-st.write("PPI, 색역, 밝기 비교")
-``` {code-line-numbers="1-2|3|5-7"}
+st.title("📺 디스플레이 스펙 비교기")
 
-## 실습 마무리 {.smaller}
+# 기본 데이터
+displays = pd.DataFrame({
+    "제품":     ["Samsung QD-OLED","LG WOLED","Sony BRAVIA",
+                 "Apple Pro Display","Samsung Neo QLED"],
+    "패널":     ["QD-OLED","WOLED","OLED","Mini-LED","QLED"],
+    "PPI":      [141, 109, 109, 218, 120],
+    "색역_P3":  [99, 98, 97, 99, 95],
+    "밝기_nit": [1500, 1000, 1300, 1600, 2000],
+    "가격_만원":[450, 380, 520, 720, 350]
+})
 
-- Streamlit Cloud에서 앱 배포
-- 각 플랫폼의 특성 이해
-
-::: {.callout-tip title="팁"}
-Streamlit은 데이터 시각화에 최적화되어 있습니다.
+metric = st.selectbox("비교 항목 선택",
+                      ["PPI","색역_P3","밝기_nit","가격_만원"])
+fig = px.bar(displays, x="제품", y=metric,
+             color="패널", title=f"디스플레이 {metric} 비교",
+             color_discrete_sequence=px.colors.qualitative.Set2)
+st.plotly_chart(fig, use_container_width=True)
+st.dataframe(displays, use_container_width=True)
+```
 :::
 
-::: {.callout-warning title="주의"}
-Firebase는 AI 기능 사용 시 추가 비용이 발생할 수 있습니다.
+::: {.column width="45%"}
+### Streamlit Cloud 배포 체크리스트
+
+```bash
+# 1. requirements.txt 생성
+pip freeze > requirements.txt
+
+# 또는 최소 버전으로
+streamlit
+pandas
+plotly
+
+# 2. .gitignore 확인
+.env
+__pycache__/
+*.pyc
+
+# 3. GitHub push
+git add .
+git commit -m "Display spec app"
+git push
+
+# 4. share.streamlit.io에서 배포
+```
+
+::: {.callout-tip title="빠른 배포 팁"}
+`requirements.txt`에 버전을 명시하지 않으면 최신 버전이 설치됩니다. 호환성 문제가 생기면 버전을 고정하세요.
+:::
+:::
 :::
 
-## Q&A {.smaller}
+---
 
-- 질문을 받습니다.
-- 각 플랫폼의 장단점 다시 확인
+## 배포 후 모니터링
 
-## 다음 강의 예고 {.smaller}
+::: {.columns}
+::: {.column width="55%"}
+### Streamlit Cloud Analytics
 
-- PART 5: 데이터 시각화 심화
-- 다양한 라이브러리 활용법
+배포 후 확인할 수 있는 것들:
+- 방문자 수 (일별/주별)
+- 평균 세션 시간
+- 오류 로그
 
-## 강의 종료 {.smaller}
+### GitHub Pages 트래픽
 
-감사합니다! 다음 주에 뵙겠습니다.
+```
+Repository → Insights → Traffic
+- 방문자 수
+- 클론 수
+- 참조 사이트
+```
+
+### 앱 오류 확인
+
+```bash
+# Streamlit Cloud 로그 확인
+# App → Manage app → Logs
+
+# 로컬에서 먼저 테스트
+streamlit run app.py
+
+# 오류 메시지를 AI에게 붙여넣기
+# "이 오류 어떻게 해결해?"
+```
+:::
+
+::: {.column width="45%"}
+::: {.callout-tip title="배포 후 확인 사항"}
+1. URL이 실제로 열리는지 확인
+2. 모바일에서도 정상 작동하는지 확인
+3. 로딩 시간 측정 (3초 이내 목표)
+4. 다른 사람 계정으로 접속 테스트
+:::
+
+::: {.callout-important title="프로젝트 2 마감: 이번 주!"}
+**디스플레이 공정 시뮬레이터** 또는 **데이터 분석 앱** 배포 URL 제출
+
+평가 기준:
+- 작동하는 URL 존재 여부
+- 디스플레이 산업 연관성
+- UI/UX 완성도
+:::
+:::
+:::
+
+---
+
+## 플랫폼 선택 가이드 — 사분면 차트
+
+```{r}
+#| echo: true
+#| fig-width: 9
+#| fig-height: 4.5
+library(ggplot2)
+
+platforms_quad <- data.frame(
+  Platform = c("GitHub\nPages","Streamlit\nCloud","Firebase",
+               "Vercel","Render","Railway"),
+  Ease     = c(9, 8, 5, 7, 6, 7),
+  Power    = c(3, 6, 9, 7, 8, 8),
+  Free     = c(TRUE, TRUE, TRUE, TRUE, FALSE, FALSE),
+  nudge_x  = c(0.4, 0.4, -0.4, 0.4, -0.5, 0.4),
+  nudge_y  = c(0.4, 0.4,  0.4, 0.4,  0.4, -0.4)
+)
+
+ggplot(platforms_quad, aes(x=Ease, y=Power, label=Platform, color=Free)) +
+  geom_point(size=5) +
+  geom_text(aes(x=Ease+nudge_x, y=Power+nudge_y),
+            size=3.5, fontface="bold") +
+  scale_color_manual(values=c("TRUE"="#27AE60","FALSE"="#E74C3C"),
+                     labels=c("무료","유료"), name="요금") +
+  geom_vline(xintercept=6.5, linetype="dashed", color="gray50", alpha=0.5) +
+  geom_hline(yintercept=5.5, linetype="dashed", color="gray50", alpha=0.5) +
+  annotate("text", x=4,   y=10.5, label="강력하지만 복잡", color="gray60", size=3) +
+  annotate("text", x=9.2, y=10.5, label="강력하고 쉬움 ★", color="#27AE60", size=3) +
+  annotate("text", x=4,   y=0.5,  label="복잡하고 약함",   color="gray60", size=3) +
+  annotate("text", x=9.2, y=0.5,  label="쉽지만 약함",     color="gray60", size=3) +
+  xlim(2, 11) + ylim(0, 11) +
+  theme_minimal(base_size=13) +
+  labs(title="배포 플랫폼 선택 가이드 (쉬움 vs 강력함)",
+       subtitle="취업 준비생 추천: Streamlit Cloud(오른쪽 위) → GitHub Pages(오른쪽 아래) 순서",
+       x="사용 쉬움 (1=어려움, 10=쉬움)",
+       y="기능 강력함 (1=약함, 10=강력)")
+```
+
+---
+
+## 월별 배포 플랫폼 인기도 트렌드
+
+```{r}
+#| echo: true
+#| fig-width: 9
+#| fig-height: 4.2
+library(ggplot2)
+
+set.seed(7)
+months_trend <- 1:12
+trend_data <- data.frame(
+  Month    = rep(months_trend, 3),
+  Searches = c(
+    80 + months_trend*0.5 + rnorm(12, 0, 2),   # Streamlit
+    60 + months_trend*1.5 + rnorm(12, 0, 2),   # Firebase Studio
+    90 + months_trend*0.2 + rnorm(12, 0, 2)    # GitHub Pages
+  ),
+  Platform = rep(c("Streamlit Cloud","Firebase Studio","GitHub Pages"),
+                 each=12)
+)
+
+ggplot(trend_data, aes(x=Month, y=Searches, color=Platform, group=Platform)) +
+  geom_line(linewidth=1.3) +
+  geom_point(size=2.5) +
+  scale_color_manual(values=c("Streamlit Cloud"="#FF4B4B",
+                               "Firebase Studio"="#F9AB00",
+                               "GitHub Pages"="#24292E")) +
+  scale_x_continuous(breaks=1:12,
+                     labels=paste0(1:12,"월")) +
+  scale_y_continuous(labels=function(x) paste0(x)) +
+  theme_minimal(base_size=12) +
+  labs(title="배포 플랫폼 검색 트렌드 비교 (2024년 시뮬레이션)",
+       subtitle="Firebase Studio 급성장 중 — 2024년 말 가장 핫한 플랫폼",
+       x="", y="상대 검색량", color="플랫폼")
+```
+
+---
+
+## 10강 핵심 요약
+
+::: {.columns}
+::: {.column width="50%"}
+### 오늘 배운 것
+
+::: {.fragment}
+**배포의 필요성**: URL 하나가 포트폴리오의 핵심
+:::
+::: {.fragment}
+**GitHub Pages**: 정적 사이트, 완전 무료, 취업 포트폴리오
+:::
+::: {.fragment}
+**Streamlit Cloud**: Python/AI 앱, 10분 배포
+:::
+::: {.fragment}
+**Firebase Studio**: 풀스택, AI 코드 생성 + 배포
+:::
+::: {.fragment}
+**플랫폼 선택 기준**: 비용 + 난이도 + 용도
+:::
+:::
+
+::: {.column width="50%"}
+### 다음 강의 예고 (11강)
+
+**배포 플랫폼 10종 총정리**
+
+> GitHub Pages, Streamlit만으론 부족할 때
+
+- Netlify, Vercel, Render, Railway
+- Hugging Face Spaces
+- Fly.io, Replit
+
+"10개를 알면 어떤 앱이든 최적의 집을 찾아줄 수 있다"
+:::
+:::

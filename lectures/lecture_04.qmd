@@ -1,6 +1,6 @@
 ---
 title: "Claude Agent 모드 + CLI-Anything"
-subtitle: "AI가 20개 파일을 알아서 만든다"
+subtitle: "AI가 스스로 일한다 — 에이전트의 시대"
 author: "렛유인 KDC"
 date: today
 engine: knitr
@@ -31,115 +31,571 @@ format:
     margin: 0.1
 ---
 
-# PART 2: 에이전트 모드와 일반 모드 비교 {background="#1F4E79"}
+# AI가 스스로 파일을 열고, 분석하고, 수정하고, 커밋한다 {background="#1F4E79"}
 
-## 오프닝
-"일반모드: 1개 파일. 에이전트 모드: 20개 파일 + 테스트까지"
+::: {style="margin-top: 35px; font-size: 1.0em; color: #CBD5E0;"}
+당신이 말한다:
 
-## 에이전트 모드 구조
-- Orchestrator와 Subagent의 병렬 실행 다이어그램
+*"OLED 수율 데이터 분석하고 보고서 만들어줘"*
+:::
+
+::: {style="margin-top: 25px; font-size: 0.9em; color: #A0AEC0;"}
+AI가 혼자서:
+
+CSV 파일을 열고 → 통계 분석 → ggplot2 차트 생성 → Quarto 보고서 작성 → GitHub push
+
+**당신이 한 것: 문장 하나.**
+:::
+
+::: {style="margin-top: 30px; font-size: 1.2em; color: #F6E05E;"}
+이게 에이전트 모드다.
+:::
+
+::: {style="margin-top: 20px; font-size: 0.85em; color: #718096;"}
+1강: Claude Pro로 대화 | 2강: GitHub + 첫 배포 | 3강: Skills 자동화 | **4강: Agent가 스스로 실행**
+:::
+
+---
+
+## 에이전트 vs 챗봇 — 근본적인 차이
 
 ::: {.columns}
-::: {.column width="45%"}
-![Orchestrator 다이어그램](img/orchestrator.png)
+
+::: {.column width="50%"}
+::: {style="background: #2A1515; padding: 20px; border-radius: 10px; border-top: 4px solid #C0392B;"}
+### 챗봇
+
+대화한다.
+
+당신이 모든 것을 **직접 실행**한다.
+
+```
+당신: 수율 계산 코드 써줘
+AI: [코드 출력]
+당신: 코드를 직접 복사
+당신: 파일에 붙여넣기
+당신: 직접 실행
+당신: 에러 → 다시 AI에게
+당신: 또 복사, 붙여넣기...
+```
+
+AI는 **말만** 한다.
 :::
+:::
+
+::: {.column width="50%"}
+::: {style="background: #153A15; padding: 20px; border-radius: 10px; border-top: 4px solid #27AE60;"}
+### 에이전트
+
+목표를 주면 **스스로 계획하고 실행**한다.
+
+```
+당신: 수율 데이터 분석해서
+      보고서 만들어줘
+
+AI: 파일 목록 확인 중...
+AI: yield_2026.csv 발견
+AI: 분석 실행 중...
+AI: 차트 생성 완료
+AI: 보고서 작성 완료
+AI: GitHub push 완료
+AI: 완료! URL: [링크]
+```
+
+AI가 **직접 실행**한다.
+:::
+:::
+
+:::
+
+::: {style="margin-top: 20px; text-align: center; font-size: 1.0em; color: #F6E05E;"}
+Chat = 도우미. Agent = **대리인**.
+:::
+
+---
+
+## 에이전트 vs 챗봇 — 패턴 시각화
+
+```{r}
+#| label: chatbot-vs-agent
+library(ggplot2)
+
+chat_steps <- data.frame(
+  x     = c(1, 2, 3, 4, 5, 6, 7, 8),
+  y     = c(1, -1, 1, -1, 1, -1, 1, -1),
+  who   = c("Human", "AI", "Human", "AI", "Human", "AI", "Human", "AI"),
+  label = c("질문1", "답변1", "질문2", "답변2", "질문3", "답변3", "질문4", "답변4")
+)
+
+ggplot(chat_steps, aes(x = x, y = y, color = who)) +
+  geom_point(size = 8) +
+  geom_segment(aes(xend = x, yend = 0), linetype = "dashed", alpha = 0.5, linewidth = 0.8) +
+  geom_text(aes(label = label),
+            vjust = ifelse(chat_steps$y > 0, 2.5, -1.8), size = 3.5, color = "white") +
+  scale_color_manual(values = c("Human" = "#3498DB", "AI" = "#E67E22"),
+                     labels = c("Human" = "사람", "AI" = "AI")) +
+  geom_hline(yintercept = 0, color = "gray50", linewidth = 0.8) +
+  annotate("text", x = 4.5, y = 0.08, label = "시간 흐름 →",
+           color = "gray60", size = 3.5) +
+  theme_void(base_size = 13) +
+  labs(title = "챗봇 패턴: 왕복 대화 (8번 교환으로 1개 결과물)", color = "") +
+  theme(
+    plot.background = element_rect(fill = "#1E2A3A", color = NA),
+    plot.title      = element_text(color = "white", size = 13, hjust = 0.5, face = "bold"),
+    legend.text     = element_text(color = "white"),
+    legend.position = "bottom"
+  )
+```
+
+::: {style="font-size: 0.85em; color: #A0AEC0; margin-top: 5px; text-align: center;"}
+에이전트 모드: 당신이 목표 1번 말함 → AI가 필요한 모든 단계를 스스로 실행
+:::
+
+---
+
+## Claude Agent가 할 수 있는 것들
+
+::: {style="font-size: 0.95em; color: #CBD5E0; margin-bottom: 25px;"}
+에이전트 모드에서 Claude Code는 단순한 "답변 기계"가 아니다. 실제 컴퓨터 작업을 수행한다.
+:::
+
+::: {.columns}
+
+::: {.column width="50%"}
+::: {style="background: #1A2942; padding: 18px; border-radius: 10px; margin-bottom: 12px;"}
+::: {.fragment}
+### 1. 파일 읽기/쓰기
+
+CSV, JSON, Python, R 파일을 직접 열고 수정한다.
+
+수율 데이터 CSV → 파싱 → 분석 결과 파일 저장
+:::
+:::
+
+::: {style="background: #1A3A2A; padding: 18px; border-radius: 10px; margin-bottom: 12px;"}
+::: {.fragment}
+### 2. 코드 실행
+
+Python, R, bash 스크립트를 직접 실행한다.
+
+분석 코드 작성 → 바로 실행 → 결과 확인
+:::
+:::
+
+::: {style="background: #2A1A3A; padding: 18px; border-radius: 10px;"}
+::: {.fragment}
+### 3. 웹 검색
+
+최신 정보를 실시간으로 검색한다.
+
+"삼성 디스플레이 최신 채용 공고 찾아줘"
+:::
+:::
+:::
+
+::: {.column width="50%"}
+::: {style="background: #3A2A1A; padding: 18px; border-radius: 10px; margin-bottom: 12px;"}
+::: {.fragment}
+### 4. 도구 호출 (Tool Use)
+
+Git, GitHub CLI, 패키지 매니저 등 외부 도구를 호출한다.
+
+`git commit`, `gh pr create`, `pip install` 자동 실행
+:::
+:::
+
+::: {style="background: #1A3A3A; padding: 18px; border-radius: 10px;"}
+::: {.fragment}
+### 5. 멀티스텝 계획 & 실행
+
+복잡한 목표를 단계별로 분해하고, 각 단계를 순서대로 실행한다.
+
+"포트폴리오 웹사이트 만들고 배포해줘" → 12개 자동 실행
+:::
+:::
+:::
+
+:::
+
+---
+
+## CLI-Anything — 모든 도구에 AI 인터페이스를
+
+::: {style="font-size: 0.9em; color: #CBD5E0; margin-bottom: 20px;"}
+강사 직접 제작 프로젝트: "어떤 소프트웨어든 AI 에이전트 CLI로 변환"
+:::
+
+::: {.columns}
+
 ::: {.column width="55%"}
-에이전트 모드는 Orchestrator가 Subagent를 병렬로 실행하여 작업을 분산합니다.
-:::
-:::
+**개념**: 기존 CLI 도구를 자연어로 제어
 
-## 워크플로우 4단계
-Plan → Explore → Code → Review
+```bash
+# 기존 방식: 명령어를 외워야 함
+ffmpeg -i input.mp4 -vf scale=1920:1080 \
+  -c:v libx264 -crf 23 output.mp4
 
-::: {.panel-tabset}
-### Plan
-계획 수립 단계
-### Explore
-탐색과 데이터 수집
-### Code
-코드 작성 및 구현
-### Review
-결과 검토 및 피드백 수집
-:::
-
-## CLI-Anything: 7단계 파이프라인
-
-## 단계 1: Analyze {auto-animate="true"}
-Analyze 단계에서는 데이터의 특성을 이해하고 문제를 정의합니다.
-
-## 단계 2: Design {auto-animate="true"}
-Analyze + Design 단계에서는 솔루션을 설계합니다.
-
-## 단계 3: Implement {auto-animate="true"}
-Design + Implement 단계에서는 설계된 솔루션을 구현합니다.
-
-## 멀티 에이전트 vs 단일 에이전트 성능 비교
-
-```{r}
-#| echo: false
-#| fig-width: 9
-#| fig-height: 4.5
-library(ggplot2); library(dplyr); library(scales)
-
-# 샘플 데이터
-data <- data.frame(
-  Agent_Type = c("멀티 에이전트", "단일 에이전트"),
-  Completion_Time = c(5, 10)
-)
-
-ggplot(data, aes(x=Agent_Type, y=Completion_Time, fill=Agent_Type)) +
-  geom_bar(stat="identity") +
-  theme_minimal() +
-  labs(title="작업 완료 시간 비교", x="에이전트 유형", y="시간 (분)") +
-  scale_fill_manual(values=c("#2E86C1", "#F39C12"))
+# CLI-Anything 방식: 자연어로
+cli-anything ffmpeg
+> "input.mp4를 1080p로 변환해줘"
+> ffmpeg 실행 중...
+> 완료: output.mp4 (23.4MB)
 ```
 
-## 에이전트 모드 vs 일반 모드 비교표
+::: {style="margin-top: 15px;"}
+:::
 
-```{r}
-#| echo: false
-df <- data.frame(
-  Mode = c("에이전트 모드", "일반 모드"),
-  File_Count = c(20, 1),
-  Includes_Test = c("Yes", "No")
-)
+```bash
+# 디스플레이 분석 도구에 적용
+cli-anything yield-tool
+> "3월 2주차 수율 이상값 분석해줘"
+> 데이터 로드 중...
+> 이상값 3건 발견 (라인 7, 12, 19)
+> 보고서 생성 완료
+```
+:::
 
-knitr::kable(df, caption="에이전트 모드와 일반 모드 비교", align=c("l", "r", "r"))
+::: {.column width="45%"}
+::: {.callout-note}
+## 이 프로젝트의 의미
+
+복잡한 CLI 도구를 배울 필요가 없다.
+
+자연어로 말하면 AI가 올바른 명령어로 번역하고 실행한다.
+
+**디스플레이 현업에서**:
+- 수율 분석 도구
+- 공정 데이터 파이프라인
+- 품질 검사 스크립트
+
+모두 자연어로 제어 가능하게 만들 수 있다.
+:::
+
+::: {style="background: #2D3748; padding: 12px; border-radius: 8px; margin-top: 10px; font-size: 0.85em;"}
+이것 자체가 훌륭한 포트폴리오다.
+
+기존 사내 도구 하나를 자연어 인터페이스로 감싸는 프로젝트 → 취업 면접에서 최강 소재
+:::
+:::
+
+:::
+
+---
+
+## 에이전트 실습 시나리오 — 수율 데이터 분석 자동화
+
+::: {style="font-size: 0.9em; color: #CBD5E0; margin-bottom: 20px;"}
+**시나리오**: OLED 라인 30일치 수율 데이터(CSV)가 있다. 에이전트에게 단 한 줄로 지시한다.
+:::
+
+**당신의 지시 (단 한 줄)**:
+
+```
+"yield_data.csv 분석해서 이상 구간 찾고,
+ ggplot2 차트 포함한 Quarto 보고서 만들어서
+ GitHub에 push해줘."
 ```
 
-## "디스플레이 수율 분석 대시보드" 생성
-
-::: {.fragment .fade-in}
-"디스플레이 수율 분석 대시보드 만들어줘"라는 요청에 따라 생성 과정을 실시간으로 관찰합니다.
-:::
-::: {.fragment .highlight-red}
-대시보드 생성 과정에서 자동화의 중요성을 강조합니다.
+::: {style="margin-top: 15px;"}
 :::
 
-## CLI-Anything으로 나만의 AI 도구 만들기
-- 실습을 통해 CLI-Anything의 기능을 활용하여 나만의 AI 도구를 만들어봅니다.
+**에이전트가 자동으로 수행하는 5단계**:
 
-## 생성된 코드 구조 분석
+::: {.columns}
+::: {.column width="50%"}
+**Step 1**: `yield_data.csv` 파일 열어서 파싱
 
-```python
-def analyze_data(data):
-    # 데이터 분석 수행
-    return analysis_result
+→ 30일 × 12개 라인 = 360행 데이터 처리
 
-def generate_dashboard(analysis_result):
-    # 대시보드 생성
-    return dashboard
-``` {code-line-numbers="1-2|3|5-7"}
+**Step 2**: R로 통계 분석 실행
 
-## 팁과 주의사항
+→ 평균 수율 94.2%, 이상값 3건 탐지
+:::
+::: {.column width="50%"}
+**Step 3**: ggplot2 차트 생성 (R 코드 작성 + 실행)
 
-::: {.callout-tip title="팁"}
-워크플로우를 명확히 정의하여 효율성을 높이세요.
+**Step 4**: Quarto 보고서 `.qmd` 작성 + `quarto render`
+
+**Step 5**: `git add . && git commit && git push`
+
+→ GitHub Pages 자동 업데이트
+:::
 :::
 
-::: {.callout-warning title="주의"}
-에이전트 모드 사용 시, 병렬 실행에 따른 자원 관리에 주의하세요.
+---
+
+## 에이전트 실행 타임라인
+
+```{r}
+#| label: agent-gantt-chart
+library(ggplot2)
+
+tasks_agent <- data.frame(
+  Task = factor(
+    c("CSV 파싱", "이상값 탐지", "차트 생성", "보고서 작성", "GitHub push"),
+    levels = rev(c("CSV 파싱", "이상값 탐지", "차트 생성", "보고서 작성", "GitHub push"))
+  ),
+  Start  = c(0,  10, 20, 35, 55),
+  End    = c(10, 20, 35, 55, 65),
+  Status = c("완료", "완료", "완료", "진행중", "대기")
+)
+
+ggplot(tasks_agent,
+       aes(xmin = Start, xmax = End,
+           ymin = as.numeric(Task) - 0.4, ymax = as.numeric(Task) + 0.4,
+           fill = Status)) +
+  geom_rect(color = "white", linewidth = 0.3) +
+  scale_fill_manual(values = c("완료" = "#27AE60", "진행중" = "#F39C12", "대기" = "#5D6D7E")) +
+  theme_minimal(base_size = 13) +
+  scale_y_continuous(breaks = 1:5, labels = levels(tasks_agent$Task)) +
+  theme(
+    plot.background    = element_rect(fill = "#1E2A3A", color = NA),
+    panel.background   = element_rect(fill = "#1E2A3A", color = NA),
+    text               = element_text(color = "white"),
+    axis.text          = element_text(color = "#CBD5E0"),
+    panel.grid.major.x = element_line(color = "#2D3748"),
+    panel.grid.minor   = element_blank(),
+    panel.grid.major.y = element_blank(),
+    legend.background  = element_rect(fill = "#1E2A3A", color = NA)
+  ) +
+  labs(
+    title = "Claude Agent: 수율 분석 작업 자동 실행 타임라인",
+    subtitle = "사람의 개입 없이 65초 만에 5단계 완료",
+    x = "시간 (초)", y = "", fill = "상태"
+  ) +
+  geom_text(aes(x = (Start + End) / 2, y = as.numeric(Task),
+                label = paste0(End - Start, "초")),
+            color = "white", fontface = "bold", size = 4)
+```
+
+---
+
+## 에이전트 모드 실전 — 직접 해보기
+
+::: {.columns}
+
+::: {.column width="55%"}
+**준비물**
+
+```bash
+# 1. 가상 수율 데이터 생성 (Claude에게 시킴)
+claude
+> "OLED 수율 분석용 가상 CSV 데이터를
+>  data/yield_2026.csv로 생성해줘.
+>  30일 × 10개 공정 라인, 수율 85~99%
+>  중간에 이상값 3~5개 포함해줘."
+```
+
+**에이전트 지시 (1줄로 전체 파이프라인)**
+
+```bash
+> "yield_2026.csv를 읽어서
+>  1) 공정별 수율 트렌드 분석
+>  2) 이상값 탐지 (평균-2SD 기준)
+>  3) ggplot2 차트 3종 생성
+>  4) reports/yield_report.qmd 작성
+>  5) git commit & push
+>  까지 전부 해줘."
+```
 :::
 
-## 강의 요약
-에이전트 모드의 구조와 성능을 이해하고, CLI-Anything을 활용한 실제 구현을 경험합니다.
+::: {.column width="45%"}
+::: {style="background: #1A2942; padding: 18px; border-radius: 10px;"}
+### 에이전트 실행 중 화면
+
+```
+Claude Code v1.x.x
+
+Reading: data/yield_2026.csv
+Lines: 300 rows loaded
+
+Running R analysis...
+Mean yield: 93.7%
+Anomalies found: 4
+
+Generating charts...
+chart_trend.png: done
+chart_anomaly.png: done
+chart_heatmap.png: done
+
+Writing report...
+reports/yield_report.qmd: done
+Running quarto render...
+
+Committing...
+git add .
+git commit -m "feat: 4월 수율 분석 보고서"
+git push origin main
+
+Done! View at: https://...
+```
+:::
+:::
+
+:::
+
+---
+
+## 에이전트의 한계 — 알아야 잘 쓴다
+
+::: {.columns}
+
+::: {.column width="50%"}
+::: {style="background: #3D1515; padding: 20px; border-radius: 10px; border-top: 4px solid #C0392B;"}
+### 에이전트가 잘 못하는 것
+
+- **불명확한 목표**: "잘 만들어줘"는 실패한다
+- **창의적 판단**: "어떤 색이 예쁜가?" → 사람이 결정
+- **도메인 상식**: 수율 95%가 좋은지 나쁜지 → 당신이 판단
+- **보안 관련**: 실제 내부 데이터, API 키 노출 위험
+- **긴 작업의 일관성**: 100파일 이상 수정 시 맥락 손실
+:::
+:::
+
+::: {.column width="50%"}
+::: {style="background: #153A15; padding: 20px; border-radius: 10px; border-top: 4px solid #27AE60;"}
+### 에이전트를 잘 쓰는 방법
+
+- **명확한 목표**: 입력/출력/기준 명시
+- **작은 단위로 쪼개기**: 한 번에 5단계 이내
+- **결과 검증**: AI 출력을 맹신하지 말것
+- **도메인 지식 투입**: 수율 기준, 이상값 정의는 당신이
+- **반복**: 처음엔 실패해도 괜찮다. 피드백으로 개선
+
+:::
+:::
+
+:::
+
+::: {style="margin-top: 20px; background: #1A2942; padding: 15px; border-radius: 10px; text-align: center; font-size: 0.95em;"}
+**핵심**: AI는 실행을 담당. **당신은 방향과 판단을 담당.**
+
+디스플레이 도메인 전문가인 당신이 방향을 잡으면, AI가 실행한다.
+:::
+
+---
+
+## 프로젝트 1 최종 안내
+
+::: {.callout-warning}
+## 이번 주까지! 나의 디스플레이 관심 분야 소개 웹페이지
+
+**GitHub Pages에 배포하고 URL 제출**
+
+**Claude Agent를 활용하세요**:
+
+```
+"나의 디스플레이 엔지니어 포트폴리오 웹사이트를
+ 만들고 GitHub Pages에 배포해줘.
+ 내용:
+ - 자기소개 (OLED/LCD 관심 분야)
+ - 이 강의에서 배운 기술 스택
+ - 목표: 삼성/LG 디스플레이 취업
+
+ 다크 테마, 모바일 반응형,
+ GitHub Actions 자동 배포까지 설정해줘."
+```
+
+**에이전트가 전부 알아서 한다.** 당신은 내용만 확인하면 된다.
+:::
+
+::: {.columns}
+::: {.column width="50%"}
+### 평가 기준
+
+- 동작 여부 (GitHub Pages URL 접속 가능): 50%
+- 내용의 진정성 (나만의 이야기): 30%
+- 디자인 완성도: 20%
+:::
+::: {.column width="50%"}
+### 제출 방법
+
+- 구글 폼에 GitHub Pages URL 입력
+- 마감: 5강 시작 전
+- 늦은 제출: -20점
+
+**막히면**: 강의 카카오톡 채널에 에러 메시지 올리기
+:::
+:::
+
+---
+
+## PART 1 & 2 마무리 정리
+
+```{r}
+#| label: summary-table
+summary_df <- data.frame(
+  강의    = c("1강", "2강", "3강", "4강"),
+  핵심_도구 = c("Claude Pro + Artifacts",
+               "GitHub + Claude Code",
+               "Skills + CLAUDE.md Hooks",
+               "Agent 모드 + CLI-Anything"),
+  핵심_개념 = c("바이브 코딩 마인드셋",
+               "Git + 자동 배포 파이프라인",
+               "반복 작업 자동화",
+               "멀티스텝 자율 실행"),
+  결과물   = c("첫 Claude 프롬프트",
+               "GitHub Pages 배포",
+               "커스텀 /display-report 스킬",
+               "에이전트 수율 분석 보고서")
+)
+
+knitr::kable(
+  summary_df,
+  caption = "PART 1-2 (1~4강) 핵심 정리",
+  col.names = c("강의", "핵심 도구", "핵심 개념", "결과물"),
+  align = c("c", "l", "l", "l")
+)
+```
+
+::: {style="margin-top: 20px; font-size: 0.85em; color: #A0AEC0;"}
+**1강**: 왜 바이브 코딩인가 → **2강**: 환경 세팅 → **3강**: 자동화 → **4강**: 에이전트
+
+이 4강이 전체 커리큘럼의 기반이다. 5강부터는 이 기반 위에 실전 앱을 만든다.
+:::
+
+---
+
+## 앞으로의 여정 — PART 3 & 4 예고
+
+::: {.columns}
+
+::: {.column width="50%"}
+::: {style="background: #1A2942; padding: 20px; border-radius: 10px;"}
+### PART 3 (5~8강): 실전 앱 개발
+
+**5강**: Streamlit으로 수율 대시보드 만들기
+
+**6강**: R Shiny 앱 + 데이터 시각화
+
+**7강**: Python + pandas 분석 파이프라인
+
+**8강**: 완성된 포트폴리오 앱 배포 & 발표
+
+결과물: **실제로 동작하는 웹 앱** → 포트폴리오 주력 아이템
+:::
+:::
+
+::: {.column width="50%"}
+::: {style="background: #1A3A2A; padding: 20px; border-radius: 10px;"}
+### PART 4 (9~12강): 취업 직결
+
+**9강**: 삼성/LG 디스플레이 채용 분석
+
+**10강**: GitHub 포트폴리오 최종 정리
+
+**11강**: 기술 면접 대비 (AI로 연습)
+
+**12강**: 최종 발표 & 수료
+
+결과물: **취업 포트폴리오 완성본** + 면접 준비 완료
+:::
+:::
+
+:::
+
+::: {style="margin-top: 20px; text-align: center; font-size: 1.1em; color: #F6E05E;"}
+**오늘 배운 에이전트 모드가 5강 이후 모든 것의 핵심이다.**
+
+다음 강의에서 만나요!
+:::

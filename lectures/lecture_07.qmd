@@ -1,6 +1,6 @@
 ---
 title: "Quarto 공정 분석 보고서 & GitHub Pages"
-subtitle: "PPT 수정 지옥 탈출 — 코드+글+차트가 하나로"
+subtitle: "PPT 수정 지옥에서 탈출 — 코드·글·차트가 하나의 파일로"
 author: "렛유인 KDC"
 date: today
 engine: knitr
@@ -31,147 +31,439 @@ format:
     margin: 0.1
 ---
 
-# PART 3: Quarto와 데이터 시각화 {background="#1F4E79"}
+## 데이터가 바뀌었습니다. 보고서도 다시 만드세요. {background="#1F4E79"}
 
-## 오프닝: PPT 수정 지옥
-"PPT 수정 지옥. 데이터 바뀌면 차트도 다시, 표도 다시, 번호도 다시."
+<br>
 
-## Quarto .qmd 구조
-- YAML 헤더
-- 마크다운
-- 코드 청크
+매주 반복되는 악몽:
 
-## 출력 형식 비교
-::: {.panel-tabset}
-### HTML
-- 웹 기반
-- 인터랙티브 가능
-
-### PDF
-- 인쇄 최적화
-- 고정 레이아웃
-
-### Slides
-- 발표용
-- 인터랙티브 가능
-
-### Website
-- 전체 웹사이트
-- 네비게이션 포함
+:::{.fragment}
+엑셀 업데이트 → 차트 복붙 → 숫자 수동 입력 → 검토 요청
+:::
+:::{.fragment}
+→ **"이 숫자 맞아요?"** → 다시 처음부터
 :::
 
-## Quarto vs Jupyter vs PPT
-```{r}
-#| echo: false
-df <- data.frame(
-  Platform = c("Quarto", "Jupyter", "PPT"),
-  Dynamic = c("Yes", "Yes", "No"),
-  Reproducible = c("Yes", "Limited", "No")
-)
-knitr::kable(df, caption="Quarto vs Jupyter vs PPT 비교", align=c("l","r","r"))
+<br>
+
+:::{.fragment}
+**Quarto가 이 지옥을 끝냅니다.**
+
+데이터가 바뀌면 `quarto render` 한 번.
+
+차트, 표, 숫자 — **전부 자동으로 업데이트.**
+:::
+
+<br>
+
+:::{.fragment}
+> 지금 보고 있는 **이 슬라이드 자체**가 Quarto RevealJS로 만들어진 것입니다.
+:::
+
+---
+
+## Quarto란?
+
+:::{.columns}
+:::{.column width="55%"}
+### RMarkdown의 진화형
+
+RMarkdown을 알고 있다면? Quarto는 그 다음 세대입니다.
+모르더라도 괜찮습니다 — 오늘부터 시작하면 됩니다.
+
+**하나의 `.qmd` 파일 → 여러 출력 형식:**
+
+- HTML 보고서
+- PDF 문서
+- **RevealJS 슬라이드** (지금 이것!)
+- 웹사이트 / 블로그
+- Word 문서
+- 학술 논문 (LaTeX)
+:::
+:::{.column width="45%"}
+### 작동 방식
+
+```
+.qmd 파일
+    │
+    ▼
+knitr / jupyter
+(코드 실행)
+    │
+    ▼
+Pandoc
+(문서 변환)
+    │
+    ▼
+HTML / PDF / RevealJS
 ```
 
-## GitHub Pages 자동 배포
-- gh-pages 브랜치 활용
-- 푸시 후 자동 빌드
-
-## 슬라이드 자체가 Quarto RevealJS!
-::: {.fragment .fade-in}
-- Quarto의 강력한 기능
+`quarto render report.qmd` 명령 하나로 전체 파이프라인 실행.
+:::
 :::
 
-## 실습: 디스플레이 공정 분석 보고서
-- 샘플 수율 데이터 활용
-- ggplot2 차트 자동 생성
+---
 
-## 수율 데이터 예시
-```{r}
-#| echo: false
-#| fig-width: 9
-#| fig-height: 4.5
+## .qmd 파일 구조 해부
+
+```markdown
+---                          ← YAML 헤더 (출력 형식, 제목, 저자 설정)
+title: "월간 수율 분석 보고서"
+author: "공정팀 김엔지니어"
+date: today
+format: html
+---
+
+# 1. 개요                    ← 마크다운 텍스트
+
+이번 달 전체 라인 평균 수율은 **96.2%**로 전월 대비 0.3%p 향상되었습니다.
+
+## 1.1 라인별 현황
+
+```{r}                        ← R 코드 청크 (자동 실행)
 library(ggplot2)
-set.seed(123)
-data <- data.frame(
-  Parameter = rep(letters[1:5], each=20),
-  Yield = rnorm(100, mean=75, sd=10)
-)
-ggplot(data, aes(x=Parameter, y=Yield)) +
-  geom_point() +
-  geom_smooth(method='lm') +
-  labs(title="파라미터별 수율 상관관계")
+library(dplyr)
+df %>%
+  group_by(Line) %>%
+  summarise(avg = mean(Yield)) %>%
+  ggplot(aes(x=Line, y=avg)) +
+  geom_bar(stat="identity")
+```                           ← 차트가 여기에 자동 삽입
+
+분석 결과, Line C가 가장 높은 수율을 기록했습니다.  ← 텍스트 계속
 ```
 
-## Quarto render → HTML 보고서
-```bash
-quarto render report.qmd --to html
-```
-
-## GitHub Pages 배포
-```bash
-git add .
-git commit -m "Update report"
-git push origin main
-```
-
-## Quarto 작성 → render → 배포
-::: {.fragment .highlight-red}
-1. Quarto 작성
-:::
-::: {.fragment .highlight-red}
-2. render
-:::
-::: {.fragment .highlight-red}
-3. 배포
+:::{.callout-tip}
+코드 청크 옵션: `#| echo: false`로 코드 숨기기, `#| eval: false`로 실행 안 하기
 :::
 
-## auto-animate 예시 {auto-animate="true"}
-단계 1: 데이터 준비
+---
 
-## auto-animate 예시 {auto-animate="true"}
-단계 1: 데이터 준비 + 시각화 추가
+## Quarto vs 기존 방식 비교
 
-## R ggplot2: 수율 분석
 ```{r}
 #| echo: false
-#| fig-width: 9
-#| fig-height: 4.5
-ggplot(data, aes(x=Yield, fill=Parameter)) +
-  geom_histogram(binwidth=2) +
-  labs(title="수율 분포")
+library(knitr)
+
+comparison <- data.frame(
+  항목 = c("데이터 변경 시", "차트 업데이트", "숫자 오타", "협업", "버전 관리"),
+  기존방식 = c("수동 재작업", "복붙 반복", "발생 가능", "파일 이메일", "파일명_최종2_진짜최종"),
+  Quarto = c("자동 재렌더링", "자동 생성", "코드로 방지", "Git으로 협업", "Git 커밋 이력")
+)
+
+knitr::kable(
+  comparison,
+  caption = "Quarto vs 기존 보고서 작성 방식",
+  align = c("l", "c", "c")
+)
 ```
 
-## 코드 하이라이트 예시
-```python
-import matplotlib.pyplot as plt
-# 데이터 준비
-data = [1, 2, 3, 4]
-# 차트 생성
-plt.plot(data)  # {code-line-numbers="1-2|3|5-7"}
-plt.show()
+<br>
+
+:::{.callout-important}
+## 핵심 차이점
+
+기존 방식에서 "데이터가 바뀌었습니다"는 **반나절~하루**의 재작업을 의미합니다.
+Quarto에서는 터미널에서 `quarto render` 입력 후 **커피 한 잔** 마시면 됩니다.
+:::
+
+---
+
+## 실습 — 디스플레이 공정 단계별 불량률 분포
+
+공정 분석 보고서에 바로 넣을 수 있는 차트:
+
+```{r}
+library(ggplot2)
+
+set.seed(99)
+process_data <- data.frame(
+  Step = rep(c("포토", "식각", "증착", "세정", "검사"), each = 30),
+  DefectRate = c(
+    rnorm(30, 2.1, 0.3), rnorm(30, 1.8, 0.4),
+    rnorm(30, 3.2, 0.6), rnorm(30, 0.8, 0.2),
+    rnorm(30, 0.5, 0.1)
+  )
+)
+
+ggplot(process_data, aes(x = Step, y = DefectRate, fill = Step)) +
+  geom_boxplot(alpha = 0.7, outlier.color = "#E74C3C") +
+  theme_minimal(base_size = 13) +
+  scale_fill_brewer(palette = "Set2") +
+  labs(
+    title = "공정 단계별 불량률 분포",
+    subtitle = "증착 공정에서 불량률 가장 높고 변동성도 큼 — 집중 개선 필요",
+    y = "불량률 (%)", x = "공정 단계"
+  ) +
+  theme(legend.position = "none")
 ```
 
-## 팁과 주의사항
-::: {.callout-tip title="팁"}
-Quarto는 효율적입니다!
-:::
-::: {.callout-warning title="주의"}
-데이터 변동 시 업데이트 필요
+---
+
+## 디스플레이 불량 원인 파레토 차트
+
+어느 원인부터 잡아야 할까? 파레토 법칙: 상위 20% 원인이 80% 문제를 만든다.
+
+```{r}
+library(ggplot2)
+library(dplyr)
+
+defects <- data.frame(
+  Cause = c("이물질", "스크래치", "얼라인불량", "색얼룩", "단선", "기타"),
+  Count = c(45, 32, 28, 19, 12, 8)
+) %>%
+  arrange(desc(Count)) %>%
+  mutate(
+    Cause = factor(Cause, levels = Cause),
+    CumPct = cumsum(Count) / sum(Count) * 100
+  )
+
+ggplot(defects, aes(x = Cause)) +
+  geom_bar(aes(y = Count), stat = "identity", fill = "#2E75B6", width = 0.6) +
+  geom_line(aes(y = CumPct * max(Count) / 100, group = 1),
+            color = "#E74C3C", linewidth = 1.2) +
+  geom_point(aes(y = CumPct * max(Count) / 100),
+             color = "#E74C3C", size = 3) +
+  geom_hline(yintercept = 0.8 * max(defects$Count),
+             linetype = "dashed", color = "gray50") +
+  scale_y_continuous(
+    name = "불량 건수",
+    sec.axis = sec_axis(~ . / max(defects$Count) * 100, name = "누적 비율 (%)")
+  ) +
+  theme_minimal(base_size = 13) +
+  labs(
+    title = "디스플레이 불량 원인 파레토 차트",
+    subtitle = "이물질 + 스크래치 + 얼라인불량 = 전체 불량의 73% — 이 3가지가 핵심",
+    x = "불량 원인"
+  )
+```
+
+---
+
+## Quarto 출력 형식 전환 {auto-animate="true"}
+
+하나의 `.qmd` 파일, 최소한의 수정으로 여러 형식 출력:
+
+```yaml
+format:
+  html: default
+```
+
+---
+
+## Quarto 출력 형식 전환 {auto-animate="true"}
+
+하나의 `.qmd` 파일, 최소한의 수정으로 여러 형식 출력:
+
+```yaml
+format:
+  html: default
+  pdf: default
+  revealjs: default
+  docx: default
+```
+
+:::{.fragment}
+**단 4줄 추가**로 같은 내용이 HTML 보고서, PDF, 슬라이드, Word로 동시 출력됩니다.
 :::
 
-## 컬럼 레이아웃
-::: {.columns}
-::: {.column width="45%"}
-Quarto 특징
+---
+
+## GitHub Pages 배포 — 보고서를 웹에 공개
+
+:::{.columns}
+:::{.column width="55%"}
+### `_quarto.yml` 설정
+
+```yaml
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "디스플레이 공정 분석 허브"
+  navbar:
+    left:
+      - href: index.qmd
+        text: 홈
+      - href: monthly_report.qmd
+        text: 월간 보고서
+      - href: yield_analysis.qmd
+        text: 수율 분석
+```
+
+### 렌더링 & 배포
+
+```bash
+quarto render
+git add docs/
+git commit -m "보고서 업데이트: 2024-12월"
+git push
+```
 :::
-::: {.column width="55%"}
-자동화 및 재현성
+:::{.column width="45%"}
+### GitHub Pages 설정
+
+1. GitHub 리포 → **Settings**
+2. **Pages** 섹션으로 이동
+3. Source: **Deploy from branch**
+4. Branch: `main` / Folder: `/docs`
+5. **Save**
+
+:::{.fragment}
+```
+https://YOUR_ID.github.io/display-report/
+```
+
+**완료. 팀 전체가 URL 하나로 최신 보고서 열람 가능.**
+:::
+
+:::{.callout-tip}
+GitHub Pages는 **완전 무료**. 공개 레포 기준 무제한 호스팅.
+:::
 :::
 :::
 
-## 마무리 {.smaller}
-- Quarto의 강력한 시각화 및 자동화 기능
-- GitHub Pages를 통한 쉽게 배포 가능
-- 데이터 분석 및 보고서 작성의 효율성 증대
+---
 
-## Q&A {.smaller}
-- 질문을 받습니다.
+## 코드 청크 옵션 마스터하기
+
+````markdown
+```{{r}}
+#| label: yield-trend-chart      # 차트 ID (교차 참조에 사용)
+#| echo: false                   # 코드 숨김, 차트만 출력
+#| fig-width: 10                 # 너비 설정
+#| fig-height: 5                 # 높이 설정
+#| fig-cap: "라인별 월간 수율 트렌드"  # 캡션
+#| cache: true                   # 결과 캐싱 (느린 계산에 유용)
+
+library(ggplot2)
+# 차트 코드...
+```
+````
+
+<br>
+
+:::{.columns}
+:::{.column width="50%"}
+**자주 쓰는 옵션:**
+
+| 옵션 | 값 | 의미 |
+|------|-----|------|
+| `echo` | true/false | 코드 표시 여부 |
+| `eval` | true/false | 코드 실행 여부 |
+| `warning` | true/false | 경고 표시 |
+| `cache` | true/false | 결과 캐싱 |
+:::
+:::{.column width="50%"}
+**보고서용 권장 전역 설정:**
+
+```yaml
+execute:
+  echo: false
+  warning: false
+  message: false
+  cache: true
+```
+
+모든 청크에 개별로 쓰는 대신
+YAML 헤더에 한 번에 설정.
+:::
+:::
+
+---
+
+## 인라인 코드 — 숫자 오타 방지
+
+```{r}
+#| echo: false
+# 인라인 코드 예시용 더미 데이터
+set.seed(1)
+yield_df <- data.frame(Yield=rnorm(30,96.2,1), Line=rep(c("A","B"),15))
+df <- yield_df
+current_avg <- mean(df$Yield)
+prev_avg <- current_avg - 0.3
+defect_df <- data.frame(id=1:5)
+```
+
+
+
+보고서에서 숫자가 틀리는 가장 큰 이유: 수동 입력.
+
+:::{.columns}
+:::{.column width="50%"}
+**기존 방식 (위험):**
+```markdown
+이번 달 평균 수율은 96.2%이며
+전월 대비 0.3%p 향상되었습니다.
+총 불량 건수는 144건입니다.
+```
+데이터가 바뀌면? 숫자를 찾아서 수동 수정. 실수 필연적.
+:::
+:::{.column width="50%"}
+**Quarto 인라인 코드 (안전):**
+````markdown
+이번 달 평균 수율은
+`r round(mean(df$Yield), 1)`%이며
+전월 대비
+`r round(current_avg - prev_avg, 1)`%p
+향상되었습니다.
+총 불량 건수는
+`r nrow(defect_df)`건입니다.
+````
+데이터가 바뀌면? **자동으로 숫자도 업데이트.**
+:::
+:::
+
+:::{.callout-important}
+인라인 코드(backtick r expression backtick)는 Quarto 보고서에서 **가장 강력한 기능** 중 하나입니다.
+숫자 한 개도 수동으로 입력하지 마세요.
+:::
+
+---
+
+## 마무리 — 이 슬라이드가 바로 Quarto다
+
+:::{.callout-important}
+## 지금 보고 있는 것
+
+이 강의 자료 자체가 **Quarto RevealJS**로 만들어진 것입니다.
+
+R 코드 청크 → 차트 자동 생성
+마크다운 텍스트 → 슬라이드 레이아웃
+YAML 헤더 → RevealJS 테마 설정
+
+`quarto render lecture_07.qmd` 한 번으로 이 모든 슬라이드가 생성됩니다.
+:::
+
+<br>
+
+:::{.columns}
+:::{.column width="60%"}
+### 오늘 배운 것
+
+| 기능 | 활용 |
+|------|------|
+| .qmd 구조 | YAML + 마크다운 + 코드 청크 |
+| 코드 청크 옵션 | echo/eval/cache/fig-cap |
+| 인라인 코드 | 자동 숫자 업데이트 |
+| 파레토 차트 | 불량 원인 우선순위 |
+| GitHub Pages | 무료 보고서 웹 배포 |
+:::
+:::{.column width="40%"}
+:::{.callout-tip}
+## 과제
+
+1. 월간 수율 보고서 `.qmd` 작성
+2. `quarto render`로 HTML 출력
+3. GitHub Pages 배포 URL 제출
+4. **보너스**: PDF 형식으로도 동시 출력
+:::
+
+**다음 강의 예고** — 8강
+
+Google AI Studio + Gemini API 챗봇
+
+"하루 1,500회 무료 — AI를 내 앱에 심는 방법"
+:::
+:::

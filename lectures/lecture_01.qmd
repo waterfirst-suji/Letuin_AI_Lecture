@@ -31,154 +31,515 @@ format:
     margin: 0.1
 ---
 
-# 1강: AI와 바이브 코딩 {background="#1F4E79"}
+# "나는 코드를 거의 직접 쓰지 않는다" {background="#1F4E79"}
 
-## 오프닝: Andrej Karpathy의 트윗
-- "나는 코드를 거의 직접 쓰지 않는다" - 50만 뷰
-
-## 바이브 코딩 개념
-- 자연어 지시
-- AI 코드 생성
-- 결과 확인 사이클
-
-::: {.fragment .fade-in}
-바이브 코딩의 혁신적인 접근
+::: {style="margin-top: 40px; font-size: 1.2em; color: #FFD700;"}
+**Andrej Karpathy** — 전 Tesla AI 디렉터, OpenAI 공동창업자
 :::
 
-## AI 개발 도구 비교
+::: {style="margin-top: 30px; font-size: 0.95em; color: #CBD5E0;"}
+2025년 2월, 트위터에 올라온 트윗 하나.
 
-::: {.panel-tabset}
-### Claude
-- 200K 컨텍스트
-- Projects, Artifacts
-
-### GPT-4o
-- 고성능 모델
-- 다양한 언어 지원
-
-### Gemini
-- 비용 효율성
-- 특정 산업 특화
+**조회수 500만.** 전 세계 개발자들이 "?!?" 했다.
 :::
 
-## AI 도구 성능 비교표
-
-```{r}
-#| echo: false
-df <- data.frame(
-  Tool = c("Claude", "GPT-4o", "Gemini"),
-  Context = c("200K", "Unlimited", "150K"),
-  Free_Limit = c("10K", "5K", "7.5K"),
-  Special_Feature = c("Projects", "Multi-language", "Industry-specific")
-)
-
-knitr::kable(df, caption="AI 도구 성능 비교", align=c("l", "r", "r", "l"))
-```
-
-## Constitutional AI: Anthropic의 안전 AI 원칙
-- System Prompt 공개 분석
-
-::: {.callout-warning title="주의"}
-유출된 데이터는 민감할 수 있습니다.
+::: {style="margin-top: 40px; font-size: 1.5em; font-style: italic;"}
+"I'm mostly vibe coding these days."
 :::
 
-## Claude Pro 기능
-- 200K 컨텍스트
-- Projects, Artifacts
-
-::: {.callout-tip title="팁"}
-Claude.ai의 Projects를 적극 활용하세요.
+::: {style="margin-top: 30px; font-size: 0.85em; color: #A0AEC0;"}
+이 강의는 그 트윗이 의미하는 것을 몸으로 익히는 시간입니다.
 :::
 
-## 2025년 AI 생태계 지형도
-- 시장 점유율
-- 분기별 성장
+---
 
-```{r}
-#| echo: false
-#| fig-width: 9
-#| fig-height: 4.5
-library(ggplot2); library(dplyr)
-data <- data.frame(
-  Quarter = rep(c("Q1", "Q2", "Q3", "Q4"), 3),
-  Share = c(30, 35, 40, 45, 25, 30, 35, 40, 20, 25, 30, 35),
-  Tool = rep(c("Claude", "GPT-4o", "Gemini"), each = 4)
-)
-ggplot(data, aes(x = Quarter, y = Share, color = Tool, group = Tool)) +
-  geom_line() + geom_point() + theme_minimal() +
-  labs(title="2025년 AI 생태계 시장 점유율", y="점유율 (%)")
-```
+## 바이브 코딩이란? {auto-animate="true"}
 
-## 디스플레이 엔지니어 × AI 활용 비율
-
-```{r}
-#| echo: false
-#| fig-width: 9
-#| fig-height: 4.5
-data <- data.frame(
-  Company = c("Samsung", "LG"),
-  Use_Rate = c(70, 65)
-)
-ggplot(data, aes(x = Company, y = Use_Rate, fill = Company)) +
-  geom_bar(stat="identity") + theme_minimal() +
-  labs(title="디스플레이 엔지니어 × AI 활용 비율", y="활용 비율 (%)")
-```
-
-## Claude.ai 실습: 프로젝트 생성
+::: {style="font-size: 0.9em; color: #CBD5E0; margin-bottom: 30px;"}
+2025년 2월, Karpathy의 트윗 하나가 개발자 커뮤니티를 뒤흔들었다.
+자연어로 AI에게 말하고, AI가 코드를 쓰고, 당신은 결과를 검토한다.
+:::
 
 ::: {.columns}
-::: {.column width="45%"}
-- 로그인
-- Projects 생성
-:::
-::: {.column width="55%"}
-```python
-# 프로젝트 생성 코드 예시
-def create_project(name):
-    return f"Project {name} created!"
-```
+
+::: {.column width="33%"}
+::: {style="background: #2D3748; padding: 20px; border-radius: 10px; text-align: center; border-top: 4px solid #3B82F6;"}
+### 1. 지시
+*"삼성 디스플레이 수율 분석 대시보드 만들어줘"*
+
+자연어로 말한다. 코드 몰라도 된다.
 :::
 :::
 
-## 예시 프롬프트
-- "디스플레이 산업 취업준비생용 포트폴리오 앱 5가지 제안"
+::: {.column width="33%"}
+::: {style="background: #2D3748; padding: 20px; border-radius: 10px; text-align: center; border-top: 4px solid #F59E0B;"}
+### 2. 생성
+AI가 코드를 작성한다.
 
-## 바이브 코딩 단계 {auto-animate="true"}
-1. 지시
-2. 생성
-
-## 바이브 코딩 단계 {auto-animate="true"}
-1. 지시
-2. 생성
-3. 테스트
-4. 배포
-
-::: {.fragment .highlight-red}
-각 단계에서의 주의사항
+Python, R, HTML 전부. 에러도 스스로 고친다.
+:::
 :::
 
-## AI 도구별 GitHub Star 성장 추이
-- 2023~2025
+::: {.column width="33%"}
+::: {style="background: #2D3748; padding: 20px; border-radius: 10px; text-align: center; border-top: 4px solid #10B981;"}
+### 3. 검토 & 배포
+결과물을 확인하고 수정 지시만 한다.
+
+GitHub에 배포까지 AI가 한다.
+:::
+:::
+
+:::
+
+::: {style="margin-top: 30px; text-align: center; font-size: 1.1em; color: #F6E05E;"}
+**당신의 역할**: 방향을 정하고, 결과를 판단하고, 다음 질문을 던진다.
+:::
+
+---
+
+## 바이브 코딩이란? (심화) {auto-animate="true"}
+
+::: {style="font-size: 0.9em; color: #CBD5E0; margin-bottom: 20px;"}
+이건 단순히 "AI가 코드 짜주는 것"이 아니다. 패러다임의 전환이다.
+:::
+
+::: {.columns}
+
+::: {.column width="33%"}
+::: {style="background: #2D3748; padding: 20px; border-radius: 10px; text-align: center; border-top: 4px solid #3B82F6;"}
+### 1. 지시
+*"삼성 디스플레이 수율 분석 대시보드 만들어줘"*
+
+자연어로 말한다. 코드 몰라도 된다.
+:::
+:::
+
+::: {.column width="33%"}
+::: {style="background: #2D3748; padding: 20px; border-radius: 10px; text-align: center; border-top: 4px solid #F59E0B;"}
+### 2. 생성
+AI가 코드를 작성한다.
+
+Python, R, HTML 전부. 에러도 스스로 고친다.
+:::
+:::
+
+::: {.column width="33%"}
+::: {style="background: #2D3748; padding: 20px; border-radius: 10px; text-align: center; border-top: 4px solid #10B981;"}
+### 3. 검토 & 배포
+결과물을 확인하고 수정 지시만 한다.
+
+GitHub에 배포까지 AI가 한다.
+:::
+:::
+
+:::
+
+::: {style="margin-top: 25px; background: #1A365D; padding: 20px; border-radius: 10px; border-left: 5px solid #F6E05E;"}
+**핵심 통찰**: 코딩 능력 < **문제 정의 능력 + AI 지시 능력**
+
+디스플레이 공정 지식이 있는 당신이 AI보다 훨씬 유리한 이유가 여기 있다.
+:::
+
+---
+
+## 이게 가능한 이유 — AI 컨텍스트의 폭발적 성장
 
 ```{r}
-#| echo: false
-#| fig-width: 9
-#| fig-height: 4.5
-star_data <- data.frame(
-  Year = rep(2023:2025, each = 3),
-  Stars = c(1000, 1500, 1200, 2000, 2500, 2200, 3000, 3500, 3200),
-  Tool = rep(c("Claude", "GPT-4o", "Gemini"), times = 3)
+#| label: context-window-chart
+library(ggplot2)
+
+models <- data.frame(
+  Model = factor(
+    c("GPT-3\n(2020)", "GPT-4\n(2023)", "Claude 2\n(2023)",
+      "Claude 3.5\n(2024)", "Claude 3.7\n(2025)"),
+    levels = c("GPT-3\n(2020)", "GPT-4\n(2023)", "Claude 2\n(2023)",
+               "Claude 3.5\n(2024)", "Claude 3.7\n(2025)")
+  ),
+  Context_K = c(4, 32, 100, 200, 200),
+  Company = c("OpenAI", "OpenAI", "Anthropic", "Anthropic", "Anthropic")
 )
-ggplot(star_data, aes(x = Year, y = Stars, color = Tool, group = Tool)) +
-  geom_line() + geom_point() + theme_minimal() +
-  labs(title="AI 도구별 GitHub Star 성장 추이", y="Stars")
+
+ggplot(models, aes(x = Model, y = Context_K, fill = Company)) +
+  geom_bar(stat = "identity", width = 0.6) +
+  scale_fill_manual(values = c("OpenAI" = "#74AA9C", "Anthropic" = "#D4A843")) +
+  theme_minimal(base_size = 14) +
+  theme(
+    plot.background  = element_rect(fill = "#1E2A3A", color = NA),
+    panel.background = element_rect(fill = "#1E2A3A", color = NA),
+    text             = element_text(color = "white"),
+    axis.text        = element_text(color = "#CBD5E0"),
+    panel.grid.major.y = element_line(color = "#2D3748"),
+    panel.grid.minor   = element_blank(),
+    panel.grid.major.x = element_blank(),
+    legend.background  = element_rect(fill = "#1E2A3A", color = NA)
+  ) +
+  labs(
+    title = "AI 모델 컨텍스트 윈도우 진화 — 4K에서 200K, 50배 성장",
+    y = "컨텍스트 크기 (K tokens)", x = "", fill = "회사"
+  ) +
+  geom_text(aes(label = paste0(Context_K, "K")), vjust = -0.5,
+            fontface = "bold", size = 4.5, color = "white")
 ```
 
-## 마무리
-- AI와 바이브 코딩의 미래
+::: {style="font-size: 0.85em; color: #A0AEC0; margin-top: 5px;"}
+200K tokens = 약 **15만 단어** = 웬만한 소설 한 권 분량. AI가 프로젝트 전체 맥락을 기억한다.
+:::
 
-```python
-# 미래를 준비하는 코드
-def future_ready():
-    print("AI와 함께하는 미래를 준비하세요!")
+---
+
+## 2025 AI 개발 도구 지형도
+
+::: {.panel-tabset}
+
+### Claude Pro
+
+::: {.columns}
+::: {.column width="60%"}
+**Anthropic Claude 3.7 Sonnet**
+
+- 200K 컨텍스트 윈도우 (경쟁사 최대)
+- **Projects**: 프로젝트별 AI 기억 영구 유지
+- **Artifacts**: 코드/앱 실시간 미리보기
+- **Constitutional AI**: 안전하고 신뢰할 수 있는 출력
+- Claude Code CLI와 완벽 연동
+- 한국어 품질 최상위권
+:::
+::: {.column width="40%"}
+::: {style="background: #D4A843; color: #1A202C; padding: 20px; border-radius: 10px; text-align: center; font-weight: bold; font-size: 1.1em;"}
+이 강의 수강생 전원
+
+Claude Pro 1개월
+
+무료 제공
+:::
+:::
+:::
+
+### GPT-4o
+
+**OpenAI GPT-4o**
+
+- 멀티모달: 이미지, 음성, 텍스트 통합
+- DALL-E 3 이미지 생성 통합
+- 플러그인 / GPT 마켓플레이스 생태계
+- ChatGPT 인터페이스로 가장 널리 알려짐
+- 컨텍스트: 128K tokens
+- 가장 넓은 사용자 커뮤니티
+
+### Gemini
+
+**Google Gemini 1.5 Pro**
+
+- **무료 1500회/일** (가장 관대한 무료 티어)
+- Google Workspace 완벽 연동 (Gmail, Docs, Sheets)
+- Google Colab 네이티브 지원 — R/Python 분석에 강함
+- 컨텍스트: 1M tokens (대용량 문서 분석 최강)
+- 디스플레이 공정 데이터 분석에 특히 유용
+
+:::
+
+---
+
+## AI 회사들이 모델에게 내리는 비밀 지시 {auto-animate="true"}
+
+::: {style="font-size: 0.9em; color: #CBD5E0; margin-bottom: 20px;"}
+모든 AI 모델 뒤에는 보이지 않는 "시스템 프롬프트"가 있다. Anthropic은 이를 공개했다. 이름: **Constitutional AI**
+:::
+
+::: {style="background: #1A2942; padding: 20px; border-radius: 10px; border-left: 5px solid #F6E05E; font-size: 0.95em;"}
+**원칙 1 — Harmless (해롭지 않을 것)**
+
+해를 끼칠 수 있는 행동은 거부한다. 이것이 AI가 "그건 도와드리기 어렵습니다"라고 말하는 이유.
+:::
+
+---
+
+## AI 회사들이 모델에게 내리는 비밀 지시 {auto-animate="true"}
+
+::: {style="font-size: 0.9em; color: #CBD5E0; margin-bottom: 20px;"}
+모든 AI 모델 뒤에는 보이지 않는 "시스템 프롬프트"가 있다. Anthropic은 이를 공개했다. 이름: **Constitutional AI**
+:::
+
+::: {style="background: #1A2942; padding: 20px; border-radius: 10px; border-left: 5px solid #F6E05E; font-size: 0.9em;"}
+**원칙 1 — Harmless**: 해를 끼칠 수 있는 행동은 거부한다.
+:::
+
+::: {style="background: #1A3A2A; padding: 20px; border-radius: 10px; border-left: 5px solid #10B981; font-size: 0.9em; margin-top: 10px;"}
+**원칙 2 — Honest (정직할 것)**
+
+확실하지 않은 것을 확실한 것처럼 말하지 않는다. AI가 "잘 모르겠습니다"라고 말할 때, 그게 더 좋은 AI다.
+:::
+
+::: {style="background: #2A1A3A; padding: 20px; border-radius: 10px; border-left: 5px solid #A855F7; font-size: 0.9em; margin-top: 10px;"}
+**원칙 3 — Helpful (도움이 될 것)**
+
+사용자의 진짜 목표를 이해하고 도움을 준다. 표면적 질문이 아닌 근본 목적을 파악한다.
+:::
+
+::: {style="margin-top: 15px; font-size: 0.85em; color: #A0AEC0;"}
+이 원칙을 이해하면 AI를 더 잘 쓸 수 있다. "왜 AI가 이렇게 대답하지?"의 답이 여기 있다.
+:::
+
+---
+
+## Claude Pro를 1개월 드리는 이유
+
+::: {style="margin-top: 20px;"}
+:::
+
+::: {.callout-tip}
+## 이 강의 동안 Claude Pro를 마음껏 쓰세요
+
+한 달 안에 배운 것이 **평생 써먹을 도구**가 됩니다.
+
+Claude Pro의 가장 강력한 기능들:
+
+- **Projects** — 프로젝트 컨텍스트 영구 보존. 매번 설명하지 않아도 된다.
+- **Artifacts** — 앱/코드/문서 실시간 렌더링. 바로 결과를 본다.
+- **Claude Code** — 터미널에서 AI 코딩 어시스턴트 (2강에서 배움)
+- 무제한 대화 (무료 플랜은 하루 사용량 제한 있음)
+:::
+
+::: {style="margin-top: 20px;"}
+:::
+
+::: {.callout-important}
+## 현실적인 기대치 설정
+
+AI는 **도구**입니다. 망치가 집을 짓지 않듯, AI가 혼자 앱을 만들지 않습니다.
+
+**당신이 방향을 잡고, AI가 실행을 도운다.**
+
+디스플레이 공정을 아는 당신의 도메인 지식 + AI의 코딩 능력 = 강력한 경쟁력
+:::
+
+---
+
+## AI 도입 전후: 디스플레이 엔지니어 업무 시간 비교
+
+```{r}
+#| label: productivity-chart
+library(ggplot2)
+library(tidyr)
+
+tasks <- data.frame(
+  Task = factor(
+    c("보고서 작성", "데이터 분석", "코드 작성", "문서 번역", "아이디어 검토"),
+    levels = c("보고서 작성", "데이터 분석", "코드 작성", "문서 번역", "아이디어 검토")
+  ),
+  Before = c(4.0, 3.0, 5.0, 2.0, 1.5),
+  After  = c(0.5, 0.5, 0.5, 0.2, 0.3)
+)
+
+df_long <- pivot_longer(tasks, cols = c(Before, After),
+                        names_to = "Period", values_to = "Hours")
+
+ggplot(df_long, aes(x = Task, y = Hours, fill = Period)) +
+  geom_bar(stat = "identity", position = "dodge", width = 0.6) +
+  scale_fill_manual(
+    values = c("Before" = "#C0392B", "After" = "#27AE60"),
+    labels = c("Before" = "AI 이전 (시간)", "After" = "AI 이후 (시간)")
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    plot.background    = element_rect(fill = "#1E2A3A", color = NA),
+    panel.background   = element_rect(fill = "#1E2A3A", color = NA),
+    text               = element_text(color = "white"),
+    axis.text          = element_text(color = "#CBD5E0"),
+    axis.text.x        = element_text(angle = 15, hjust = 1, color = "#CBD5E0"),
+    panel.grid.major.y = element_line(color = "#2D3748"),
+    panel.grid.minor   = element_blank(),
+    panel.grid.major.x = element_blank(),
+    legend.background  = element_rect(fill = "#1E2A3A", color = NA)
+  ) +
+  labs(
+    title = "디스플레이 엔지니어 업무별 소요 시간 비교 (AI 전/후)",
+    subtitle = "가상 시나리오 — 실제 효과는 업무 특성에 따라 다름",
+    y = "소요 시간 (시간)", x = "", fill = ""
+  ) +
+  geom_text(aes(label = paste0(Hours, "h")),
+            position = position_dodge(width = 0.6),
+            vjust = -0.4, size = 3.5, color = "white", fontface = "bold")
 ```
+
+---
+
+## 바이브 코딩 실전 단계 {auto-animate="true"}
+
+::: {style="margin-top: 30px;"}
+:::
+
+::: {style="background: #1A365D; padding: 25px; border-radius: 12px; border-left: 6px solid #3B82F6; font-size: 1.05em;"}
+### Step 1: 문제를 자연어로 정의한다
+
+*"삼성 디스플레이 OLED 패널 수율 데이터를 분석하는 Python 스크립트가 필요해. CSV 파일을 읽고 이상 공정 구간을 시각화해줘."*
+:::
+
+::: {style="background: #1A3A2A; padding: 25px; border-radius: 12px; border-left: 6px solid #10B981; font-size: 1.05em; margin-top: 15px;"}
+### Step 2: AI가 코드를 작성한다
+
+AI가 전체 코드를 작성. 에러 발생하면 "이 에러 고쳐줘"라고 말하면 된다.
+:::
+
+---
+
+## 바이브 코딩 실전 단계 (전체) {auto-animate="true"}
+
+::: {style="background: #1A365D; padding: 15px; border-radius: 12px; border-left: 6px solid #3B82F6; font-size: 0.95em;"}
+**Step 1**: 문제를 자연어로 정의 — *도메인 지식이 핵심*
+:::
+
+::: {style="background: #1A3A2A; padding: 15px; border-radius: 12px; border-left: 6px solid #10B981; font-size: 0.95em; margin-top: 10px;"}
+**Step 2**: AI가 코드 작성 — *에러 나면 그냥 "고쳐줘"*
+:::
+
+::: {style="background: #2A1A3A; padding: 15px; border-radius: 12px; border-left: 6px solid #A855F7; font-size: 0.95em; margin-top: 10px;"}
+**Step 3**: 결과를 검토하고 피드백 — *"수율 기준을 95%로 바꿔줘"*
+:::
+
+::: {style="background: #3A2A1A; padding: 15px; border-radius: 12px; border-left: 6px solid #F59E0B; font-size: 0.95em; margin-top: 10px;"}
+**Step 4**: 배포 — *GitHub Pages, Streamlit, 사내 서버*
+:::
+
+::: {style="margin-top: 20px; text-align: center; font-size: 1em; color: #F6E05E;"}
+이 4단계가 이 강의 전체 커리큘럼이다. 오늘부터 1단계를 시작한다.
+:::
+
+---
+
+## 실전 프롬프트 엔지니어링 — 좋은 지시와 나쁜 지시
+
+::: {.columns}
+
+::: {.column width="50%"}
+::: {style="background: #3D1515; padding: 20px; border-radius: 10px; border-top: 4px solid #C0392B;"}
+### 나쁜 프롬프트
+
+*"앱 만들어줘"*
+
+*"코드 짜줘"*
+
+*"분석해줘"*
+
+너무 모호하다. AI도 모른다. 당신도 모른다.
+
+결과: 쓸모없는 일반적인 답변
+:::
+:::
+
+::: {.column width="50%"}
+::: {style="background: #153D1F; padding: 20px; border-radius: 10px; border-top: 4px solid #27AE60;"}
+### 좋은 프롬프트
+
+*"삼성 디스플레이 신입 취업 준비생용 포트폴리오 웹사이트 HTML을 만들어줘. OLED 공정 지식과 수율 분석 프로젝트를 강조하고, 모바일 반응형으로 만들어줘."*
+
+**맥락 + 대상 + 형식 + 제약조건**
+:::
+:::
+
+:::
+
+::: {style="margin-top: 20px; background: #1A2942; padding: 15px; border-radius: 10px;"}
+**공식**: [맥락] + [구체적 요청] + [출력 형식] + [제약조건]
+
+예시: *"[삼성 디스플레이 신입 지원자로서] [자기소개서 도입부를 써줘] [3문장으로] [겸손하지만 자신감 있는 톤으로]"*
+:::
+
+---
+
+## 오늘의 실습 과제 — 지금 바로 시작!
+
+::: {.columns}
+
+::: {.column width="60%"}
+### 4단계 실습 가이드
+
+**Step 1: Claude.ai 접속 & 로그인**
+
+claude.ai 접속 → Google 계정으로 로그인
+
+**Step 2: Projects 생성**
+
+좌측 사이드바 → New Project → 이름: *"디스플레이 취업 포트폴리오"*
+
+**Step 3: 첫 번째 프롬프트 입력**
+
+```
+삼성 디스플레이 취업 준비생을 위한
+포트폴리오 앱 5가지를 제안해줘.
+각 앱의 기능, 기술 스택, 예상 개발 시간을
+표로 정리해줘.
+```
+
+**Step 4: Artifacts 확인**
+
+우측에 나타나는 Artifact(결과물) 클릭해서 미리보기 확인
+:::
+
+::: {.column width="40%"}
+::: {.callout-important}
+## 다음 강의 전 숙제
+
+**GitHub 계정 만들어오기**
+
+1. github.com 접속
+2. Sign Up 클릭
+3. 아이디: 취업에 쓸 수 있는 전문적인 이름
+   - `park-display-engineer` (좋음)
+   - `cutegirl2024` (나쁨)
+
+왜 GitHub인가?
+
+취업 포트폴리오 = GitHub 주소
+:::
+
+::: {style="background: #1A365D; padding: 15px; border-radius: 10px; margin-top: 15px; text-align: center; font-size: 0.9em;"}
+**2강 예고**
+
+Pieter Levels는 어떻게 혼자 연 $5M을 버는가?
+
+GitHub + Claude Code 환경 세팅
+:::
+:::
+
+:::
+
+---
+
+## 1강 정리 — 오늘 배운 것
+
+::: {.columns}
+
+::: {.column width="55%"}
+### 핵심 개념 요약
+
+| 개념 | 핵심 메시지 |
+|------|-------------|
+| 바이브 코딩 | 자연어 지시 → AI 실행 |
+| Karpathy 트윗 | "나는 코드를 거의 안 쓴다" |
+| Constitutional AI | 안전 · 정직 · 도움의 3원칙 |
+| 컨텍스트 윈도우 | 4K → 200K, 50배 성장 |
+| 좋은 프롬프트 | 맥락 + 요청 + 형식 + 제약 |
+:::
+
+::: {.column width="45%"}
+### 당신의 경쟁력
+
+::: {style="background: #1A3A2A; padding: 20px; border-radius: 10px; font-size: 0.9em;"}
+디스플레이 도메인 지식을 가진 당신은 AI를 가장 잘 활용할 수 있는 위치에 있다.
+
+**OLED 공정 이해 + 수율 개념 + 삼성/LG 산업 맥락**
+
+이걸 AI에게 설명할 수 있으면, AI는 당신의 강력한 도구가 된다.
+
+코딩을 배우는 게 목표가 아니다.
+
+**문제를 해결하는 것**이 목표다.
+:::
+:::
+
+:::
+
+::: {style="margin-top: 25px; text-align: center; font-size: 1.1em; color: #F6E05E;"}
+**다음 강의**: Pieter Levels의 비밀 — GitHub + Claude Code 설치 & 첫 배포
+:::

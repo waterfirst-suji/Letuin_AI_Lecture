@@ -197,7 +197,7 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">종합 통합 실습 — 모든 것을 하나로</h1>
-  <p class="subtitle">Streamlit + Gemini AI + 텔레그램 알람 풀스택 완성 (60분)</p>
+  <p class="subtitle">Streamlit + Gemini + 텔레그램 = 나만의 AI 모니터링 시스템</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -210,162 +210,344 @@
   <p class="date">2026-04-06</p>
 </section>
 <section>
-<section id="part-6-시스템-구성-및-시뮬레이션" class="title-slide slide level1 center" data-background="#1F4E79">
-<h1>PART 6: 시스템 구성 및 시뮬레이션</h1>
+<section id="지금까지-배운-모든-것이-이-60분-안에-연결됩니다" class="title-slide slide level1 center" data-background="#1F4E79">
+<h1>지금까지 배운 모든 것이 이 60분 안에 연결됩니다</h1>
 
 </section>
-<section id="강의-목표" class="slide level2">
-<h2>강의 목표</h2>
-<ul>
-<li>시스템 아키텍처 이해</li>
-<li>코드 생성 및 실행</li>
-<li>연결 테스트 및 디버깅</li>
-<li>GitHub와 Streamlit 배포</li>
-</ul>
-</section>
-<section id="전체-시스템-아키텍처" class="slide level2">
-<h2>전체 시스템 아키텍처</h2>
-
-<img data-src="lecture_15_files/figure-revealjs/unnamed-chunk-1-1.png" width="864" class="r-stretch"></section>
-<section id="시뮬레이션-수율-데이터-실시간-트렌드" class="slide level2">
-<h2>시뮬레이션 수율 데이터 실시간 트렌드</h2>
-
-<img data-src="lecture_15_files/figure-revealjs/unnamed-chunk-2-1.png" width="864" class="r-stretch"></section>
-<section id="파일-역할-정리표" class="slide level2">
-<h2>파일 역할 정리표</h2>
-<div class="cell">
-<div class="cell-output-display">
+<section id="오늘-60분의-로드맵" class="slide level2 smaller">
+<h2>오늘 60분의 로드맵</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p><strong>세 개의 모듈을 하나로</strong></p>
+<p>Streamlit 대시보드 + Gemini AI 분석 + 텔레그램 알람.</p>
+<p>이 세 가지를 하나로 합치면 — 삼성/LG 공장에서 실제로 쓸 법한 AI 모니터링 시스템이 완성됩니다.</p>
+<p><strong>60분 타임테이블</strong></p>
 <table class="caption-top">
-<caption>파일별 역할 정리</caption>
 <thead>
 <tr class="header">
-<th style="text-align: left;">파일명</th>
-<th style="text-align: left;">역할</th>
-<th style="text-align: left;">핵심코드</th>
+<th>시간</th>
+<th>내용</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">data_simulator.py</td>
-<td style="text-align: left;">데이터 시뮬레이션</td>
-<td style="text-align: left;">시뮬레이션 로직</td>
+<td>0~10분</td>
+<td>아키텍처 설계</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">app.py</td>
-<td style="text-align: left;">대시보드 앱</td>
-<td style="text-align: left;">Streamlit UI</td>
+<td>10~35분</td>
+<td>코드 생성</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">alert_bot.py</td>
-<td style="text-align: left;">텔레그램 알람</td>
-<td style="text-align: left;">텔레그램 API 연동</td>
+<td>35~50분</td>
+<td>연결 테스트</td>
+</tr>
+<tr class="even">
+<td>50~60분</td>
+<td>배포</td>
 </tr>
 </tbody>
 </table>
-</div>
-</div>
-</section>
-<section id="코드-생성-data_simulator.py" class="slide level2" data-auto-animate="true">
-<h2 data-id="quarto-animate-title">코드 생성: data_simulator.py</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode python hljs"><span id="cb1-1" class="hljs-ln-code"><a href=""></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb1-2" class="hljs-ln-code"><a href=""></a></span>
-<span id="cb1-3" class="hljs-ln-code"><a href=""></a><span class="kw">def</span> simulate_yield():</span>
-<span id="cb1-4" class="hljs-ln-code"><a href=""></a>    <span class="co">"""수율 데이터 시뮬레이션"""</span></span>
-<span id="cb1-5" class="hljs-ln-code"><a href=""></a>    np.random.seed(<span class="dv">123</span>)</span>
-<span id="cb1-6" class="hljs-ln-code"><a href=""></a>    <span class="cf">return</span> np.cumsum(np.random.uniform(<span class="op">-</span><span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="dv">100</span>)) <span class="op">+</span> <span class="dv">50</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="코드-생성-data_simulator.py-app.py" class="slide level2" data-auto-animate="true">
-<h2 data-id="quarto-animate-title">코드 생성: data_simulator.py + app.py</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode python hljs"><span id="cb2-1" class="hljs-ln-code"><a href=""></a><span class="im">import</span> streamlit <span class="im">as</span> st</span>
-<span id="cb2-2" class="hljs-ln-code"><a href=""></a></span>
-<span id="cb2-3" class="hljs-ln-code"><a href=""></a><span class="kw">def</span> simulate_yield():</span>
-<span id="cb2-4" class="hljs-ln-code"><a href=""></a>    <span class="co">"""수율 데이터 시뮬레이션"""</span></span>
-<span id="cb2-5" class="hljs-ln-code"><a href=""></a>    np.random.seed(<span class="dv">123</span>)</span>
-<span id="cb2-6" class="hljs-ln-code"><a href=""></a>    <span class="cf">return</span> np.cumsum(np.random.uniform(<span class="op">-</span><span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="dv">100</span>)) <span class="op">+</span> <span class="dv">50</span></span>
-<span id="cb2-7" class="hljs-ln-code"><a href=""></a></span>
-<span id="cb2-8" class="hljs-ln-code"><a href=""></a>st.title(<span class="st">"시뮬레이션 수율 데이터"</span>)</span>
-<span id="cb2-9" class="hljs-ln-code"><a href=""></a>st.line_chart(simulate_yield())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="연결-테스트-디버깅" class="slide level2">
-<h2>연결 테스트 &amp; 디버깅</h2>
-<div class="columns">
-<div class="column" style="width:45%;">
-<ul>
-<li>데이터 시뮬레이션 테스트</li>
-<li>대시보드 연결 확인</li>
-</ul>
-</div><div class="column" style="width:55%;">
-<ul>
-<li>텔레그램 알람 테스트</li>
-<li>GitHub Actions 설정 점검</li>
-</ul>
-</div></div>
-</section>
-<section id="github-push-streamlit-배포" class="slide level2">
-<h2>GitHub push + Streamlit 배포</h2>
-<div class="fragment fade-in">
-<ol type="1">
-<li>GitHub에 코드 푸시</li>
-</ol>
-</div>
-<div class="fragment highlight-red">
-<ol start="2" type="1">
-<li>Streamlit에서 앱 배포</li>
-</ol>
-</div>
-</section>
-<section id="코드-살펴보기" class="slide level2">
-<h2>코드 살펴보기</h2>
-<div class="panel-tabset">
-<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">data_simulator.py</a></li><li><a href="#tabset-1-2">app.py</a></li><li><a href="#tabset-1-3">alert_bot.py</a></li></ul>
-<div class="tab-content">
-<div id="tabset-1-1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href=""></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb3-2"><a href=""></a></span>
-<span id="cb3-3"><a href=""></a><span class="kw">def</span> simulate_yield():</span>
-<span id="cb3-4"><a href=""></a>    <span class="co">"""수율 데이터 시뮬레이션"""</span></span>
-<span id="cb3-5"><a href=""></a>    np.random.seed(<span class="dv">123</span>)</span>
-<span id="cb3-6"><a href=""></a>    <span class="cf">return</span> np.cumsum(np.random.uniform(<span class="op">-</span><span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="dv">100</span>)) <span class="op">+</span> <span class="dv">50</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div id="tabset-1-2">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href=""></a><span class="im">import</span> streamlit <span class="im">as</span> st</span>
-<span id="cb4-2"><a href=""></a></span>
-<span id="cb4-3"><a href=""></a><span class="kw">def</span> simulate_yield():</span>
-<span id="cb4-4"><a href=""></a>    <span class="co">"""수율 데이터 시뮬레이션"""</span></span>
-<span id="cb4-5"><a href=""></a>    np.random.seed(<span class="dv">123</span>)</span>
-<span id="cb4-6"><a href=""></a>    <span class="cf">return</span> np.cumsum(np.random.uniform(<span class="op">-</span><span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="dv">100</span>)) <span class="op">+</span> <span class="dv">50</span></span>
-<span id="cb4-7"><a href=""></a></span>
-<span id="cb4-8"><a href=""></a>st.title(<span class="st">"시뮬레이션 수율 데이터"</span>)</span>
-<span id="cb4-9"><a href=""></a>st.line_chart(simulate_yield())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div id="tabset-1-3">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href=""></a><span class="im">import</span> telegram</span>
-<span id="cb5-2"><a href=""></a></span>
-<span id="cb5-3"><a href=""></a><span class="kw">def</span> send_alert(message):</span>
-<span id="cb5-4"><a href=""></a>    <span class="co">"""텔레그램 알람 전송"""</span></span>
-<span id="cb5-5"><a href=""></a>    bot <span class="op">=</span> telegram.Bot(token<span class="op">=</span><span class="st">'YOUR_TELEGRAM_TOKEN'</span>)</span>
-<span id="cb5-6"><a href=""></a>    bot.send_message(chat_id<span class="op">=</span><span class="st">'YOUR_CHAT_ID'</span>, text<span class="op">=</span>message)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div>
-</div>
-</section>
-<section id="팁과-주의사항" class="slide level2">
-<h2>팁과 주의사항</h2>
-<div title="팁">
+</div><div class="column" style="width:45%;">
+<div title="바이브 코딩 원칙">
 <div class="callout callout-tip callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>팁</strong></p>
+<p><strong>바이브 코딩 원칙</strong></p>
 </div>
 <div class="callout-content">
-<p>코드 변경 시, GitHub Actions를 통해 자동 배포를 설정하세요.</p>
+<p><strong>설계 먼저, 코드는 AI가.</strong></p>
+<p>Claude Code에게 전체 구조를 먼저 설계하게 하세요. 그러면 코드 생성이 훨씬 빠르고 정확해집니다.</p>
 </div>
 </div>
 </div>
 </div>
+<div title="오늘의 목표">
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>오늘의 목표</strong></p>
+</div>
+<div class="callout-content">
+<p>URL 하나로 실행되는 AI 대시보드를 완성하세요. 그게 면접에서 가장 강력한 무기입니다.</p>
+</div>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="오늘-만들-것-전체-아키텍처" class="slide level2 smaller">
+<h2>오늘 만들 것 — 전체 아키텍처</h2>
+
+<img data-src="lecture_15_files/figure-revealjs/unnamed-chunk-1-1.png" width="864" class="r-stretch"></section>
+<section id="단계-1-010분-아키텍처-설계" class="slide level2 smaller">
+<h2>단계 1 (0~10분) — 아키텍처 설계</h2>
+<p><strong>Claude Code에게 전체 시스템 설계를 맡긴다</strong></p>
+<pre><code>Streamlit + Gemini + 텔레그램으로
+수율 모니터링 시스템을 만들어줘.
+
+파일 구조와 각 파일의 역할을 먼저 설계해줘.
+각 파일은 500줄을 넘지 않도록 모듈화해줘.</code></pre>
+<p>Claude Code가 제안하는 파일 구조:</p>
+<pre><code>monitoring_system/
+├── data_simulator.py    # 수율 데이터 생성 (랜덤 시뮬레이션)
+├── app.py               # Streamlit 대시보드 (메인 UI)
+├── alert_bot.py         # 텔레그램 알람 봇 (백그라운드 스레드)
+├── requirements.txt     # 의존성 목록
+└── .env                 # 환경 변수 (토큰, API 키)</code></pre>
+<div title="설계 원칙">
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>설계 원칙</strong></p>
+</div>
+<div class="callout-content">
+<p>각 파일은 하나의 역할만 합니다. <code>app.py</code>가 너무 커지면 유지보수가 불가능합니다.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="단계-2-1035분-data_simulator.py-생성" class="slide level2" data-auto-animate="true">
+<h2 data-id="quarto-animate-title">단계 2 (10~35분) — data_simulator.py 생성</h2>
+<p><strong>Claude Code 프롬프트</strong>: “data_simulator.py를 작성해줘.”</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" data-code-line-numbers="1-4|6-10|12-20"><pre class="sourceCode numberSource python number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode python hljs"><span id="cb3-1" class="hljs-ln-code"><a href=""></a><span class="co"># data_simulator.py</span></span>
+<span id="cb3-2" class="hljs-ln-code"><a href=""></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb3-3" class="hljs-ln-code"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb3-4" class="hljs-ln-code"><a href=""></a><span class="im">from</span> datetime <span class="im">import</span> datetime, timedelta</span>
+<span id="cb3-5" class="hljs-ln-code"><a href=""></a></span>
+<span id="cb3-6" class="hljs-ln-code"><a href=""></a><span class="kw">def</span> simulate_yield(n_points: <span class="bu">int</span> <span class="op">=</span> <span class="dv">100</span>) <span class="op">-&gt;</span> pd.DataFrame:</span>
+<span id="cb3-7" class="hljs-ln-code"><a href=""></a>    <span class="co">"""수율 데이터 시뮬레이션</span></span>
+<span id="cb3-8" class="hljs-ln-code"><a href=""></a><span class="co">    매번 호출할 때마다 약간 다른 데이터 생성</span></span>
+<span id="cb3-9" class="hljs-ln-code"><a href=""></a><span class="co">    """</span></span>
+<span id="cb3-10" class="hljs-ln-code"><a href=""></a>    np.random.seed(<span class="bu">int</span>(datetime.now().timestamp()) <span class="op">%</span> <span class="dv">1000</span>)</span>
+<span id="cb3-11" class="hljs-ln-code"><a href=""></a></span>
+<span id="cb3-12" class="hljs-ln-code"><a href=""></a>    times <span class="op">=</span> [</span>
+<span id="cb3-13" class="hljs-ln-code"><a href=""></a>        datetime.now() <span class="op">-</span> timedelta(minutes<span class="op">=</span><span class="dv">5</span> <span class="op">*</span> i)</span>
+<span id="cb3-14" class="hljs-ln-code"><a href=""></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n_points, <span class="dv">0</span>, <span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb3-15" class="hljs-ln-code"><a href=""></a>    ]</span>
+<span id="cb3-16" class="hljs-ln-code"><a href=""></a>    yield_a <span class="op">=</span> np.clip(</span>
+<span id="cb3-17" class="hljs-ln-code"><a href=""></a>        <span class="dv">96</span> <span class="op">+</span> np.cumsum(np.random.normal(<span class="dv">0</span>, <span class="fl">0.2</span>, n_points)), <span class="dv">88</span>, <span class="dv">100</span></span>
+<span id="cb3-18" class="hljs-ln-code"><a href=""></a>    )</span>
+<span id="cb3-19" class="hljs-ln-code"><a href=""></a>    yield_b <span class="op">=</span> np.clip(</span>
+<span id="cb3-20" class="hljs-ln-code"><a href=""></a>        <span class="dv">95</span> <span class="op">+</span> np.cumsum(np.random.normal(<span class="dv">0</span>, <span class="fl">0.3</span>, n_points)), <span class="dv">88</span>, <span class="dv">100</span></span>
+<span id="cb3-21" class="hljs-ln-code"><a href=""></a>    )</span>
+<span id="cb3-22" class="hljs-ln-code"><a href=""></a></span>
+<span id="cb3-23" class="hljs-ln-code"><a href=""></a>    <span class="cf">return</span> pd.DataFrame({</span>
+<span id="cb3-24" class="hljs-ln-code"><a href=""></a>        <span class="st">"timestamp"</span>: times,</span>
+<span id="cb3-25" class="hljs-ln-code"><a href=""></a>        <span class="st">"Line_A"</span>:    yield_a,</span>
+<span id="cb3-26" class="hljs-ln-code"><a href=""></a>        <span class="st">"Line_B"</span>:    yield_b</span>
+<span id="cb3-27" class="hljs-ln-code"><a href=""></a>    })</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="단계-2-계속-app.py-streamlit-대시보드" class="slide level2" data-auto-animate="true">
+<h2 data-id="quarto-animate-title">단계 2 계속 — app.py Streamlit 대시보드</h2>
+<p><strong>Claude Code 프롬프트</strong>: “app.py를 작성해줘. KPI 카드와 차트를 포함해줘.”</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4" data-code-line-numbers="1-7|9-14|16-27|29-40"><pre class="sourceCode numberSource python number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode python hljs"><span id="cb4-1" class="hljs-ln-code"><a href=""></a><span class="co"># app.py</span></span>
+<span id="cb4-2" class="hljs-ln-code"><a href=""></a><span class="im">import</span> streamlit <span class="im">as</span> st</span>
+<span id="cb4-3" class="hljs-ln-code"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb4-4" class="hljs-ln-code"><a href=""></a><span class="im">import</span> plotly.express <span class="im">as</span> px</span>
+<span id="cb4-5" class="hljs-ln-code"><a href=""></a><span class="im">from</span> data_simulator <span class="im">import</span> simulate_yield</span>
+<span id="cb4-6" class="hljs-ln-code"><a href=""></a><span class="im">import</span> google.generativeai <span class="im">as</span> genai</span>
+<span id="cb4-7" class="hljs-ln-code"><a href=""></a><span class="im">import</span> os</span>
+<span id="cb4-8" class="hljs-ln-code"><a href=""></a></span>
+<span id="cb4-9" class="hljs-ln-code"><a href=""></a>genai.configure(api_key<span class="op">=</span>os.getenv(<span class="st">"GEMINI_API_KEY"</span>))</span>
+<span id="cb4-10" class="hljs-ln-code"><a href=""></a>model <span class="op">=</span> genai.GenerativeModel(<span class="st">"gemini-1.5-flash"</span>)</span>
+<span id="cb4-11" class="hljs-ln-code"><a href=""></a></span>
+<span id="cb4-12" class="hljs-ln-code"><a href=""></a>st.set_page_config(</span>
+<span id="cb4-13" class="hljs-ln-code"><a href=""></a>    page_title<span class="op">=</span><span class="st">"수율 모니터링"</span>, page_icon<span class="op">=</span><span class="st">"🏭"</span>, layout<span class="op">=</span><span class="st">"wide"</span></span>
+<span id="cb4-14" class="hljs-ln-code"><a href=""></a>)</span>
+<span id="cb4-15" class="hljs-ln-code"><a href=""></a>st.title(<span class="st">"AI 수율 모니터링 대시보드"</span>)</span>
+<span id="cb4-16" class="hljs-ln-code"><a href=""></a></span>
+<span id="cb4-17" class="hljs-ln-code"><a href=""></a><span class="co"># 데이터 로드</span></span>
+<span id="cb4-18" class="hljs-ln-code"><a href=""></a><span class="cf">if</span> st.button(<span class="st">"데이터 새로고침"</span>) <span class="kw">or</span> <span class="st">"data"</span> <span class="kw">not</span> <span class="kw">in</span> st.session_state:</span>
+<span id="cb4-19" class="hljs-ln-code"><a href=""></a>    st.session_state.data <span class="op">=</span> simulate_yield(<span class="dv">100</span>)</span>
+<span id="cb4-20" class="hljs-ln-code"><a href=""></a></span>
+<span id="cb4-21" class="hljs-ln-code"><a href=""></a>df <span class="op">=</span> st.session_state.data</span>
+<span id="cb4-22" class="hljs-ln-code"><a href=""></a></span>
+<span id="cb4-23" class="hljs-ln-code"><a href=""></a><span class="co"># KPI 카드 3개</span></span>
+<span id="cb4-24" class="hljs-ln-code"><a href=""></a>col1, col2, col3 <span class="op">=</span> st.columns(<span class="dv">3</span>)</span>
+<span id="cb4-25" class="hljs-ln-code"><a href=""></a><span class="cf">with</span> col1:</span>
+<span id="cb4-26" class="hljs-ln-code"><a href=""></a>    delta_a <span class="op">=</span> df[<span class="st">"Line_A"</span>].iloc[<span class="op">-</span><span class="dv">1</span>] <span class="op">-</span> df[<span class="st">"Line_A"</span>].iloc[<span class="op">-</span><span class="dv">2</span>]</span>
+<span id="cb4-27" class="hljs-ln-code"><a href=""></a>    st.metric(<span class="st">"Line A 현재 수율"</span>,</span>
+<span id="cb4-28" class="hljs-ln-code"><a href=""></a>              <span class="ss">f"</span><span class="sc">{</span>df[<span class="st">'Line_A'</span>]<span class="sc">.</span>iloc[<span class="op">-</span><span class="dv">1</span>]<span class="sc">:.1f}</span><span class="ss">%"</span>,</span>
+<span id="cb4-29" class="hljs-ln-code"><a href=""></a>              delta<span class="op">=</span><span class="ss">f"</span><span class="sc">{</span>delta_a<span class="sc">:+.1f}</span><span class="ss">%p"</span>)</span>
+<span id="cb4-30" class="hljs-ln-code"><a href=""></a><span class="cf">with</span> col2:</span>
+<span id="cb4-31" class="hljs-ln-code"><a href=""></a>    delta_b <span class="op">=</span> df[<span class="st">"Line_B"</span>].iloc[<span class="op">-</span><span class="dv">1</span>] <span class="op">-</span> df[<span class="st">"Line_B"</span>].iloc[<span class="op">-</span><span class="dv">2</span>]</span>
+<span id="cb4-32" class="hljs-ln-code"><a href=""></a>    st.metric(<span class="st">"Line B 현재 수율"</span>,</span>
+<span id="cb4-33" class="hljs-ln-code"><a href=""></a>              <span class="ss">f"</span><span class="sc">{</span>df[<span class="st">'Line_B'</span>]<span class="sc">.</span>iloc[<span class="op">-</span><span class="dv">1</span>]<span class="sc">:.1f}</span><span class="ss">%"</span>,</span>
+<span id="cb4-34" class="hljs-ln-code"><a href=""></a>              delta<span class="op">=</span><span class="ss">f"</span><span class="sc">{</span>delta_b<span class="sc">:+.1f}</span><span class="ss">%p"</span>)</span>
+<span id="cb4-35" class="hljs-ln-code"><a href=""></a><span class="cf">with</span> col3:</span>
+<span id="cb4-36" class="hljs-ln-code"><a href=""></a>    alarm_count <span class="op">=</span> <span class="bu">int</span>(</span>
+<span id="cb4-37" class="hljs-ln-code"><a href=""></a>        ((df[<span class="st">"Line_A"</span>] <span class="op">&lt;</span> <span class="dv">95</span>) <span class="op">|</span> (df[<span class="st">"Line_B"</span>] <span class="op">&lt;</span> <span class="dv">95</span>)).<span class="bu">sum</span>()</span>
+<span id="cb4-38" class="hljs-ln-code"><a href=""></a>    )</span>
+<span id="cb4-39" class="hljs-ln-code"><a href=""></a>    st.metric(<span class="st">"알람 발생 횟수"</span>, alarm_count)</span>
+<span id="cb4-40" class="hljs-ln-code"><a href=""></a></span>
+<span id="cb4-41" class="hljs-ln-code"><a href=""></a><span class="co"># 차트</span></span>
+<span id="cb4-42" class="hljs-ln-code"><a href=""></a>fig <span class="op">=</span> px.line(df, x<span class="op">=</span><span class="st">"timestamp"</span>, y<span class="op">=</span>[<span class="st">"Line_A"</span>, <span class="st">"Line_B"</span>],</span>
+<span id="cb4-43" class="hljs-ln-code"><a href=""></a>              title<span class="op">=</span><span class="st">"실시간 수율 추이"</span>)</span>
+<span id="cb4-44" class="hljs-ln-code"><a href=""></a>st.plotly_chart(fig, use_container_width<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="단계-2-완료-alert_bot.py-알람-봇" class="slide level2 smaller">
+<h2>단계 2 완료 — alert_bot.py 알람 봇</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" data-code-line-numbers="1-6|8-21|23-36"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href=""></a><span class="co"># alert_bot.py</span></span>
+<span id="cb5-2"><a href=""></a><span class="im">import</span> schedule, time, requests, threading</span>
+<span id="cb5-3"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb5-4"><a href=""></a><span class="im">from</span> datetime <span class="im">import</span> datetime</span>
+<span id="cb5-5"><a href=""></a><span class="im">from</span> data_simulator <span class="im">import</span> simulate_yield</span>
+<span id="cb5-6"><a href=""></a><span class="im">import</span> os</span>
+<span id="cb5-7"><a href=""></a></span>
+<span id="cb5-8"><a href=""></a>TELEGRAM_TOKEN <span class="op">=</span> os.getenv(<span class="st">"TELEGRAM_BOT_TOKEN"</span>)</span>
+<span id="cb5-9"><a href=""></a>CHAT_ID        <span class="op">=</span> os.getenv(<span class="st">"TELEGRAM_CHAT_ID"</span>)</span>
+<span id="cb5-10"><a href=""></a>THRESHOLD      <span class="op">=</span> <span class="fl">95.0</span></span>
+<span id="cb5-11"><a href=""></a></span>
+<span id="cb5-12"><a href=""></a><span class="kw">def</span> send_alert(message: <span class="bu">str</span>):</span>
+<span id="cb5-13"><a href=""></a>    url <span class="op">=</span> (</span>
+<span id="cb5-14"><a href=""></a>        <span class="ss">f"https://api.telegram.org/bot</span><span class="sc">{</span>TELEGRAM_TOKEN<span class="sc">}</span><span class="ss">/sendMessage"</span></span>
+<span id="cb5-15"><a href=""></a>    )</span>
+<span id="cb5-16"><a href=""></a>    <span class="cf">try</span>:</span>
+<span id="cb5-17"><a href=""></a>        requests.post(url, json<span class="op">=</span>{</span>
+<span id="cb5-18"><a href=""></a>            <span class="st">"chat_id"</span>:    CHAT_ID,</span>
+<span id="cb5-19"><a href=""></a>            <span class="st">"text"</span>:       message,</span>
+<span id="cb5-20"><a href=""></a>            <span class="st">"parse_mode"</span>: <span class="st">"Markdown"</span></span>
+<span id="cb5-21"><a href=""></a>        }, timeout<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb5-22"><a href=""></a>    <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb5-23"><a href=""></a>        <span class="bu">print</span>(<span class="ss">f"텔레그램 전송 실패: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb5-24"><a href=""></a></span>
+<span id="cb5-25"><a href=""></a><span class="kw">def</span> check_and_alert():</span>
+<span id="cb5-26"><a href=""></a>    df <span class="op">=</span> simulate_yield(<span class="dv">20</span>)  <span class="co"># 최근 20개 포인트</span></span>
+<span id="cb5-27"><a href=""></a>    <span class="cf">for</span> line <span class="kw">in</span> [<span class="st">"Line_A"</span>, <span class="st">"Line_B"</span>]:</span>
+<span id="cb5-28"><a href=""></a>        current <span class="op">=</span> df[line].iloc[<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb5-29"><a href=""></a>        <span class="cf">if</span> current <span class="op">&lt;</span> THRESHOLD:</span>
+<span id="cb5-30"><a href=""></a>            send_alert(</span>
+<span id="cb5-31"><a href=""></a>                <span class="ss">f"*수율 경고*</span><span class="ch">\n</span><span class="ss">"</span></span>
+<span id="cb5-32"><a href=""></a>                <span class="ss">f"라인: </span><span class="sc">{</span>line<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span></span>
+<span id="cb5-33"><a href=""></a>                <span class="ss">f"수율: </span><span class="sc">{</span>current<span class="sc">:.1f}</span><span class="ss">%</span><span class="ch">\n</span><span class="ss">"</span></span>
+<span id="cb5-34"><a href=""></a>                <span class="ss">f"시각: </span><span class="sc">{</span>datetime<span class="sc">.</span>now()<span class="sc">.</span>strftime(<span class="st">'%H:%M'</span>)<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb5-35"><a href=""></a>            )</span>
+<span id="cb5-36"><a href=""></a></span>
+<span id="cb5-37"><a href=""></a><span class="kw">def</span> run_scheduler():</span>
+<span id="cb5-38"><a href=""></a>    <span class="co">"""별도 스레드에서 스케줄러 실행"""</span></span>
+<span id="cb5-39"><a href=""></a>    schedule.every(<span class="dv">5</span>).minutes.do(check_and_alert)</span>
+<span id="cb5-40"><a href=""></a>    <span class="cf">while</span> <span class="va">True</span>:</span>
+<span id="cb5-41"><a href=""></a>        schedule.run_pending()</span>
+<span id="cb5-42"><a href=""></a>        time.sleep(<span class="dv">10</span>)</span>
+<span id="cb5-43"><a href=""></a></span>
+<span id="cb5-44"><a href=""></a><span class="co"># Streamlit 앱 시작 시 백그라운드 스레드로 실행</span></span>
+<span id="cb5-45"><a href=""></a>bot_thread <span class="op">=</span> threading.Thread(target<span class="op">=</span>run_scheduler, daemon<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb5-46"><a href=""></a>bot_thread.start()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="단계-3-3550분-연결-테스트" class="slide level2 smaller">
+<h2>단계 3 (35~50분) — 연결 테스트</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p><strong>테스트 순서: 모듈별로 독립 테스트 먼저</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href=""></a><span class="co"># 1. data_simulator.py 단독 테스트</span></span>
+<span id="cb6-2"><a href=""></a><span class="ex">python</span> <span class="at">-c</span> <span class="st">"from data_simulator import simulate_yield; </span><span class="dt">\</span></span>
+<span id="cb6-3"><a href=""></a><span class="st">  print(simulate_yield(5))"</span></span>
+<span id="cb6-4"><a href=""></a></span>
+<span id="cb6-5"><a href=""></a><span class="co"># 2. 텔레그램 봇 연결 테스트</span></span>
+<span id="cb6-6"><a href=""></a><span class="ex">python</span> <span class="at">-c</span> <span class="st">"</span></span>
+<span id="cb6-7"><a href=""></a><span class="st">import requests, os</span></span>
+<span id="cb6-8"><a href=""></a><span class="st">r = requests.post(</span></span>
+<span id="cb6-9"><a href=""></a><span class="st">  f'https://api.telegram.org/bot{os.getenv(</span><span class="dt">\"</span><span class="st">TELEGRAM_BOT_TOKEN</span><span class="dt">\"</span><span class="st">)}/sendMessage',</span></span>
+<span id="cb6-10"><a href=""></a><span class="st">  json={'chat_id': os.getenv('TELEGRAM_CHAT_ID'), 'text': '테스트!'}</span></span>
+<span id="cb6-11"><a href=""></a><span class="st">)</span></span>
+<span id="cb6-12"><a href=""></a><span class="st">print(r.json())</span></span>
+<span id="cb6-13"><a href=""></a><span class="st">"</span></span>
+<span id="cb6-14"><a href=""></a></span>
+<span id="cb6-15"><a href=""></a><span class="co"># 3. Streamlit 앱 실행</span></span>
+<span id="cb6-16"><a href=""></a><span class="ex">streamlit</span> run app.py</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:45%;">
+<div title="디버깅 원칙">
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>디버깅 원칙</strong></p>
+</div>
+<div class="callout-content">
+<p>각 모듈이 독립적으로 작동하는지 먼저 테스트하고, 그 다음에 연결하세요.</p>
+<p>전체를 한 번에 돌리면 어디서 오류가 났는지 알 수 없습니다.</p>
+</div>
+</div>
+</div>
+</div>
+<p><strong>흔한 오류와 해결법</strong></p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>오류</th>
+<th>원인</th>
+<th>해결</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>401 Unauthorized</td>
+<td>토큰 오류</td>
+<td>.env 확인</td>
+</tr>
+<tr class="even">
+<td>ImportError</td>
+<td>패키지 미설치</td>
+<td>pip install</td>
+</tr>
+<tr class="odd">
+<td>Chat not found</td>
+<td>CHAT_ID 오류</td>
+<td>/start 재실행</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+</section>
+<section id="단계-4-5060분-배포" class="slide level2 smaller">
+<h2>단계 4 (50~60분) — 배포</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p><strong>Streamlit Cloud 배포 (무료)</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href=""></a><span class="co"># 1. requirements.txt 생성</span></span>
+<span id="cb7-2"><a href=""></a><span class="ex">pip</span> freeze <span class="op">&gt;</span> requirements.txt</span>
+<span id="cb7-3"><a href=""></a></span>
+<span id="cb7-4"><a href=""></a><span class="co"># 필수 패키지만 남기기 (용량 절약)</span></span>
+<span id="cb7-5"><a href=""></a><span class="co"># streamlit, plotly, pandas,</span></span>
+<span id="cb7-6"><a href=""></a><span class="co"># google-generativeai, python-dotenv</span></span>
+<span id="cb7-7"><a href=""></a></span>
+<span id="cb7-8"><a href=""></a><span class="co"># 2. GitHub push</span></span>
+<span id="cb7-9"><a href=""></a><span class="fu">git</span> add .</span>
+<span id="cb7-10"><a href=""></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Add AI monitoring system"</span></span>
+<span id="cb7-11"><a href=""></a><span class="fu">git</span> push origin main</span>
+<span id="cb7-12"><a href=""></a></span>
+<span id="cb7-13"><a href=""></a><span class="co"># 3. Streamlit Cloud에서 배포</span></span>
+<span id="cb7-14"><a href=""></a><span class="co"># share.streamlit.io</span></span>
+<span id="cb7-15"><a href=""></a><span class="co"># → New app</span></span>
+<span id="cb7-16"><a href=""></a><span class="co"># → GitHub 저장소 연결</span></span>
+<span id="cb7-17"><a href=""></a><span class="co"># → Secrets에 환경변수 추가</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:45%;">
+<p><strong>Streamlit Cloud Secrets 설정</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource toml number-lines code-with-copy"><code class="sourceCode toml"><span id="cb8-1"><a href=""></a><span class="co"># Streamlit Cloud → Settings → Secrets</span></span>
+<span id="cb8-2"><a href=""></a><span class="co"># .toml 형식으로 입력</span></span>
+<span id="cb8-3"><a href=""></a></span>
+<span id="cb8-4"><a href=""></a><span class="dt">GEMINI_API_KEY</span> <span class="op">=</span> <span class="st">"AIza..."</span></span>
+<span id="cb8-5"><a href=""></a><span class="dt">TELEGRAM_BOT_TOKEN</span> <span class="op">=</span> <span class="st">"123456..."</span></span>
+<span id="cb8-6"><a href=""></a><span class="dt">TELEGRAM_CHAT_ID</span> <span class="op">=</span> <span class="st">"-100..."</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div title="주의">
 <div class="callout callout-warning callout-titled callout-style-default">
 <div class="callout-body">
@@ -376,23 +558,178 @@
 <p><strong>주의</strong></p>
 </div>
 <div class="callout-content">
-<p>텔레그램 API 토큰과 채팅 ID는 보안에 유의하세요.</p>
+<p>GitHub에 <code>.env</code> 파일을 올리면 안 됩니다. Streamlit Cloud의 Secrets 기능을 사용하세요.</p>
 </div>
 </div>
 </div>
 </div>
+</div></div>
 </section>
-<section id="요약" class="slide level2">
-<h2>요약</h2>
+<section id="완성된-시스템-실시간-수율-모니터링" class="slide level2 smaller">
+<h2>완성된 시스템 — 실시간 수율 모니터링</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb9-2"><a href=""></a></span>
+<span id="cb9-3"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb9-4"><a href=""></a>n <span class="ot">&lt;-</span> <span class="dv">60</span></span>
+<span id="cb9-5"><a href=""></a>timeline <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb9-6"><a href=""></a>  <span class="at">Minute  =</span> <span class="dv">1</span><span class="sc">:</span>n,</span>
+<span id="cb9-7"><a href=""></a>  <span class="at">Yield_A =</span> <span class="fu">pmin</span>(<span class="fu">pmax</span>(<span class="dv">96</span> <span class="sc">+</span> <span class="fu">cumsum</span>(<span class="fu">rnorm</span>(n,  <span class="fl">0.0</span>, <span class="fl">0.20</span>)), <span class="dv">88</span>), <span class="dv">100</span>),</span>
+<span id="cb9-8"><a href=""></a>  <span class="at">Yield_B =</span> <span class="fu">pmin</span>(<span class="fu">pmax</span>(<span class="dv">95</span> <span class="sc">+</span> <span class="fu">cumsum</span>(<span class="fu">rnorm</span>(n, <span class="sc">-</span><span class="fl">0.05</span>, <span class="fl">0.25</span>)), <span class="dv">88</span>), <span class="dv">100</span>)</span>
+<span id="cb9-9"><a href=""></a>)</span>
+<span id="cb9-10"><a href=""></a>alarm_pts_a <span class="ot">&lt;-</span> timeline[timeline<span class="sc">$</span>Yield_A <span class="sc">&lt;</span> <span class="dv">95</span>, ]</span>
+<span id="cb9-11"><a href=""></a>alarm_pts_b <span class="ot">&lt;-</span> timeline[timeline<span class="sc">$</span>Yield_B <span class="sc">&lt;</span> <span class="dv">95</span>, ]</span>
+<span id="cb9-12"><a href=""></a>all_alarm <span class="ot">&lt;-</span> <span class="fu">unique</span>(<span class="fu">c</span>(alarm_pts_a<span class="sc">$</span>Minute, alarm_pts_b<span class="sc">$</span>Minute))</span>
+<span id="cb9-13"><a href=""></a></span>
+<span id="cb9-14"><a href=""></a><span class="fu">ggplot</span>(timeline, <span class="fu">aes</span>(<span class="at">x =</span> Minute)) <span class="sc">+</span></span>
+<span id="cb9-15"><a href=""></a>  <span class="fu">annotate</span>(<span class="st">"rect"</span>, <span class="at">xmin =</span> <span class="dv">0</span>, <span class="at">xmax =</span> <span class="dv">60</span>, <span class="at">ymin =</span> <span class="dv">88</span>, <span class="at">ymax =</span> <span class="dv">95</span>,</span>
+<span id="cb9-16"><a href=""></a>           <span class="at">alpha =</span> <span class="fl">0.07</span>, <span class="at">fill =</span> <span class="st">"#E74C3C"</span>) <span class="sc">+</span></span>
+<span id="cb9-17"><a href=""></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> Yield_A, <span class="at">color =</span> <span class="st">"Line A"</span>), <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb9-18"><a href=""></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> Yield_B, <span class="at">color =</span> <span class="st">"Line B"</span>), <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb9-19"><a href=""></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">95</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>,</span>
+<span id="cb9-20"><a href=""></a>             <span class="at">color =</span> <span class="st">"#E74C3C"</span>, <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb9-21"><a href=""></a>  {<span class="cf">if</span> (<span class="fu">length</span>(all_alarm) <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb9-22"><a href=""></a>    <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> all_alarm,</span>
+<span id="cb9-23"><a href=""></a>               <span class="at">color =</span> <span class="st">"#E74C3C"</span>, <span class="at">alpha =</span> <span class="fl">0.4</span>, <span class="at">linewidth =</span> <span class="fl">0.8</span>)} <span class="sc">+</span></span>
+<span id="cb9-24"><a href=""></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Line A"</span> <span class="ot">=</span> <span class="st">"#3498DB"</span>, <span class="st">"Line B"</span> <span class="ot">=</span> <span class="st">"#27AE60"</span>)) <span class="sc">+</span></span>
+<span id="cb9-25"><a href=""></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> <span class="cf">function</span>(x) <span class="fu">paste0</span>(x, <span class="st">"%"</span>)) <span class="sc">+</span></span>
+<span id="cb9-26"><a href=""></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">13</span>) <span class="sc">+</span></span>
+<span id="cb9-27"><a href=""></a>  <span class="fu">labs</span>(</span>
+<span id="cb9-28"><a href=""></a>    <span class="at">title =</span> <span class="st">"통합 시스템: 실시간 수율 모니터링 (빨간 수직선 = 알람 발생)"</span>,</span>
+<span id="cb9-29"><a href=""></a>    <span class="at">x =</span> <span class="st">"경과 시간 (분)"</span>, <span class="at">y =</span> <span class="st">"수율 (%)"</span>, <span class="at">color =</span> <span class="st">"라인"</span></span>
+<span id="cb9-30"><a href=""></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+</div>
+<img data-src="lecture_15_files/figure-revealjs/unnamed-chunk-5-1.png" width="864" class="r-stretch"></section>
+<section id="완성-대시보드-기능-체크리스트" class="slide level2 smaller">
+<h2>완성 대시보드 — 기능 체크리스트</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Streamlit UI 기능</strong></p>
 <ul>
-<li>시스템 구성 요소 이해</li>
-<li>코드 생성 및 연결 테스트</li>
-<li>Streamlit 배포 및 GitHub 연동</li>
+<li>KPI 카드 (Line A/B 수율, 알람 횟수)</li>
+<li>실시간 수율 트렌드 차트 (Plotly)</li>
+<li>데이터 새로고침 버튼</li>
+<li>Gemini AI 분석 패널</li>
+<li>알람 이력 테이블</li>
 </ul>
+</div><div class="column" style="width:50%;">
+<p><strong>백그라운드 기능</strong></p>
+<ul>
+<li>5분마다 자동 수율 체크</li>
+<li>임계값 이하 시 텔레그램 알람</li>
+<li>Gemini AI 원인 분석 메시지</li>
+<li>알람 레벨 3단계 (주의/경고/위험)</li>
+</ul>
+<div title="포트폴리오 가치">
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>포트폴리오 가치</strong></p>
+</div>
+<div class="callout-content">
+<p>이 시스템을 GitHub에 올리고 URL을 면접에서 보여주면 “실제 프로젝트 경험”으로 인정받습니다.</p>
+</div>
+</div>
+</div>
+</div>
+</div></div>
 </section>
-<section id="감사합니다" class="slide level2" data-background="#1F4E79">
-<h2>감사합니다!</h2>
-<p>질문이 있으시면 언제든지 문의하세요.</p>
+<section id="프로젝트-3-안내-마지막-과제" class="slide level2" data-background="#1F4E79">
+<h2>프로젝트 3 안내 — 마지막 과제</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p><strong>과제: 나만의 AI 디스플레이 도구</strong></p>
+<p>지금까지 배운 모든 것을 활용하세요.</p>
+<p><strong>최소 요구사항</strong></p>
+<ol type="1">
+<li>Streamlit 앱 (배포 URL 필수)</li>
+<li>AI API 연동 (Claude or Gemini)</li>
+<li>디스플레이 산업 관련 기능</li>
+<li>GitHub 레포 (README 포함)</li>
+<li>텔레그램 봇 또는 알람 기능</li>
+</ol>
+<p><strong>발표 방법</strong>: 2주 후, 팀당 3분 URL 하나로 모든 것을 보여주세요.</p>
+</div><div class="column" style="width:45%;">
+<p><strong>아이디어 예시</strong></p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>아이디어</th>
+<th>난이도</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>수율 예측 대시보드</td>
+<td>보통</td>
+</tr>
+<tr class="even">
+<td>OLED 공정 Q&amp;A 봇</td>
+<td>쉬움</td>
+</tr>
+<tr class="odd">
+<td>불량 원인 분석 도구</td>
+<td>보통</td>
+</tr>
+<tr class="even">
+<td>공정 레시피 최적화</td>
+<td>어려움</td>
+</tr>
+<tr class="odd">
+<td>장비 상태 모니터링</td>
+<td>보통</td>
+</tr>
+</tbody>
+</table>
+<p><strong>평가 기준</strong></p>
+<ul>
+<li>실용성 40% / 완성도 30%</li>
+<li>코드 품질 20% / 발표 10%</li>
+</ul>
+</div></div>
+</section>
+<section id="강-요약" class="slide level2 smaller">
+<h2>15강 요약</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>오늘 만든 것</strong></p>
+<ul>
+<li><code>data_simulator.py</code> — 수율 시뮬레이션</li>
+<li><code>app.py</code> — Streamlit 대시보드 (KPI + 차트)</li>
+<li><code>alert_bot.py</code> — 텔레그램 자동 알람 봇</li>
+<li>세 모듈을 하나의 시스템으로 통합</li>
+<li>Streamlit Cloud 배포 완료</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>다음 강의 예고</strong></p>
+<p><strong>16강</strong>: 최신 AI 트렌드 &amp; 수료</p>
+<ul>
+<li>2025 AI 지형도 변화 타임라인</li>
+<li>GitHub Trending 실시간 분석</li>
+<li>디스플레이 x AI 삼성/LG 사례</li>
+<li>취업 포트폴리오 최종 점검</li>
+<li>수료증 및 프로젝트 3 발표</li>
+</ul>
+</div></div>
+<div title="핵심 한 줄 요약">
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>핵심 한 줄 요약</strong></p>
+</div>
+<div class="callout-content">
+<p>Streamlit + Gemini + 텔레그램 = 60분 만에 완성되는 AI 공장 모니터링 시스템. 코딩은 AI가, 아이디어는 당신이.</p>
+</div>
+</div>
+</div>
+</div>
 
 </section></section>
     </div>

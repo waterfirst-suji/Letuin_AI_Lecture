@@ -1,6 +1,6 @@
 ---
 title: "배포 플랫폼 10종 총정리"
-subtitle: "내 앱을 세상에 — 10개 플랫폼 완전 정리"
+subtitle: "Netlify, Vercel, Render, Railway… 어디에 무엇을 올려야 하나"
 author: "렛유인 KDC"
 date: today
 engine: knitr
@@ -31,145 +31,512 @@ format:
     margin: 0.1
 ---
 
-# PART 5: 앱을 만들었는데 내 컴퓨터에서만 돌아간다면? {background="#1F4E79"}
+# PART 7: 플랫폼 10종, 각자의 자리가 있다 {background="#1F4E79"}
 
-## 11강: 플랫폼 소개
+## 여러분은 지금 어떤 플랫폼을 써야 할까요? {background="#1F4E79"}
 
-### 10개 플랫폼 개요
-
-- GitHub Pages: HTML/정적, 무료
-- Streamlit Cloud: Python, 무료
-- shinyapps.io: R Shiny, 제한무료
-
-::: {.fragment .fade-in}
-- Netlify: 정적+서버리스, 무료
-- Vercel: Next.js/React, 무료
+::: {.columns}
+::: {.column width="55%"}
+::: {.r-fit-text}
+**10개**
+:::
+주요 배포 플랫폼의 수
 :::
 
-::: {.fragment .highlight-red}
-- Firebase: 웹앱+DB, 무료
-- Render: 풀스택, 무료
+::: {.column width="45%"}
+::: {.fragment}
+- GitHub Pages → HTML만
+- Streamlit Cloud → Python만
+- Firebase → Full-stack만
+
+각각의 플랫폼은 **존재 이유**가 있다.
+
+10개를 다 알면 어떤 앱이든 **최적의 집**을 찾아줄 수 있다.
+:::
+:::
 :::
 
-### 플랫폼 개요 (계속)
+---
 
-- Fly.io: 컨테이너, 제한무료
-- HuggingFace Spaces: AI/ML, 무료
-
-::: {.fragment .fade-in}
-- Google Cloud Run: 프로덕션, 유료
-:::
-
-## 플랫폼 난이도 vs 무료한도
+## 10대 플랫폼 한눈에 보기
 
 ```{r}
-#| echo: false
+#| echo: true
+ten_platforms <- data.frame(
+  번호       = 1:10,
+  플랫폼     = c("GitHub Pages","Streamlit Cloud","Firebase Studio","Vercel","Netlify",
+                "Render","Railway","Hugging Face","Replit","Fly.io"),
+  언어_기술  = c("HTML/JS","Python","Python/JS/Flutter","Next.js/React","정적/서버리스",
+                "Docker/Python","Docker/Python","ML/Python","다국어","Docker"),
+  무료여부   = c("완전무료","완전무료","무료티어","무료티어","무료티어",
+                "무료티어","유료중심","무료티어","무료티어","무료티어"),
+  추천용도   = c("포트폴리오","데이터앱","풀스택","프론트엔드","JAMstack",
+                "API서버","백엔드","AI모델","학습","프로덕션")
+)
+knitr::kable(ten_platforms,
+             caption="배포 플랫폼 10종 비교",
+             align=c("c","l","l","c","l"))
+```
+
+---
+
+## 정적 vs 동적 사이트 — 응답 시간 비교
+
+```{r}
+#| echo: true
 #| fig-width: 9
 #| fig-height: 4.5
 library(ggplot2)
-platforms <- data.frame(
-  Platform = c("GitHub Pages", "Streamlit Cloud", "shinyapps.io", "Netlify", "Vercel", 
-               "Firebase", "Render", "Fly.io", "HuggingFace Spaces", "Google Cloud Run"),
-  Difficulty = c(1, 2, 3, 2, 3, 3, 3, 4, 2, 5),
-  FreeLimit = c(5, 4, 3, 4, 4, 4, 4, 3, 4, 2),
-  Features = c(10, 8, 7, 9, 9, 8, 8, 6, 8, 5)
+
+requests <- data.frame(
+  Type  = factor(rep(c("정적 사이트\n(GitHub Pages)",
+                        "동적 사이트\n(Streamlit)"), each=4)),
+  Step  = factor(rep(c("클라이언트\n요청","CDN/서버","처리","응답"), 2),
+                 levels=c("클라이언트\n요청","CDN/서버","처리","응답")),
+  Time_ms = c(5, 20, 20, 30,   # 정적: CDN에서 바로 제공
+               5, 50, 550, 560) # 동적: 서버에서 Python 실행
 )
-ggplot(platforms, aes(x=Difficulty, y=FreeLimit, size=Features, label=Platform)) +
-  geom_point(alpha=0.7) +
-  geom_text(vjust=1.5, size=3) +
-  scale_size(range=c(3,10)) +
-  labs(x="난이도", y="무료 한도", title="플랫폼 난이도 vs 무료한도")
+
+ggplot(requests, aes(x=as.numeric(Step), y=Time_ms,
+                     color=Type, group=Type)) +
+  geom_line(linewidth=1.5) +
+  geom_point(size=4) +
+  scale_x_continuous(breaks=1:4,
+                     labels=c("요청","서버","처리","응답")) +
+  scale_color_manual(values=c("#3498DB","#E67E22")) +
+  scale_y_continuous(labels=function(x) paste0(x,"ms")) +
+  theme_minimal(base_size=13) +
+  labs(title="정적 vs 동적 사이트 응답 시간 비교",
+       subtitle="정적 사이트는 CDN 덕분에 압도적으로 빠름 — 동적은 서버 연산 시간 추가",
+       x="단계", y="누적 시간", color="사이트 유형")
 ```
 
-## 플랫폼 비교표
+---
+
+## 각 플랫폼 실제 배포 데모
+
+::: {.panel-tabset}
+
+### GitHub Pages
+
+```bash
+# 방법 1: 직접 HTML 배포
+mkdir my-portfolio && cd my-portfolio
+echo "<h1>Display Engineer Portfolio</h1>" > index.html
+
+git init
+git add index.html
+git commit -m "Initial commit"
+
+# GitHub에 새 저장소 생성 후
+git remote add origin https://github.com/USERNAME/REPO.git
+git push -u origin main
+
+# Settings → Pages → Source: main branch / (root)
+# 주소: https://USERNAME.github.io/REPO
+```
+
+### Vercel
+
+```bash
+# Node.js / React / Next.js 앱 배포
+npm install -g vercel
+
+# 프로젝트 폴더에서
+vercel
+
+# 질문에 답하면 자동 배포
+# > Set up and deploy? Y
+# > Which scope? (개인 계정 선택)
+# > Link to existing project? N
+# > Project name: my-display-app
+
+# 완료 후
+# https://my-display-app.vercel.app
+```
+
+### Render
+
+```bash
+# Python API 서버 / FastAPI / Flask 배포
+
+# 1. requirements.txt 확인
+fastapi==0.109.0
+uvicorn==0.27.0
+pandas==2.0.3
+
+# 2. render.yaml 생성 (선택)
+services:
+  - type: web
+    name: display-api
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+
+# 3. render.com → New → Web Service
+# GitHub 연결 후 자동 배포
+```
+
+:::
+
+---
+
+## 플랫폼 선택 플로우차트
 
 ```{r}
-#| echo: false
-knitr::kable(platforms, caption="플랫폼 전체 비교", align=c("l","r","r","r"))
+#| echo: true
+#| fig-width: 9
+#| fig-height: 4.5
+library(ggplot2)
+
+nodes_dt <- data.frame(
+  x     = c(5,   2,   8,   1,   3,    6,     9),
+  y     = c(4,   3,   3,   2,   2,    2,     2),
+  label = c("새 앱\n만들기",
+            "Python\n앱?",
+            "정적\n사이트?",
+            "Streamlit\nCloud",
+            "Heroku\n/Render",
+            "GitHub\nPages",
+            "Vercel\n/Netlify"),
+  type  = c("root","branch","branch","leaf","leaf","leaf","leaf")
+)
+
+edges_dt <- data.frame(
+  x    = c(5,5,2,2,8,8),
+  xend = c(2,8,1,3,6,9),
+  y    = c(4,4,3,3,3,3),
+  yend = c(3,3,2,2,2,2),
+  label= c("YES","NO","YES","NO","YES","NO")
+)
+
+ggplot() +
+  geom_segment(data=edges_dt,
+               aes(x=x, xend=xend, y=y, yend=yend),
+               color="gray60", linewidth=1,
+               arrow=arrow(length=unit(0.15,"inches"), type="closed")) +
+  geom_label(data=edges_dt,
+             aes(x=(x+xend)/2, y=(y+yend)/2, label=label),
+             size=2.8, fill="gray20", color="white") +
+  geom_point(data=nodes_dt,
+             aes(x=x, y=y, color=type), size=14) +
+  geom_text(data=nodes_dt,
+            aes(x=x, y=y, label=label),
+            color="white", size=2.8, fontface="bold") +
+  scale_color_manual(values=c("root"="#1F4E79",
+                               "branch"="#2E75B6",
+                               "leaf"="#27AE60")) +
+  xlim(0, 10) + ylim(1, 5) +
+  theme_void(base_size=13) +
+  labs(title="배포 플랫폼 선택 가이드") +
+  theme(legend.position="none",
+        plot.title=element_text(color="gray20", size=14, hjust=0.5, face="bold"))
 ```
 
-## 플랫폼 추천 {auto-animate="true"}
+---
 
-::: {.panel-tabset}
-### 입문자 추천
-- GitHub Pages
-- Streamlit Cloud
-- HuggingFace Spaces
-:::
-
-### 중급자 추천
-- Netlify
-- Vercel
-- Firebase
-:::
-
-### 고급자 추천
-- Fly.io
-- Google Cloud Run
-:::
-  
-## 플랫폼 추천 {auto-animate="true"}
-
-::: {.panel-tabset}
-### 입문자 추천
-- GitHub Pages
-- Streamlit Cloud
-- HuggingFace Spaces
-:::
-
-### 중급자 추천
-- Netlify
-- Vercel
-- Firebase
-:::
-
-### 고급자 추천
-- Fly.io
-- Google Cloud Run
-- Render
-:::
-
-## Netlify 배포 실습
-
-- Netlify의 drag & drop 기능으로 손쉽게 배포
-
-::: {.callout-tip title="팁"}
-Netlify는 정적 사이트 배포에 최적화되어 있습니다.
-:::
-
-## 배포 시 주의사항
-
-::: {.callout-warning title="주의"}
-유료 플랜을 선택하기 전에 무료 한도를 반드시 확인하세요.
-:::
-
-## 플랫폼 기능 요약
+## Netlify — JAMstack의 왕좌
 
 ::: {.columns}
-::: {.column width="45%"}
-### 장점
-- 다양한 무료 옵션
-- 쉬운 배포
-:::
-
 ::: {.column width="55%"}
-### 단점
-- 한정된 기능
-- 유료 플랜 필요 시 비용 증가
+### Netlify란?
+
+**JAMstack** (JavaScript + API + Markup) 특화 플랫폼
+
+**강점:**
+- 드래그 앤 드롭으로 HTML 폴더 배포
+- 자동 HTTPS
+- 폼 처리 (백엔드 없이 문의 폼 구현)
+- A/B 테스트 기능
+- 분기별 프리뷰 URL
+
+```bash
+# 방법 1: CLI 배포
+npm install -g netlify-cli
+netlify deploy --dir=./dist --prod
+
+# 방법 2: 드래그 앤 드롭
+# app.netlify.com에 폴더 드래그
+```
+:::
+
+::: {.column width="45%"}
+### Netlify 무료 플랜
+
+| 항목 | 한도 |
+|------|------|
+| 빌드 시간 | 300분/월 |
+| 대역폭 | 100GB/월 |
+| 사이트 수 | 무제한 |
+| 팀원 수 | 1명 |
+
+::: {.callout-tip title="디스플레이 업 활용"}
+제품 소개 사이트, 스펙 비교 페이지, 이력서/포트폴리오에 최적. GitHub + Netlify = 자동 배포 파이프라인.
+:::
 :::
 :::
 
-## 코드 예시: Netlify 배포
+---
+
+## Hugging Face Spaces — AI 모델 배포의 성지
+
+::: {.columns}
+::: {.column width="55%"}
+### AI 모델을 세상에 공개하는 곳
+
+> "Stable Diffusion, Whisper, 수많은 AI 모델들이 여기 있다."
+
+**Hugging Face Spaces 특징:**
+- Gradio 또는 Streamlit 앱 무료 배포
+- GPU 인스턴스 (유료) 사용 가능
+- 모델 허브와 즉시 연동
+- 공개 AI 커뮤니티 접점
 
 ```python
-# Netlify CLI 설치
-npm install -g netlify-cli
+# Gradio 앱 예시 (display defect classifier)
+import gradio as gr
 
-# 프로젝트 디렉토리에서 배포
-netlify deploy --prod
-``` {code-line-numbers="1-2|3"}
+def classify_defect(image):
+    # OLED 결함 분류 AI 모델
+    return {"정상": 0.92, "Bright Dot": 0.05,
+            "Dark Dot": 0.02, "Mura": 0.01}
 
-## 마무리
+gr.Interface(
+    fn=classify_defect,
+    inputs=gr.Image(),
+    outputs=gr.Label()
+).launch()
+```
+:::
 
-- 다양한 플랫폼을 통해 앱을 손쉽게 배포하세요.
-- 각 플랫폼의 장단점을 고려하여 선택하세요.
+::: {.column width="45%"}
+### 취업에 활용하는 법
+
+```
+Hugging Face Space URL:
+huggingface.co/spaces/yourname/display-inspector
+
+포트폴리오에 추가:
+- OLED 결함 분류 AI
+- 수율 예측 모델
+- 패널 화질 평가기
+```
+
+::: {.callout-note title="삼성/LG 취업 팁"}
+AI 모델을 Hugging Face에 공개하면 채용담당자가 바로 테스트할 수 있습니다. GitHub + Hugging Face = 완성형 포트폴리오.
+:::
+:::
+:::
+
+---
+
+## Replit — 브라우저에서 바로 코딩하고 배포
+
+::: {.columns}
+::: {.column width="55%"}
+### 설치 없이 바로 시작
+
+**Replit의 장점:**
+- 브라우저만 있으면 개발 가능
+- 50+ 언어 지원 (Python, JS, R, ...)
+- 배포 버튼 한 번으로 공개
+- 실시간 협업 (구글독스처럼)
+- AI 코드 어시스턴트 내장
+
+**학습 환경으로 최적:**
+```python
+# Replit에서 Python 즉시 실행
+# → Deploy 클릭
+# → replit.app URL 생성
+```
+:::
+
+::: {.column width="45%"}
+### Replit vs 로컬 환경
+
+| 항목 | Replit | 로컬 |
+|------|--------|------|
+| 설치 | 불필요 | 필요 |
+| 속도 | 느림 | 빠름 |
+| 협업 | 실시간 | Git |
+| 배포 | 원클릭 | 설정 필요 |
+| 가격 | 무료(제한) | 무료 |
+
+::: {.callout-tip title="추천 사용 시나리오"}
+강의 시간에 빠르게 데모 앱을 만들어 URL을 공유할 때 가장 빠릅니다.
+:::
+:::
+:::
+
+---
+
+## 플랫폼 평가 히트맵 — 어떤 상황에 어떤 플랫폼?
+
+```{r}
+#| echo: true
+#| fig-width: 9
+#| fig-height: 4.5
+library(ggplot2)
+
+score_data <- data.frame(
+  Platform  = rep(c("GitHub Pages","Streamlit","Firebase",
+                     "Vercel","Render"), each=4),
+  Criterion = rep(c("무료 한도","쉬운 설정","Python 지원","확장성"), 5),
+  Score     = c(
+    10, 9, 2, 7,   # GitHub Pages
+     9, 8,10, 6,   # Streamlit
+     7, 6, 8,10,   # Firebase
+     8, 8, 5, 9,   # Vercel
+     7, 7, 9, 8    # Render
+  )
+)
+
+ggplot(score_data, aes(x=Criterion, y=Platform, fill=Score)) +
+  geom_tile(color="gray30", linewidth=0.5) +
+  geom_text(aes(label=Score), color="white", fontface="bold", size=4.5) +
+  scale_fill_gradient2(low="#E74C3C", mid="#F39C12", high="#27AE60",
+                       midpoint=7, limits=c(1, 10)) +
+  theme_minimal(base_size=12) +
+  labs(title="배포 플랫폼 평가 히트맵 (10점 만점)",
+       subtitle="초록=강점, 빨강=약점 — 자신의 필요에 맞는 강점을 보유한 플랫폼 선택",
+       x="", y="", fill="점수")
+```
+
+---
+
+## 실습 — 기존 앱 다른 플랫폼에 재배포
+
+::: {.columns}
+::: {.column width="55%"}
+### 미션: 동일한 앱을 두 플랫폼에
+
+9강에서 만든 **PPI 계산기**를 아래 두 곳에 배포하세요.
+
+**Streamlit Cloud (이미 완료):**
+```
+https://yourname-ppi-calc.streamlit.app
+```
+
+**Hugging Face Spaces로 재배포:**
+```bash
+# 1. Hugging Face 계정 생성
+# 2. New Space → Streamlit 선택
+# 3. 파일 업로드 또는 GitHub 연결
+# 4. app.py, requirements.txt 업로드
+# 5. 자동 빌드 완료
+```
+
+동일한 앱, **다른 URL** — 포트폴리오에 두 링크 모두 추가!
+:::
+
+::: {.column width="45%"}
+### 플랫폼별 URL 예시
+
+```
+GitHub Pages:
+  yourname.github.io/display-tools
+
+Streamlit Cloud:
+  yourname-display-tools.streamlit.app
+
+Hugging Face:
+  huggingface.co/spaces/yourname/ppi-calc
+
+Vercel:
+  display-tools-yourname.vercel.app
+```
+
+::: {.callout-important title="포트폴리오 전략"}
+면접관이 "포트폴리오 보여주세요"라고 했을 때, 3개 이상의 URL을 즉시 꺼낼 수 있어야 합니다.
+:::
+:::
+:::
+
+---
+
+## 플랫폼 속도 비교 — 실제 로딩 타임
+
+```{r}
+#| echo: true
+#| fig-width: 9
+#| fig-height: 4.2
+library(ggplot2)
+
+load_times <- data.frame(
+  Platform = factor(
+    c("GitHub Pages","Vercel","Netlify","Streamlit","Render","Hugging Face"),
+    levels=c("GitHub Pages","Vercel","Netlify","Streamlit","Render","Hugging Face")
+  ),
+  Cold_Start = c(0.3, 0.5, 0.4, 8.0, 12.0, 15.0),
+  Warm_Start = c(0.3, 0.5, 0.4,  2.0,  1.5,  2.5),
+  Type       = c("정적","정적","정적","동적","동적","동적")
+)
+
+load_long <- reshape(load_times,
+  varying=c("Cold_Start","Warm_Start"),
+  v.names="Seconds",
+  timevar="StartType",
+  times=c("콜드 스타트 (첫 방문)","웜 스타트 (재방문)"),
+  direction="long"
+)
+
+ggplot(load_long, aes(x=Platform, y=Seconds, fill=StartType)) +
+  geom_bar(stat="identity", position="dodge", width=0.65) +
+  scale_fill_manual(values=c("콜드 스타트 (첫 방문)"="#E74C3C",
+                              "웜 스타트 (재방문)"="#27AE60")) +
+  scale_y_continuous(labels=function(x) paste0(x,"초")) +
+  theme_minimal(base_size=12) +
+  labs(title="플랫폼별 페이지 로딩 시간 비교 (초)",
+       subtitle="정적 사이트 0.3~0.5초 vs 동적 앱 콜드스타트 8~15초 차이 주의",
+       x="", y="로딩 시간 (초)", fill="")
+```
+
+---
+
+## 11강 핵심 요약
+
+::: {.columns}
+::: {.column width="50%"}
+### 10대 플랫폼 한 줄 요약
+
+::: {.fragment}
+**GitHub Pages**: 정적 포트폴리오, 완전 무료
+:::
+::: {.fragment}
+**Streamlit Cloud**: Python/데이터 앱
+:::
+::: {.fragment}
+**Firebase**: 풀스택, Google 생태계
+:::
+::: {.fragment}
+**Vercel**: React/Next.js, 프론트 최강
+:::
+::: {.fragment}
+**Netlify**: JAMstack, 드래그 앤 드롭
+:::
+::: {.fragment}
+**Render/Railway**: Docker, API 서버
+:::
+::: {.fragment}
+**Hugging Face**: AI 모델 공개
+:::
+::: {.fragment}
+**Replit**: 브라우저 코딩/데모
+:::
+:::
+
+::: {.column width="50%"}
+### 다음 강의 예고 (12강)
+
+**환경 관리 & 보안 & GitHub Actions**
+
+> 이 실수를 하면 요금 폭탄이 온다
+
+실화: GitHub에 API Key 올림 → 30분 후 봇 발견 → $50,000 청구
+
+- .env 파일
+- .gitignore
+- GitHub Secrets
+- CI/CD 자동화
+:::
+:::

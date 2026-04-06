@@ -29,6 +29,72 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #f8f8f2; background-color: #282a36; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #f8f8f2; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #ff79c6; } /* Annotation */
+    code span.at { color: #ff79c6; } /* Attribute */
+    code span.bn { color: #bd93f9; } /* BaseN */
+    code span.bu { color: #8be9fd; } /* BuiltIn */
+    code span.cf { color: #ff79c6; } /* ControlFlow */
+    code span.ch { color: #f1fa8c; } /* Char */
+    code span.cn { color: #bd93f9; font-weight: bold; } /* Constant */
+    code span.co { color: #6272a4; } /* Comment */
+    code span.cv { color: #8be9fd; } /* CommentVar */
+    code span.do { color: #ffb86c; } /* Documentation */
+    code span.dt { color: #8be9fd; font-style: italic; } /* DataType */
+    code span.dv { color: #bd93f9; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #8be9fd; } /* Extension */
+    code span.fl { color: #bd93f9; } /* Float */
+    code span.fu { color: #50fa7b; } /* Function */
+    code span.im { color: #ff79c6; } /* Import */
+    code span.in { color: #f1fa8c; } /* Information */
+    code span.kw { color: #ff79c6; } /* Keyword */
+    code span.op { color: #f8f8f2; } /* Operator */
+    code span.ot { color: #50fa7b; } /* Other */
+    code span.pp { color: #ff79c6; } /* Preprocessor */
+    code span.re { color: #8be9fd; } /* RegionMarker */
+    code span.sc { color: #ff79c6; } /* SpecialChar */
+    code span.ss { color: #f1fa8c; } /* SpecialString */
+    code span.st { color: #f1fa8c; } /* String */
+    code span.va { color: #8be9fd; } /* Variable */
+    code span.vs { color: #f1fa8c; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
   </style>
   <link rel="stylesheet" href="lecture_09_files/libs/revealjs/dist/theme/quarto-329acd3abe71bdd3a4ec42a5a574c26f.css">
   <link href="lecture_09_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -131,7 +197,7 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">AI 시뮬레이션 만들기</h1>
-  <p class="subtitle">픽셀의 색이 만들어지는 원리를 눈으로</p>
+  <p class="subtitle">픽셀 하나의 세계 — 디스플레이 공정을 코드로 재현하다</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -144,166 +210,531 @@
   <p class="date">2026-04-06</p>
 </section>
 <section>
-<section id="part-4-디스플레이-색공간" class="title-slide slide level1 center" data-background="#1F4E79">
-<h1>PART 4: 디스플레이 색공간</h1>
+<section id="part-5-시뮬레이션으로-디스플레이-공정을-이해한다" class="title-slide slide level1 center" data-background="#1F4E79">
+<h1>PART 5: 시뮬레이션으로 디스플레이 공정을 이해한다</h1>
 
 </section>
-<section id="오프닝-픽셀과-색상" class="slide level2">
-<h2>오프닝: 픽셀과 색상</h2>
-<p>“픽셀 하나가 어떻게 색을 만드는가? 시뮬레이션으로 직접 보자.”</p>
+<section id="k-화면에는-픽셀이-몇-개일까" class="slide level2" data-background="#1F4E79">
+<h2>4K 화면에는 픽셀이 몇 개일까?</h2>
+<div class="r-fit-text">
+<p><strong>3840 × 2160 = 8,294,400</strong></p>
+</div>
+<div class="fragment">
+<p>약 <strong>830만 개</strong>의 픽셀. 각각이 빨강·초록·파랑 서브픽셀 <strong>3개</strong>로 구성. 이 <strong>2,500만 개의 불빛</strong>이 완벽하게 작동해야 한다.</p>
+</div>
+<div class="fragment">
+<p>불량 하나 → 불량품 하나.</p>
+<p>이걸 <strong>시뮬레이션</strong>으로 연습할 수 있다면?</p>
+</div>
 </section>
-<section id="디스플레이-색공간" class="slide level2 smaller">
-<h2>디스플레이 색공간</h2>
+<section id="시뮬레이션이-왜-중요한가" class="slide level2">
+<h2>시뮬레이션이 왜 중요한가</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<h3 id="현실의-문제">현실의 문제</h3>
+<p>디스플레이 제조 장비 1대 = <strong>수십억 ~ 수천억 원</strong></p>
+<p>실제 공정 실험은:</p>
+<div class="fragment">
 <ul>
-<li>sRGB</li>
-<li>DCI-P3</li>
-<li>Adobe RGB</li>
-<li>Rec.2020</li>
+<li>시간이 엄청 걸린다 (수 시간 ~ 수 일)</li>
 </ul>
-</section>
-<section id="색역color-gamut-개념" class="slide level2">
-<h2>색역(Color Gamut) 개념</h2>
-<p>CIE 1931 xy 색도도</p>
-</section>
-<section id="rgb-서브픽셀-레이아웃-비교" class="slide level2">
-<h2>RGB 서브픽셀 레이아웃 비교</h2>
+</div>
+<div class="fragment">
 <ul>
-<li>Stripe</li>
-<li>Diamond</li>
-<li>PenTile</li>
+<li>재료 비용이 막대하다 (유리 원판, 증착 재료)</li>
 </ul>
-</section>
-<section id="시뮬레이션-종류" class="slide level2">
-<h2>시뮬레이션 종류</h2>
+</div>
+<div class="fragment">
 <ul>
-<li>광학 시뮬레이션</li>
-<li>공정 시뮬레이션</li>
-<li>통계 시뮬레이션</li>
+<li>실패하면 복구가 어렵다</li>
 </ul>
-</section>
-<section id="rgb-색상-혼합-실습" class="slide level2">
-<h2>RGB 색상 혼합 실습</h2>
-<p>R/G/B 슬라이더로 색상 조합을 만들어보세요.</p>
-</section>
-<section id="색역-시각화" class="slide level2">
-<h2>색역 시각화</h2>
-<p>Gemini API를 사용하여 색상 용도를 자동 해설합니다.</p>
-</section>
-<section id="cie-1931-xy-색도도-시각화" class="slide level2 smaller">
-<h2>CIE 1931 xy 색도도 시각화</h2>
+</div>
+</div><div class="column" style="width:45%;">
+<div class="fragment">
+<h3 id="시뮬레이션의-해법">시뮬레이션의 해법</h3>
+<pre><code>실제 공정 1회 비용:
+수억 원
 
-<img data-src="lecture_09_files/figure-revealjs/unnamed-chunk-1-1.png" width="864" class="r-stretch"></section>
-<section id="rgb-서브픽셀-레이아웃-비교-1" class="slide level2 smaller">
-<h2>RGB 서브픽셀 레이아웃 비교</h2>
+시뮬레이션 1회 비용:
+0원 (전기세 제외)</code></pre>
+<p><strong>먼저 시뮬레이션 → 검증 → 실제 적용</strong></p>
+<p>삼성/LG 연구소에서 매일 하는 일</p>
+</div>
+</div></div>
+</section>
+<section id="디스플레이-시뮬레이션의-종류" class="slide level2">
+<h2>디스플레이 시뮬레이션의 종류</h2>
+<div class="panel-tabset">
+<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">픽셀/PPI 시뮬레이터</a></li><li><a href="#tabset-1-2">색역 시뮬레이터</a></li><li><a href="#tabset-1-3">수율 시뮬레이터</a></li><li><a href="#tabset-1-4">결함 시뮬레이터</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1">
+<p><strong>목적</strong>: 해상도별 선명도 비교</p>
+<pre><code>PPI = √(가로픽셀² + 세로픽셀²) / 화면크기(인치)
 
-<img data-src="lecture_09_files/figure-revealjs/unnamed-chunk-2-1.png" width="864" class="r-stretch"></section>
-<section id="색공간별-커버리지-비교" class="slide level2 smaller">
-<h2>색공간별 커버리지 비교</h2>
-<div class="cell">
-<div class="cell-output-display">
+iPhone 15 Pro:          460 PPI  → Retina 등급
+Samsung Galaxy S24 Ultra: 505 PPI
+일반 모니터 27":         163 PPI</code></pre>
+<blockquote>
+<p>인간 눈의 한계: 약 300 PPI @ 30cm 거리</p>
+</blockquote>
+</div>
+<div id="tabset-1-2">
+<p><strong>목적</strong>: 색 표현 범위 비교</p>
 <table class="caption-top">
-<caption>색공간별 커버리지 비교</caption>
 <thead>
 <tr class="header">
-<th style="text-align: left;">ColorSpace</th>
-<th style="text-align: right;">Coverage</th>
+<th>색역 표준</th>
+<th>CIE 1931 커버리지</th>
+<th>용도</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">sRGB</td>
-<td style="text-align: right;">100</td>
+<td>sRGB</td>
+<td>35.9%</td>
+<td>일반 모니터</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">DCI-P3</td>
-<td style="text-align: right;">90</td>
+<td>DCI-P3</td>
+<td>53.6%</td>
+<td>영화/전문가</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Adobe RGB</td>
-<td style="text-align: right;">75</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Rec.2020</td>
-<td style="text-align: right;">70</td>
+<td>Rec.2020</td>
+<td>75.8%</td>
+<td>HDR TV</td>
 </tr>
 </tbody>
 </table>
 </div>
+<div id="tabset-1-3">
+<p><strong>목적</strong>: 공정 변수별 수율 예측</p>
+<p>수율(Yield) = 양품 패널 수 / 전체 생산 패널 수 × 100%</p>
+<ul>
+<li>삼성 OLED 패널: 95% 이상 목표</li>
+<li>초기 OLED 개발 시: 50~60%에서 시작</li>
+</ul>
 </div>
-</section>
-<section id="색공간-시각화" class="slide level2" data-auto-animate="true">
-<h2 data-id="quarto-animate-title">색공간 시각화</h2>
-<p>RGB 색상 혼합 및 색역 시각화</p>
-</section>
-<section id="색공간-시각화-확장" class="slide level2" data-auto-animate="true">
-<h2 data-id="quarto-animate-title">색공간 시각화 확장</h2>
-<p>RGB 색상 혼합 및 색역 시각화 + 경계 시각화</p>
-</section>
-<section id="시뮬레이션의-중요성" class="slide level2">
-<h2>시뮬레이션의 중요성</h2>
-<div class="fragment fade-in">
-<p>시뮬레이션은 정확한 색상 재현을 위한 필수 도구입니다.</p>
-</div>
-<div class="fragment highlight-red">
-<p>정확한 색상 재현은 사용자 경험에 큰 영향을 미칩니다.</p>
-</div>
-</section>
-<section id="색상-용도-해설" class="slide level2">
-<h2>색상 용도 해설</h2>
-<p>Gemini API를 통한 자동 해설 기능</p>
-</section>
-<section id="시뮬레이션-종류의-비교" class="slide level2">
-<h2>시뮬레이션 종류의 비교</h2>
-<div class="panel-tabset">
-<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">광학 시뮬레이션</a></li></ul>
-<div class="tab-content">
-<div id="tabset-1-1">
-<p>광학적 특성 분석 ### 공정 시뮬레이션 제조 공정 최적화 ### 통계 시뮬레이션 데이터 기반 색상 분석</p>
+<div id="tabset-1-4">
+<p><strong>목적</strong>: 불량 패턴 분석</p>
+<ul>
+<li><strong>픽셀 결함</strong>: 항상 켜짐(Bright Dot) / 항상 꺼짐(Dark Dot)</li>
+<li><strong>라인 결함</strong>: 수직선/수평선 불량</li>
+<li><strong>얼룩 결함</strong>: Mura (불균일 밝기)</li>
+<li><strong>파티클 결함</strong>: 이물질에 의한 쇼트</li>
+</ul>
 </div>
 </div>
 </div>
 </section>
-<section id="rgb-색상-혼합-코드-예시" class="slide level2">
-<h2>RGB 색상 혼합: 코드 예시</h2>
-<p>```python # RGB 색상 혼합 시뮬레이션 def rgb_mix(red, green, blue): return (red/255, green/255, blue/255)</p>
-<p>rgb_mix(255, 0, 0) rgb_mix(0, 255, 0) rgb_mix(0, 0, 255) ``` {code-line-numbers=“1-2|3|5-7”}</p>
-</section>
-<section id="팁과-주의사항" class="slide level2">
-<h2>팁과 주의사항</h2>
-<div title="팁">
+<section id="rgb-색역-시뮬레이터-cie-색도-다이어그램" class="slide level2">
+<h2>RGB 색역 시뮬레이터 — CIE 색도 다이어그램</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb3-2"><a href=""></a></span>
+<span id="cb3-3"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb3-4"><a href=""></a>t <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">2</span><span class="sc">*</span>pi, <span class="at">length.out=</span><span class="dv">200</span>)</span>
+<span id="cb3-5"><a href=""></a>horseshoe <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb3-6"><a href=""></a>  <span class="at">x =</span> <span class="fl">0.33</span> <span class="sc">+</span> <span class="fl">0.32</span><span class="sc">*</span><span class="fu">cos</span>(t)<span class="sc">*</span><span class="fu">ifelse</span>(<span class="fu">sin</span>(t)<span class="sc">&gt;</span><span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.7</span>),</span>
+<span id="cb3-7"><a href=""></a>  <span class="at">y =</span> <span class="fl">0.33</span> <span class="sc">+</span> <span class="fl">0.32</span><span class="sc">*</span><span class="fu">sin</span>(t)</span>
+<span id="cb3-8"><a href=""></a>)</span>
+<span id="cb3-9"><a href=""></a></span>
+<span id="cb3-10"><a href=""></a>gamuts <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb3-11"><a href=""></a>  <span class="at">Gamut =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"sRGB"</span>,<span class="st">"DCI-P3"</span>,<span class="st">"Rec.2020"</span>), <span class="at">each=</span><span class="dv">3</span>),</span>
+<span id="cb3-12"><a href=""></a>  <span class="at">x =</span> <span class="fu">c</span>(<span class="fl">0.64</span>,<span class="fl">0.30</span>,<span class="fl">0.15</span>,  <span class="fl">0.68</span>,<span class="fl">0.265</span>,<span class="fl">0.15</span>,  <span class="fl">0.708</span>,<span class="fl">0.170</span>,<span class="fl">0.131</span>),</span>
+<span id="cb3-13"><a href=""></a>  <span class="at">y =</span> <span class="fu">c</span>(<span class="fl">0.33</span>,<span class="fl">0.60</span>,<span class="fl">0.06</span>,  <span class="fl">0.32</span>,<span class="fl">0.69</span>,<span class="fl">0.06</span>,   <span class="fl">0.292</span>,<span class="fl">0.797</span>,<span class="fl">0.046</span>)</span>
+<span id="cb3-14"><a href=""></a>)</span>
+<span id="cb3-15"><a href=""></a></span>
+<span id="cb3-16"><a href=""></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb3-17"><a href=""></a>  <span class="fu">geom_polygon</span>(<span class="at">data=</span>horseshoe, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y), <span class="at">fill=</span><span class="st">"gray20"</span>, <span class="at">color=</span><span class="st">"gray50"</span>) <span class="sc">+</span></span>
+<span id="cb3-18"><a href=""></a>  <span class="fu">geom_polygon</span>(<span class="at">data=</span>gamuts[gamuts<span class="sc">$</span>Gamut<span class="sc">==</span><span class="st">"Rec.2020"</span>,],</span>
+<span id="cb3-19"><a href=""></a>               <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y), <span class="at">fill=</span><span class="cn">NA</span>, <span class="at">color=</span><span class="st">"#E74C3C"</span>, <span class="at">linewidth=</span><span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb3-20"><a href=""></a>  <span class="fu">geom_polygon</span>(<span class="at">data=</span>gamuts[gamuts<span class="sc">$</span>Gamut<span class="sc">==</span><span class="st">"DCI-P3"</span>,],</span>
+<span id="cb3-21"><a href=""></a>               <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y), <span class="at">fill=</span><span class="cn">NA</span>, <span class="at">color=</span><span class="st">"#F39C12"</span>, <span class="at">linewidth=</span><span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb3-22"><a href=""></a>  <span class="fu">geom_polygon</span>(<span class="at">data=</span>gamuts[gamuts<span class="sc">$</span>Gamut<span class="sc">==</span><span class="st">"sRGB"</span>,],</span>
+<span id="cb3-23"><a href=""></a>               <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y), <span class="at">fill=</span><span class="cn">NA</span>, <span class="at">color=</span><span class="st">"#3498DB"</span>, <span class="at">linewidth=</span><span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb3-24"><a href=""></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x=</span><span class="fu">c</span>(<span class="fl">0.53</span>,<span class="fl">0.53</span>,<span class="fl">0.53</span>), <span class="at">y=</span><span class="fu">c</span>(<span class="fl">0.48</span>,<span class="fl">0.42</span>,<span class="fl">0.36</span>),</span>
+<span id="cb3-25"><a href=""></a>           <span class="at">label=</span><span class="fu">c</span>(<span class="st">"Rec.2020"</span>,<span class="st">"DCI-P3"</span>,<span class="st">"sRGB"</span>),</span>
+<span id="cb3-26"><a href=""></a>           <span class="at">color=</span><span class="fu">c</span>(<span class="st">"#E74C3C"</span>,<span class="st">"#F39C12"</span>,<span class="st">"#3498DB"</span>), <span class="at">size=</span><span class="dv">4</span>, <span class="at">fontface=</span><span class="st">"bold"</span>) <span class="sc">+</span></span>
+<span id="cb3-27"><a href=""></a>  <span class="fu">coord_fixed</span>() <span class="sc">+</span></span>
+<span id="cb3-28"><a href=""></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size=</span><span class="dv">12</span>) <span class="sc">+</span></span>
+<span id="cb3-29"><a href=""></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"디스플레이 색역 비교: sRGB → DCI-P3 → Rec.2020"</span>,</span>
+<span id="cb3-30"><a href=""></a>       <span class="at">x=</span><span class="st">"CIE x"</span>, <span class="at">y=</span><span class="st">"CIE y"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+</div>
+<img data-src="lecture_09_files/figure-revealjs/unnamed-chunk-1-1.png" width="864" class="r-stretch"></section>
+<section id="수율-시뮬레이션-공정-변수-영향" class="slide level2">
+<h2>수율 시뮬레이션 — 공정 변수 영향</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb4-2"><a href=""></a></span>
+<span id="cb4-3"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb4-4"><a href=""></a>n <span class="ot">&lt;-</span> <span class="dv">200</span></span>
+<span id="cb4-5"><a href=""></a>sim_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb4-6"><a href=""></a>  <span class="at">Temperature_dev =</span> <span class="fu">rnorm</span>(n, <span class="dv">0</span>, <span class="dv">1</span>),</span>
+<span id="cb4-7"><a href=""></a>  <span class="at">Pressure_dev    =</span> <span class="fu">rnorm</span>(n, <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb4-8"><a href=""></a>)</span>
+<span id="cb4-9"><a href=""></a>sim_data<span class="sc">$</span>Yield <span class="ot">&lt;-</span> <span class="dv">97</span> <span class="sc">-</span> <span class="fl">1.5</span><span class="sc">*</span><span class="fu">abs</span>(sim_data<span class="sc">$</span>Temperature_dev) <span class="sc">-</span></span>
+<span id="cb4-10"><a href=""></a>                  <span class="fl">1.2</span><span class="sc">*</span><span class="fu">abs</span>(sim_data<span class="sc">$</span>Pressure_dev) <span class="sc">+</span> <span class="fu">rnorm</span>(n, <span class="dv">0</span>, <span class="fl">0.5</span>)</span>
+<span id="cb4-11"><a href=""></a>sim_data<span class="sc">$</span>Yield  <span class="ot">&lt;-</span> <span class="fu">pmin</span>(<span class="fu">pmax</span>(sim_data<span class="sc">$</span>Yield, <span class="dv">85</span>), <span class="dv">100</span>)</span>
+<span id="cb4-12"><a href=""></a>sim_data<span class="sc">$</span>Status <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(sim_data<span class="sc">$</span>Yield <span class="sc">&gt;=</span> <span class="dv">95</span>, <span class="st">"양품"</span>, <span class="st">"불량"</span>)</span>
+<span id="cb4-13"><a href=""></a></span>
+<span id="cb4-14"><a href=""></a><span class="fu">ggplot</span>(sim_data, <span class="fu">aes</span>(<span class="at">x=</span>Temperature_dev, <span class="at">y=</span>Pressure_dev, <span class="at">color=</span>Yield)) <span class="sc">+</span></span>
+<span id="cb4-15"><a href=""></a>  <span class="fu">geom_point</span>(<span class="at">alpha=</span><span class="fl">0.7</span>, <span class="at">size=</span><span class="fl">2.5</span>) <span class="sc">+</span></span>
+<span id="cb4-16"><a href=""></a>  <span class="fu">scale_color_gradientn</span>(</span>
+<span id="cb4-17"><a href=""></a>    <span class="at">colors =</span> <span class="fu">c</span>(<span class="st">"#E74C3C"</span>,<span class="st">"#F39C12"</span>,<span class="st">"#27AE60"</span>),</span>
+<span id="cb4-18"><a href=""></a>    <span class="at">values  =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.5</span>, <span class="dv">1</span>),</span>
+<span id="cb4-19"><a href=""></a>    <span class="at">breaks  =</span> <span class="fu">c</span>(<span class="dv">87</span>, <span class="dv">92</span>, <span class="dv">97</span>),</span>
+<span id="cb4-20"><a href=""></a>    <span class="at">labels  =</span> <span class="fu">c</span>(<span class="st">"87%"</span>,<span class="st">"92%"</span>,<span class="st">"97%"</span>)</span>
+<span id="cb4-21"><a href=""></a>  ) <span class="sc">+</span></span>
+<span id="cb4-22"><a href=""></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size=</span><span class="dv">13</span>) <span class="sc">+</span></span>
+<span id="cb4-23"><a href=""></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"공정 변수 편차 vs 수율 시뮬레이션"</span>,</span>
+<span id="cb4-24"><a href=""></a>       <span class="at">subtitle=</span><span class="st">"온도·압력 편차가 클수록 수율 하락 — 중앙(녹색)에 유지해야 95%+ 달성"</span>,</span>
+<span id="cb4-25"><a href=""></a>       <span class="at">x=</span><span class="st">"온도 편차 (σ)"</span>, <span class="at">y=</span><span class="st">"압력 편차 (σ)"</span>, <span class="at">color=</span><span class="st">"수율"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+</div>
+<img data-src="lecture_09_files/figure-revealjs/unnamed-chunk-2-1.png" width="864" class="r-stretch"></section>
+<section id="streamlit으로-인터랙티브-시뮬레이터-만들기" class="slide level2">
+<h2>Streamlit으로 인터랙티브 시뮬레이터 만들기</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href=""></a><span class="im">import</span> streamlit <span class="im">as</span> st</span>
+<span id="cb5-2"><a href=""></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb5-3"><a href=""></a></span>
+<span id="cb5-4"><a href=""></a>st.title(<span class="st">"🔬 OLED 수율 시뮬레이터"</span>)</span>
+<span id="cb5-5"><a href=""></a>st.caption(<span class="st">"공정 변수를 조정하면 예상 수율이 바뀝니다"</span>)</span>
+<span id="cb5-6"><a href=""></a></span>
+<span id="cb5-7"><a href=""></a>col1, col2 <span class="op">=</span> st.columns(<span class="dv">2</span>)</span>
+<span id="cb5-8"><a href=""></a><span class="cf">with</span> col1:</span>
+<span id="cb5-9"><a href=""></a>    temp_tolerance <span class="op">=</span> st.slider(</span>
+<span id="cb5-10"><a href=""></a>        <span class="st">"온도 허용 편차 (±°C)"</span>,</span>
+<span id="cb5-11"><a href=""></a>        <span class="fl">0.5</span>, <span class="fl">5.0</span>, <span class="fl">2.0</span>, <span class="fl">0.5</span></span>
+<span id="cb5-12"><a href=""></a>    )</span>
+<span id="cb5-13"><a href=""></a>    pressure_tolerance <span class="op">=</span> st.slider(</span>
+<span id="cb5-14"><a href=""></a>        <span class="st">"압력 허용 편차 (±MPa)"</span>,</span>
+<span id="cb5-15"><a href=""></a>        <span class="fl">0.1</span>, <span class="fl">2.0</span>, <span class="fl">0.8</span>, <span class="fl">0.1</span></span>
+<span id="cb5-16"><a href=""></a>    )</span>
+<span id="cb5-17"><a href=""></a><span class="cf">with</span> col2:</span>
+<span id="cb5-18"><a href=""></a>    particle_count <span class="op">=</span> st.slider(</span>
+<span id="cb5-19"><a href=""></a>        <span class="st">"파티클 수 (ea/m²)"</span>,</span>
+<span id="cb5-20"><a href=""></a>        <span class="dv">0</span>, <span class="dv">100</span>, <span class="dv">20</span>, <span class="dv">5</span></span>
+<span id="cb5-21"><a href=""></a>    )</span>
+<span id="cb5-22"><a href=""></a>    align_tolerance <span class="op">=</span> st.slider(</span>
+<span id="cb5-23"><a href=""></a>        <span class="st">"얼라인 허용 (μm)"</span>,</span>
+<span id="cb5-24"><a href=""></a>        <span class="fl">0.1</span>, <span class="fl">5.0</span>, <span class="fl">1.0</span>, <span class="fl">0.1</span></span>
+<span id="cb5-25"><a href=""></a>    )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:50%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href=""></a>base_yield <span class="op">=</span> <span class="dv">97</span></span>
+<span id="cb6-2"><a href=""></a>yield_loss <span class="op">=</span> (</span>
+<span id="cb6-3"><a href=""></a>    temp_tolerance     <span class="op">*</span> <span class="fl">0.3</span> <span class="op">+</span></span>
+<span id="cb6-4"><a href=""></a>    pressure_tolerance <span class="op">*</span> <span class="fl">0.5</span> <span class="op">+</span></span>
+<span id="cb6-5"><a href=""></a>    particle_count     <span class="op">*</span> <span class="fl">0.02</span> <span class="op">+</span></span>
+<span id="cb6-6"><a href=""></a>    align_tolerance    <span class="op">*</span> <span class="fl">0.4</span></span>
+<span id="cb6-7"><a href=""></a>)</span>
+<span id="cb6-8"><a href=""></a>predicted_yield <span class="op">=</span> <span class="bu">max</span>(</span>
+<span id="cb6-9"><a href=""></a>    <span class="dv">80</span>,</span>
+<span id="cb6-10"><a href=""></a>    base_yield <span class="op">-</span> yield_loss <span class="op">+</span></span>
+<span id="cb6-11"><a href=""></a>    np.random.normal(<span class="dv">0</span>, <span class="fl">0.3</span>)</span>
+<span id="cb6-12"><a href=""></a>)</span>
+<span id="cb6-13"><a href=""></a></span>
+<span id="cb6-14"><a href=""></a>st.metric(</span>
+<span id="cb6-15"><a href=""></a>    <span class="st">"예상 수율"</span>,</span>
+<span id="cb6-16"><a href=""></a>    <span class="ss">f"</span><span class="sc">{</span>predicted_yield<span class="sc">:.1f}</span><span class="ss">%"</span>,</span>
+<span id="cb6-17"><a href=""></a>    delta<span class="op">=</span><span class="ss">f"</span><span class="sc">{</span>predicted_yield<span class="op">-</span><span class="dv">95</span><span class="sc">:.1f}</span><span class="ss">%p vs 기준"</span></span>
+<span id="cb6-18"><a href=""></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div title="핵심 포인트">
 <div class="callout callout-tip callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>팁</strong></p>
+<p><strong>핵심 포인트</strong></p>
 </div>
 <div class="callout-content">
-<p>색상 조합 시, 각 색상의 비율을 조정하여 다양한 색상을 만들어보세요.</p>
+<p>슬라이더 하나 바꿀 때마다 수율이 실시간으로 재계산됩니다. 실제 공정 엔지니어처럼 파라미터를 튜닝해보세요.</p>
 </div>
 </div>
 </div>
 </div>
-<div title="주의">
-<div class="callout callout-warning callout-titled callout-style-default">
+</div></div>
+</section>
+<section id="몬테카를로-시뮬레이션-통계로-예측하다" class="slide level2">
+<h2>몬테카를로 시뮬레이션 — 통계로 예측하다</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb7-2"><a href=""></a></span>
+<span id="cb7-3"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">7</span>)</span>
+<span id="cb7-4"><a href=""></a>n_sim <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
+<span id="cb7-5"><a href=""></a>mc_yield <span class="ot">&lt;-</span> <span class="dv">96</span> <span class="sc">+</span> <span class="fu">cumsum</span>(<span class="fu">rnorm</span>(n_sim, <span class="dv">0</span>, <span class="fl">0.1</span>))</span>
+<span id="cb7-6"><a href=""></a>mc_yield  <span class="ot">&lt;-</span> <span class="fu">pmin</span>(<span class="fu">pmax</span>(mc_yield, <span class="dv">88</span>), <span class="dv">100</span>)</span>
+<span id="cb7-7"><a href=""></a>monte_carlo <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Run=</span><span class="dv">1</span><span class="sc">:</span>n_sim, <span class="at">Yield=</span>mc_yield)</span>
+<span id="cb7-8"><a href=""></a></span>
+<span id="cb7-9"><a href=""></a><span class="fu">ggplot</span>(monte_carlo, <span class="fu">aes</span>(<span class="at">x=</span>Yield)) <span class="sc">+</span></span>
+<span id="cb7-10"><a href=""></a>  <span class="fu">geom_histogram</span>(<span class="at">bins=</span><span class="dv">40</span>, <span class="at">fill=</span><span class="st">"#2E75B6"</span>, <span class="at">alpha=</span><span class="fl">0.8</span>, <span class="at">color=</span><span class="st">"white"</span>) <span class="sc">+</span></span>
+<span id="cb7-11"><a href=""></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept=</span><span class="dv">95</span>,</span>
+<span id="cb7-12"><a href=""></a>             <span class="at">linetype=</span><span class="st">"dashed"</span>, <span class="at">color=</span><span class="st">"#E74C3C"</span>, <span class="at">linewidth=</span><span class="fl">1.2</span>) <span class="sc">+</span></span>
+<span id="cb7-13"><a href=""></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept=</span><span class="fu">mean</span>(monte_carlo<span class="sc">$</span>Yield),</span>
+<span id="cb7-14"><a href=""></a>             <span class="at">linetype=</span><span class="st">"solid"</span>, <span class="at">color=</span><span class="st">"#27AE60"</span>, <span class="at">linewidth=</span><span class="fl">1.2</span>) <span class="sc">+</span></span>
+<span id="cb7-15"><a href=""></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x=</span><span class="fl">94.3</span>, <span class="at">y=</span><span class="dv">80</span>,</span>
+<span id="cb7-16"><a href=""></a>           <span class="at">label=</span><span class="st">"관리</span><span class="sc">\n</span><span class="st">기준"</span>, <span class="at">color=</span><span class="st">"#E74C3C"</span>, <span class="at">size=</span><span class="fl">3.5</span>) <span class="sc">+</span></span>
+<span id="cb7-17"><a href=""></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x=</span><span class="fu">mean</span>(monte_carlo<span class="sc">$</span>Yield)<span class="sc">+</span><span class="fl">0.6</span>, <span class="at">y=</span><span class="dv">80</span>,</span>
+<span id="cb7-18"><a href=""></a>           <span class="at">label=</span><span class="fu">paste0</span>(<span class="st">"평균</span><span class="sc">\n</span><span class="st">"</span>,<span class="fu">round</span>(<span class="fu">mean</span>(monte_carlo<span class="sc">$</span>Yield),<span class="dv">1</span>),<span class="st">"%"</span>),</span>
+<span id="cb7-19"><a href=""></a>           <span class="at">color=</span><span class="st">"#27AE60"</span>, <span class="at">size=</span><span class="fl">3.5</span>) <span class="sc">+</span></span>
+<span id="cb7-20"><a href=""></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size=</span><span class="dv">13</span>) <span class="sc">+</span></span>
+<span id="cb7-21"><a href=""></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="fu">paste0</span>(<span class="st">"몬테카를로 수율 시뮬레이션 (n="</span>,n_sim,<span class="st">"회)"</span>),</span>
+<span id="cb7-22"><a href=""></a>       <span class="at">subtitle=</span><span class="st">"무작위 시뮬레이션 1,000회 반복 — 불확실성을 통계로 처리"</span>,</span>
+<span id="cb7-23"><a href=""></a>       <span class="at">x=</span><span class="st">"수율 (%)"</span>, <span class="at">y=</span><span class="st">"빈도"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+</div>
+<img data-src="lecture_09_files/figure-revealjs/unnamed-chunk-3-1.png" width="864" class="r-stretch"></section>
+<section id="픽셀-밀도ppi-계산기-python-구현" class="slide level2">
+<h2>픽셀 밀도(PPI) 계산기 — Python 구현</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href=""></a><span class="im">import</span> streamlit <span class="im">as</span> st</span>
+<span id="cb8-2"><a href=""></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb8-3"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb8-4"><a href=""></a><span class="im">import</span> plotly.express <span class="im">as</span> px</span>
+<span id="cb8-5"><a href=""></a></span>
+<span id="cb8-6"><a href=""></a>st.title(<span class="st">"📱 픽셀 밀도(PPI) 계산기"</span>)</span>
+<span id="cb8-7"><a href=""></a></span>
+<span id="cb8-8"><a href=""></a>col1, col2, col3 <span class="op">=</span> st.columns(<span class="dv">3</span>)</span>
+<span id="cb8-9"><a href=""></a><span class="cf">with</span> col1:</span>
+<span id="cb8-10"><a href=""></a>    width_px    <span class="op">=</span> st.number_input(<span class="st">"가로 픽셀"</span>, value<span class="op">=</span><span class="dv">3840</span>, step<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb8-11"><a href=""></a><span class="cf">with</span> col2:</span>
+<span id="cb8-12"><a href=""></a>    height_px   <span class="op">=</span> st.number_input(<span class="st">"세로 픽셀"</span>, value<span class="op">=</span><span class="dv">2160</span>, step<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb8-13"><a href=""></a><span class="cf">with</span> col3:</span>
+<span id="cb8-14"><a href=""></a>    screen_inch <span class="op">=</span> st.number_input(<span class="st">"화면 크기 (인치)"</span>, value<span class="op">=</span><span class="fl">55.0</span>, step<span class="op">=</span><span class="fl">0.1</span>)</span>
+<span id="cb8-15"><a href=""></a></span>
+<span id="cb8-16"><a href=""></a>ppi <span class="op">=</span> np.sqrt(width_px<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> height_px<span class="op">**</span><span class="dv">2</span>) <span class="op">/</span> screen_inch</span>
+<span id="cb8-17"><a href=""></a></span>
+<span id="cb8-18"><a href=""></a><span class="cf">if</span> ppi <span class="op">&gt;=</span> <span class="dv">400</span>:</span>
+<span id="cb8-19"><a href=""></a>    grade <span class="op">=</span> <span class="st">"Super Retina ★★★"</span></span>
+<span id="cb8-20"><a href=""></a><span class="cf">elif</span> ppi <span class="op">&gt;=</span> <span class="dv">200</span>:</span>
+<span id="cb8-21"><a href=""></a>    grade <span class="op">=</span> <span class="st">"Retina ★★"</span></span>
+<span id="cb8-22"><a href=""></a><span class="cf">elif</span> ppi <span class="op">&gt;=</span> <span class="dv">100</span>:</span>
+<span id="cb8-23"><a href=""></a>    grade <span class="op">=</span> <span class="st">"일반 ★"</span></span>
+<span id="cb8-24"><a href=""></a><span class="cf">else</span>:</span>
+<span id="cb8-25"><a href=""></a>    grade <span class="op">=</span> <span class="st">"저해상도"</span></span>
+<span id="cb8-26"><a href=""></a></span>
+<span id="cb8-27"><a href=""></a>st.metric(<span class="st">"PPI"</span>, <span class="ss">f"</span><span class="sc">{</span>ppi<span class="sc">:.1f}</span><span class="ss">"</span>, delta<span class="op">=</span>grade)</span>
+<span id="cb8-28"><a href=""></a></span>
+<span id="cb8-29"><a href=""></a><span class="co"># 비교 데이터</span></span>
+<span id="cb8-30"><a href=""></a>compare <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb8-31"><a href=""></a>    <span class="st">"디바이스"</span>: [<span class="st">"계산 결과"</span>,<span class="st">"iPhone 15"</span>,<span class="st">"Galaxy S24"</span>,<span class="st">"4K TV 55</span><span class="ch">\"</span><span class="st">"</span>],</span>
+<span id="cb8-32"><a href=""></a>    <span class="st">"PPI"</span>: [ppi, <span class="dv">460</span>, <span class="dv">505</span>, <span class="dv">80</span>]</span>
+<span id="cb8-33"><a href=""></a>})</span>
+<span id="cb8-34"><a href=""></a>fig <span class="op">=</span> px.bar(compare, x<span class="op">=</span><span class="st">"디바이스"</span>, y<span class="op">=</span><span class="st">"PPI"</span>, color<span class="op">=</span><span class="st">"PPI"</span>,</span>
+<span id="cb8-35"><a href=""></a>             color_continuous_scale<span class="op">=</span><span class="st">"RdYlGn"</span>)</span>
+<span id="cb8-36"><a href=""></a>st.plotly_chart(fig)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="수율-트렌드-시뮬레이션-학습-곡선" class="slide level2">
+<h2>수율 트렌드 시뮬레이션 — 학습 곡선</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb9-2"><a href=""></a></span>
+<span id="cb9-3"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb9-4"><a href=""></a>months <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">24</span></span>
+<span id="cb9-5"><a href=""></a><span class="co"># 신규 공정 학습 곡선: 초기 저수율 → 안정화 패턴</span></span>
+<span id="cb9-6"><a href=""></a>trend  <span class="ot">&lt;-</span> <span class="dv">75</span> <span class="sc">+</span> <span class="dv">20</span><span class="sc">*</span>(<span class="dv">1</span> <span class="sc">-</span> <span class="fu">exp</span>(<span class="sc">-</span>months<span class="sc">/</span><span class="dv">8</span>)) <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">24</span>, <span class="dv">0</span>, <span class="fl">1.5</span>)</span>
+<span id="cb9-7"><a href=""></a>trend  <span class="ot">&lt;-</span> <span class="fu">pmin</span>(trend, <span class="dv">99</span>)</span>
+<span id="cb9-8"><a href=""></a></span>
+<span id="cb9-9"><a href=""></a>yield_ts <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb9-10"><a href=""></a>  <span class="at">Month =</span> months,</span>
+<span id="cb9-11"><a href=""></a>  <span class="at">Yield =</span> trend,</span>
+<span id="cb9-12"><a href=""></a>  <span class="at">Phase =</span> <span class="fu">ifelse</span>(months <span class="sc">&lt;=</span> <span class="dv">6</span>, <span class="st">"초기 개발"</span>,</span>
+<span id="cb9-13"><a href=""></a>          <span class="fu">ifelse</span>(months <span class="sc">&lt;=</span> <span class="dv">12</span>, <span class="st">"수율 개선"</span>, <span class="st">"양산 안정"</span>))</span>
+<span id="cb9-14"><a href=""></a>)</span>
+<span id="cb9-15"><a href=""></a></span>
+<span id="cb9-16"><a href=""></a><span class="fu">ggplot</span>(yield_ts, <span class="fu">aes</span>(<span class="at">x=</span>Month, <span class="at">y=</span>Yield, <span class="at">color=</span>Phase, <span class="at">group=</span><span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb9-17"><a href=""></a>  <span class="fu">geom_line</span>(<span class="at">linewidth=</span><span class="fl">1.4</span>) <span class="sc">+</span></span>
+<span id="cb9-18"><a href=""></a>  <span class="fu">geom_point</span>(<span class="at">size=</span><span class="fl">2.5</span>) <span class="sc">+</span></span>
+<span id="cb9-19"><a href=""></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept=</span><span class="dv">95</span>, <span class="at">linetype=</span><span class="st">"dashed"</span>, <span class="at">color=</span><span class="st">"#E74C3C"</span>, <span class="at">linewidth=</span><span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb9-20"><a href=""></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x=</span><span class="dv">20</span>, <span class="at">y=</span><span class="fl">96.2</span>, <span class="at">label=</span><span class="st">"양산 기준 (95%)"</span>,</span>
+<span id="cb9-21"><a href=""></a>           <span class="at">color=</span><span class="st">"#E74C3C"</span>, <span class="at">size=</span><span class="fl">3.5</span>) <span class="sc">+</span></span>
+<span id="cb9-22"><a href=""></a>  <span class="fu">scale_color_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"초기 개발"</span><span class="ot">=</span><span class="st">"#E74C3C"</span>,</span>
+<span id="cb9-23"><a href=""></a>                               <span class="st">"수율 개선"</span><span class="ot">=</span><span class="st">"#F39C12"</span>,</span>
+<span id="cb9-24"><a href=""></a>                               <span class="st">"양산 안정"</span><span class="ot">=</span><span class="st">"#27AE60"</span>)) <span class="sc">+</span></span>
+<span id="cb9-25"><a href=""></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks=</span><span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">24</span>,<span class="dv">3</span>),</span>
+<span id="cb9-26"><a href=""></a>                     <span class="at">labels=</span><span class="fu">paste0</span>(<span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">24</span>,<span class="dv">3</span>),<span class="st">"개월"</span>)) <span class="sc">+</span></span>
+<span id="cb9-27"><a href=""></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels=</span><span class="cf">function</span>(x) <span class="fu">paste0</span>(x,<span class="st">"%"</span>)) <span class="sc">+</span></span>
+<span id="cb9-28"><a href=""></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size=</span><span class="dv">13</span>) <span class="sc">+</span></span>
+<span id="cb9-29"><a href=""></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"신규 OLED 공정 수율 개선 시뮬레이션 (24개월)"</span>,</span>
+<span id="cb9-30"><a href=""></a>       <span class="at">subtitle=</span><span class="st">"학습 곡선(Learning Curve): 초기 75% → 24개월 후 97% 목표"</span>,</span>
+<span id="cb9-31"><a href=""></a>       <span class="at">x=</span><span class="st">"경과 기간"</span>, <span class="at">y=</span><span class="st">"수율"</span>, <span class="at">color=</span><span class="st">"공정 단계"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+</div>
+<img data-src="lecture_09_files/figure-revealjs/unnamed-chunk-4-1.png" width="864" class="r-stretch"></section>
+<section id="oled-vs-lcd-특성-비교-시뮬레이션" class="slide level2">
+<h2>OLED vs LCD 특성 비교 시뮬레이션</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb10-2"><a href=""></a></span>
+<span id="cb10-3"><a href=""></a>characteristics <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb10-4"><a href=""></a>  항목 <span class="ot">=</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"색역"</span>,<span class="st">"명암비"</span>,<span class="st">"응답속도"</span>,<span class="st">"수율"</span>,<span class="st">"소비전력"</span>,<span class="st">"내구성"</span>), <span class="dv">2</span>),</span>
+<span id="cb10-5"><a href=""></a>  점수 <span class="ot">=</span> <span class="fu">c</span>(</span>
+<span id="cb10-6"><a href=""></a>    <span class="dv">95</span>, <span class="dv">100</span>, <span class="dv">100</span>, <span class="dv">78</span>, <span class="dv">72</span>, <span class="dv">80</span>,  <span class="co"># OLED</span></span>
+<span id="cb10-7"><a href=""></a>    <span class="dv">75</span>,  <span class="dv">60</span>,  <span class="dv">65</span>, <span class="dv">95</span>, <span class="dv">85</span>, <span class="dv">95</span>   <span class="co"># LCD</span></span>
+<span id="cb10-8"><a href=""></a>  ),</span>
+<span id="cb10-9"><a href=""></a>  유형 <span class="ot">=</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"OLED"</span>,<span class="st">"LCD"</span>), <span class="at">each=</span><span class="dv">6</span>)</span>
+<span id="cb10-10"><a href=""></a>)</span>
+<span id="cb10-11"><a href=""></a></span>
+<span id="cb10-12"><a href=""></a><span class="fu">ggplot</span>(characteristics, <span class="fu">aes</span>(<span class="at">x=</span>항목, <span class="at">y=</span>점수, <span class="at">fill=</span>유형)) <span class="sc">+</span></span>
+<span id="cb10-13"><a href=""></a>  <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">"identity"</span>, <span class="at">position=</span><span class="st">"dodge"</span>, <span class="at">width=</span><span class="fl">0.65</span>) <span class="sc">+</span></span>
+<span id="cb10-14"><a href=""></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label=</span>점수), <span class="at">position=</span><span class="fu">position_dodge</span>(<span class="fl">0.65</span>),</span>
+<span id="cb10-15"><a href=""></a>            <span class="at">vjust=</span><span class="sc">-</span><span class="fl">0.4</span>, <span class="at">size=</span><span class="fl">3.5</span>, <span class="at">fontface=</span><span class="st">"bold"</span>) <span class="sc">+</span></span>
+<span id="cb10-16"><a href=""></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"OLED"</span><span class="ot">=</span><span class="st">"#9B59B6"</span>,<span class="st">"LCD"</span><span class="ot">=</span><span class="st">"#2E75B6"</span>)) <span class="sc">+</span></span>
+<span id="cb10-17"><a href=""></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels=</span><span class="cf">function</span>(x) <span class="fu">paste0</span>(x,<span class="st">"점"</span>), <span class="at">limits=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">115</span>)) <span class="sc">+</span></span>
+<span id="cb10-18"><a href=""></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size=</span><span class="dv">13</span>) <span class="sc">+</span></span>
+<span id="cb10-19"><a href=""></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"OLED vs LCD 특성 비교 (100점 만점)"</span>,</span>
+<span id="cb10-20"><a href=""></a>       <span class="at">subtitle=</span><span class="st">"수율·내구성에서 LCD 우세, 색역·명암비에서 OLED 우세"</span>,</span>
+<span id="cb10-21"><a href=""></a>       <span class="at">x=</span><span class="st">""</span>, <span class="at">y=</span><span class="st">"점수"</span>, <span class="at">fill=</span><span class="st">"패널 종류"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+</div>
+<img data-src="lecture_09_files/figure-revealjs/unnamed-chunk-5-1.png" width="864" class="r-stretch"></section>
+<section id="시뮬레이션-vs-실제-데이터-비교" class="slide level2">
+<h2>시뮬레이션 vs 실제 데이터 비교</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb11-2"><a href=""></a></span>
+<span id="cb11-3"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">99</span>)</span>
+<span id="cb11-4"><a href=""></a>n_compare <span class="ot">&lt;-</span> <span class="dv">12</span></span>
+<span id="cb11-5"><a href=""></a>months_c  <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>n_compare</span>
+<span id="cb11-6"><a href=""></a></span>
+<span id="cb11-7"><a href=""></a>comparison <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb11-8"><a href=""></a>  <span class="at">Month =</span> <span class="fu">rep</span>(months_c, <span class="dv">2</span>),</span>
+<span id="cb11-9"><a href=""></a>  <span class="at">Yield =</span> <span class="fu">c</span>(</span>
+<span id="cb11-10"><a href=""></a>    <span class="dv">90</span> <span class="sc">+</span> months_c<span class="sc">*</span><span class="fl">0.6</span> <span class="sc">+</span> <span class="fu">rnorm</span>(n_compare, <span class="dv">0</span>, <span class="fl">0.3</span>),  <span class="co"># 시뮬레이션</span></span>
+<span id="cb11-11"><a href=""></a>    <span class="dv">89</span> <span class="sc">+</span> months_c<span class="sc">*</span><span class="fl">0.6</span> <span class="sc">+</span> <span class="fu">rnorm</span>(n_compare, <span class="dv">0</span>, <span class="fl">1.2</span>)    <span class="co"># 실제</span></span>
+<span id="cb11-12"><a href=""></a>  ),</span>
+<span id="cb11-13"><a href=""></a>  <span class="at">Type =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"시뮬레이션 예측"</span>,<span class="st">"실제 측정값"</span>), <span class="at">each=</span>n_compare)</span>
+<span id="cb11-14"><a href=""></a>)</span>
+<span id="cb11-15"><a href=""></a>comparison<span class="sc">$</span>Yield <span class="ot">&lt;-</span> <span class="fu">pmin</span>(<span class="fu">pmax</span>(comparison<span class="sc">$</span>Yield, <span class="dv">85</span>), <span class="dv">100</span>)</span>
+<span id="cb11-16"><a href=""></a></span>
+<span id="cb11-17"><a href=""></a><span class="fu">ggplot</span>(comparison, <span class="fu">aes</span>(<span class="at">x=</span>Month, <span class="at">y=</span>Yield, <span class="at">color=</span>Type, <span class="at">linetype=</span>Type)) <span class="sc">+</span></span>
+<span id="cb11-18"><a href=""></a>  <span class="fu">geom_line</span>(<span class="at">linewidth=</span><span class="fl">1.3</span>) <span class="sc">+</span></span>
+<span id="cb11-19"><a href=""></a>  <span class="fu">geom_point</span>(<span class="at">size=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb11-20"><a href=""></a>  <span class="fu">scale_color_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"시뮬레이션 예측"</span><span class="ot">=</span><span class="st">"#3498DB"</span>,</span>
+<span id="cb11-21"><a href=""></a>                               <span class="st">"실제 측정값"</span><span class="ot">=</span><span class="st">"#E67E22"</span>)) <span class="sc">+</span></span>
+<span id="cb11-22"><a href=""></a>  <span class="fu">scale_linetype_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"시뮬레이션 예측"</span><span class="ot">=</span><span class="st">"dashed"</span>,</span>
+<span id="cb11-23"><a href=""></a>                                  <span class="st">"실제 측정값"</span><span class="ot">=</span><span class="st">"solid"</span>)) <span class="sc">+</span></span>
+<span id="cb11-24"><a href=""></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>) <span class="sc">+</span></span>
+<span id="cb11-25"><a href=""></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels=</span><span class="cf">function</span>(x) <span class="fu">paste0</span>(x,<span class="st">"%"</span>), <span class="at">limits=</span><span class="fu">c</span>(<span class="dv">85</span>, <span class="dv">100</span>)) <span class="sc">+</span></span>
+<span id="cb11-26"><a href=""></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size=</span><span class="dv">13</span>) <span class="sc">+</span></span>
+<span id="cb11-27"><a href=""></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"시뮬레이션 예측 vs 실제 수율 비교"</span>,</span>
+<span id="cb11-28"><a href=""></a>       <span class="at">subtitle=</span><span class="st">"시뮬레이션 정확도가 높을수록 실제 결과와 괴리가 적다"</span>,</span>
+<span id="cb11-29"><a href=""></a>       <span class="at">x=</span><span class="st">"월차"</span>, <span class="at">y=</span><span class="st">"수율"</span>, <span class="at">color=</span><span class="st">""</span>, <span class="at">linetype=</span><span class="st">""</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+</div>
+<img data-src="lecture_09_files/figure-revealjs/unnamed-chunk-6-1.png" width="864" class="r-stretch"></section>
+<section id="실습-과제-픽셀-밀도-시뮬레이터-구축" class="slide level2">
+<h2>실습 과제 — 픽셀 밀도 시뮬레이터 구축</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<h3 id="오늘의-미션">오늘의 미션</h3>
+<p>Streamlit + Python으로 <strong>픽셀 밀도 시뮬레이터</strong> 구축</p>
+<p><strong>포함할 기능:</strong></p>
+<ol type="1">
+<li>해상도 입력 (가로 × 세로 픽셀)</li>
+<li>화면 크기 입력 (인치)</li>
+<li>PPI 자동 계산</li>
+<li>색상 코드 품질 등급 표시</li>
+<li>주요 디바이스와 비교 차트</li>
+</ol>
+<p><strong>참고 공식:</strong></p>
+<pre><code>PPI = √(W² + H²) / 인치</code></pre>
+</div><div class="column" style="width:45%;">
+<h3 id="평가-기준">평가 기준</h3>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>항목</th>
+<th>배점</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>기본 PPI 계산</td>
+<td>30점</td>
+</tr>
+<tr class="even">
+<td>품질 등급 판정</td>
+<td>20점</td>
+</tr>
+<tr class="odd">
+<td>비교 차트 추가</td>
+<td>30점</td>
+</tr>
+<tr class="even">
+<td>UI/UX 완성도</td>
+<td>20점</td>
+</tr>
+</tbody>
+</table>
+<div title="힌트">
+<div class="callout callout-tip callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>주의</strong></p>
+<p><strong>힌트</strong></p>
 </div>
 <div class="callout-content">
-<p>색상 데이터의 정확성을 위해 캘리브레이션이 필요합니다.</p>
+<p><code>st.bar_chart()</code> 또는 <code>plotly.express.bar()</code>를 활용하면 비교 차트를 빠르게 구현할 수 있습니다.</p>
 </div>
 </div>
 </div>
 </div>
+</div></div>
 </section>
-<section id="강의-마무리" class="slide level2 smaller">
-<h2>강의 마무리</h2>
-<p>픽셀이 만드는 색의 세계를 탐구했습니다. 다음 강의에서는 디스플레이 기술의 미래를 살펴보겠습니다.</p>
+<section id="강-핵심-요약" class="slide level2">
+<h2>9강 핵심 요약</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="오늘-배운-것">오늘 배운 것</h3>
+<div class="fragment">
+<p><strong>시뮬레이션의 가치</strong>: 수억 원짜리 실험을 코드로 대체</p>
+</div>
+<div class="fragment">
+<p><strong>색역 시뮬레이션</strong>: CIE 다이어그램, sRGB/DCI-P3/Rec.2020</p>
+</div>
+<div class="fragment">
+<p><strong>수율 시뮬레이션</strong>: 공정 변수 → 수율 예측</p>
+</div>
+<div class="fragment">
+<p><strong>몬테카를로</strong>: 불확실성을 통계적으로 처리</p>
+</div>
+<div class="fragment">
+<p><strong>Streamlit</strong>: 인터랙티브 시뮬레이터 구현</p>
+</div>
+</div><div class="column" style="width:50%;">
+<h3 id="다음-강의-예고-10강">다음 강의 예고 (10강)</h3>
+<p><strong>웹앱 배포 플랫폼 심화</strong></p>
+<blockquote>
+<p>만든 시뮬레이터를 인터넷에 공개하려면?</p>
+</blockquote>
+<ul>
+<li>GitHub Pages</li>
+<li>Streamlit Cloud</li>
+<li>Firebase Studio</li>
+</ul>
+<p>“URL 하나로 전 세계 어디서든 접속”</p>
+<div title="프로젝트 과제">
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>프로젝트 과제</strong></p>
+</div>
+<div class="callout-content">
+<p>픽셀 밀도 시뮬레이터를 완성하고 Streamlit Cloud에 배포하세요. 다음 강의에서 배포 방법을 배웁니다.</p>
+</div>
+</div>
+</div>
+</div>
+</div></div>
 
 </section></section>
     </div>

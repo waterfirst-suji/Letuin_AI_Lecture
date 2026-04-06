@@ -1,6 +1,6 @@
 ---
 title: "최신 AI 트렌드 & 수료"
-subtitle: "다음 단계는? — 2025~2026 AI 개발자 로드맵"
+subtitle: "다음 6개월 AI 세상은 이렇게 바뀐다 — 그리고 당신의 다음 스텝"
 author: "렛유인 KDC"
 date: today
 engine: knitr
@@ -31,152 +31,404 @@ format:
     margin: 0.1
 ---
 
-# 16강: AI 트렌드와 개발자 로드맵 {background="#1F4E79"}
+# 2025년 기준, 이미 늦었을까요? {background="#1F4E79"}
 
-## 오늘의 AI 뉴스 {.smaller}
+## 늦지 않았습니다. 오히려 지금이 가장 좋은 타이밍입니다. {.smaller}
 
-### Claude 모델 타임라인
+:::: {.columns}
 
-::: {.columns}
-::: {.column width="50%"}
-- 3.0
-- 3.5
+::: {.column width="55%"}
+**AI가 가장 빠르게 변하는 지금**
+
+6개월 전에 배운 것도 이미 구식이 됩니다.
+
+중요한 건 "AI를 배웠다"가 아니라
+**"AI와 함께 계속 배울 수 있다"는 능력**입니다.
+
+그리고 그 능력을 — 오늘 여러분은 이미 가지고 있습니다.
+
 :::
-::: {.column width="50%"}
-- 3.7
-- 4.6
+
+::: {.column width="45%"}
+**이 강의에서 증명된 것**
+
+- 16강 동안 코드를 두려워하지 않게 됨
+- AI API를 직접 연결해봄
+- 실제로 동작하는 앱을 배포해봄
+- 디스플레이 산업 맥락에서 AI를 적용해봄
+
+::: {.callout-tip title="오늘의 핵심"}
+AI 트렌드를 읽는 눈 + 내 분야에 적용하는 능력.
+이 두 가지가 미래의 경쟁력입니다.
 :::
+
 :::
 
-## GitHub Trending Top 10 {.smaller}
+::::
 
-- 실시간 인기 프로젝트
-- 오픈소스 기여 기회
-
-## 디스플레이 × AI 사례
-
-- 삼성과 LG의 최신 사례
-- AI와 디스플레이의 융합
-
-## Claude 모델별 성능 비교
+## 2025 AI 지형도 변화 타임라인 {.smaller}
 
 ```{r}
 #| echo: false
 #| fig-width: 9
-#| fig-height: 4.5
+#| fig-height: 4.0
 library(ggplot2)
 
-data <- data.frame(
-  model = c("3.0", "3.5", "3.7", "4.6"),
-  performance = c(75, 85, 90, 95)
+events <- data.frame(
+  Date = as.Date(c(
+    "2024-03-01", "2024-05-01", "2024-09-01", "2024-10-01",
+    "2025-01-01", "2025-02-01", "2025-03-01", "2025-04-01"
+  )),
+  Event = c(
+    "Claude 3 Opus\n출시", "GPT-4o\n출시",
+    "o1\n출시", "Claude 3.5 Haiku\n출시",
+    "DeepSeek R1\n오픈소스", "Gemini 2.0 Flash",
+    "Claude 3.7\nSonnet", "GPT-4.5"
+  ),
+  y = c(1, -1, 1, -1, 1, -1, 1, -1),
+  Company = c(
+    "Anthropic", "OpenAI", "OpenAI", "Anthropic",
+    "DeepSeek",  "Google", "Anthropic", "OpenAI"
+  )
 )
 
-ggplot(data, aes(x=model, y=performance, fill=model)) +
-  geom_bar(stat="identity") +
-  scale_y_continuous(labels = scales::percent_format(scale = 1)) +
-  labs(title="Claude 모델별 벤치마크 성능 비교", y="성능 (%)", x="모델")
+ggplot(events, aes(x = Date, y = 0)) +
+  geom_hline(yintercept = 0, color = "gray60", linewidth = 1.5) +
+  geom_segment(aes(xend = Date, yend = y * 0.8),
+               color = "gray50", linewidth = 0.8) +
+  geom_point(aes(color = Company), size = 4) +
+  geom_text(aes(y = y * 0.95, label = Event, color = Company),
+            size = 2.7, fontface = "bold", hjust = 0.5) +
+  scale_color_manual(values = c(
+    "Anthropic" = "#D4A843",
+    "OpenAI"    = "#74AA9C",
+    "Google"    = "#4285F4",
+    "DeepSeek"  = "#E74C3C"
+  )) +
+  ylim(-1.8, 1.8) +
+  theme_void() +
+  labs(
+    title = "2024~2025 AI 모델 출시 타임라인",
+    color = "회사"
+  ) +
+  theme(
+    plot.title       = element_text(color = "white", size = 14, hjust = 0.5),
+    legend.text      = element_text(color = "white"),
+    legend.title     = element_text(color = "white"),
+    legend.position  = "bottom"
+  )
 ```
 
-## 프로젝트 3 발표 {.smaller}
-
-### 발표 및 피드백 과정
-
-1. 각자 3분 발표
-2. 기술 설명
-3. 어려운 점 토론
-4. 동료 피드백
-
-## 프로젝트 3 발표 {.smaller} {auto-animate="true"}
-
-### 발표 및 피드백 과정
-
-- 각자 3분 발표
-- 기술 설명
-- 어려운 점 토론
-- 동료 피드백
-
-## 다음 단계 로드맵
+## GitHub Trending — 전 세계 개발자들이 지금 만드는 것 {.smaller}
 
 ::: {.panel-tabset}
-### 초급→중급
-- FastAPI
-- Docker
-- LangChain
-### 중급→고급
-- MCP 서버 제작
-- Rust CLI
-- RAG
-### 취업 활용
-- GitHub 포트폴리오 3종
-- 면접 어필법
+
+### AI 에이전트
+
+**지금 가장 뜨거운 분야**
+
+- **AutoGPT / CrewAI** — 목표를 주면 AI가 스스로 계획하고 실행
+- **LangGraph** — 복잡한 AI 워크플로우를 그래프로 표현
+- **Claude Code** (여러분이 배운 것!) — 코드베이스 전체를 이해하는 AI
+- 핵심 개념: 에이전트가 도구를 선택하고, 결과를 보고, 다음 행동을 결정
+
+### RAG
+
+**기업에서 가장 많이 쓰는 실용 AI**
+
+- **LlamaIndex** — 문서를 AI가 읽을 수 있는 형태로 변환
+- **Chroma / Weaviate** — 벡터 데이터베이스 (의미 기반 검색)
+- **실제 사례**: 삼성 제품 매뉴얼 Q&A 봇, 공정 표준 SOP 검색 시스템
+- RAG = Retrieval-Augmented Generation (검색 증강 생성)
+
+### 멀티모달
+
+**텍스트를 넘어서**
+
+- GPT-4o, Gemini 1.5 — 이미지 + 텍스트 동시 처리
+- **디스플레이 응용**: 불량 이미지를 AI에게 보여주면 원인 분석
+- 음성 입력 → 텍스트 변환 → AI 답변 → 음성 출력 파이프라인
+- 현장 엔지니어가 사진 찍으면 즉시 AI 진단
+
+### 오픈소스 LLM
+
+**무료로 로컬에서 실행 가능**
+
+- **DeepSeek R1** — 중국발 오픈소스, GPT-4급 성능
+- **Llama 3.3** — Meta의 오픈소스, 기업 활용 가능
+- **Mistral** — 유럽발 소형 고성능 모델
+- 장점: API 비용 없음, 데이터 외부 전송 없음, 사내 보안 환경 적합
+
 :::
 
-## AI 개발자 학습 로드맵
+## 디스플레이 × AI — 삼성/LG에서 실제로 {.smaller}
+
+:::: {.columns}
+
+::: {.column width="55%"}
+**가상 시나리오 (업계 트렌드 기반)**
+
+**삼성디스플레이**
+- AI 기반 불량 예측 시스템 도입 검토
+- 공정 파라미터 데이터를 ML 모델에 입력
+- 수율 저하 징후를 2~4시간 전에 예측
+
+**LG디스플레이**
+- OLED 증착 공정 자동 최적화 연구
+- AI가 온도/압력/증착 속도를 실시간 조정
+- 엔지니어의 경험을 데이터로 형식화
+
+:::
+
+::: {.column width="45%"}
+**AI가 엔지니어를 대체하나요?**
+
+아니요.
+
+AI는 데이터를 처리합니다.
+엔지니어는 판단을 내립니다.
+
+**AI가 잘하는 것**
+
+- 24시간 데이터 모니터링
+- 패턴 인식 및 이상 감지
+- 방대한 이력 데이터 분석
+
+**엔지니어가 여전히 필요한 것**
+
+- 새로운 문제 정의
+- 물리적 원인 파악
+- 최종 의사결정 및 책임
+
+:::
+
+::::
+
+## AI 생태계 성장 트렌드 {.smaller}
+
+```{r}
+#| echo: true
+#| fig-width: 9
+#| fig-height: 3.8
+library(ggplot2)
+
+growth <- data.frame(
+  Year = rep(2020:2025, 3),
+  Value = c(
+    10,  15,  25,  45,  80,  150,   # AI 스타트업 수 (지수 기준)
+     5,   8,  15,  30,  60,  120,   # AI 관련 채용 공고
+     2,   3,   8,  20,  50,  110    # GitHub AI 레포 수
+  ),
+  Category = rep(
+    c("AI 스타트업", "AI 채용공고", "GitHub AI 레포"),
+    each = 6
+  )
+)
+
+ggplot(growth, aes(x = Year, y = Value,
+                   color = Category, group = Category)) +
+  geom_line(linewidth = 1.5) +
+  geom_point(size = 3) +
+  scale_color_manual(values = c(
+    "AI 스타트업"     = "#E74C3C",
+    "AI 채용공고"     = "#3498DB",
+    "GitHub AI 레포"  = "#27AE60"
+  )) +
+  scale_y_continuous(labels = function(x) paste0(x, "x")) +
+  theme_minimal(base_size = 13) +
+  labs(
+    title    = "AI 생태계 성장 트렌드 (2020 = 10 기준)",
+    subtitle = "2020~2025년 5년간 10~15배 성장 — 지금이 기회",
+    x = "연도", y = "성장 지수", color = ""
+  )
+```
+
+## 취업 포트폴리오 체크리스트 {.smaller}
+
+```{r}
+#| echo: false
+library(knitr)
+portfolio <- data.frame(
+  항목 = c(
+    "GitHub 프로필",
+    "배포된 앱 URL",
+    "Streamlit/Shiny 앱",
+    "텔레그램 봇",
+    "AI API 활용 프로젝트",
+    "Quarto 보고서",
+    "README.md"
+  ),
+  완성도 = c(
+    "필수", "필수", "필수",
+    "추가점수", "추가점수", "추가점수", "필수"
+  ),
+  면접관_반응 = c(
+    "'GitHub 있어요?' '네, 여기 있습니다'",
+    "'앱 보여줄 수 있어요?' '네, 지금 바로요'",
+    "데이터 분석 능력 직접 증명",
+    "자동화 능력 증명 — 차별화 포인트",
+    "AI 활용 능력 증명 — 현재 가장 중요",
+    "문서화 능력 증명 — 협업 능력 신호",
+    "프로젝트 이해도 및 의사소통 능력"
+  )
+)
+knitr::kable(
+  portfolio,
+  caption = "디스플레이 취업 AI 포트폴리오 체크리스트",
+  align   = c("l", "c", "l")
+)
+```
+
+## 프로젝트 3 발표 시간 {.smaller}
+
+:::: {.columns}
+
+::: {.column width="55%"}
+**발표 형식**
+
+- 팀당 3분
+- URL 하나로 모든 것을 보여준다
+- 코드 설명보다 **사용 시연** 중심
+
+**발표 구성 (3분)**
+
+1. (30초) 무엇을 만들었나요?
+2. (90초) 실제 시연 (URL 열기)
+3. (60초) 기술 스택 및 어려웠던 점
+
+:::
+
+::: {.column width="45%"}
+**평가 포인트**
+
+| 항목 | 비중 |
+|------|------|
+| 실제로 동작하는가? | 40% |
+| 디스플레이 산업 관련성 | 30% |
+| 코드 품질 & GitHub | 20% |
+| 발표 명확성 | 10% |
+
+::: {.callout-tip title="발표 팁"}
+"이 기능을 만들 때 이런 문제가 있었고,
+이렇게 해결했습니다"가 가장 인상적입니다.
+:::
+
+:::
+
+::::
+
+## 다음 학습 로드맵 {.smaller}
 
 ```{r}
 #| echo: false
 #| fig-width: 9
-#| fig-height: 4.5
+#| fig-height: 4.0
 library(ggplot2)
 
-data <- data.frame(
-  stage = c("초급", "중급", "고급"),
-  start = c(1, 2, 3),
-  end = c(2, 3, 4)
-)
-
-ggplot(data, aes(y=stage, x=start, xend=end)) +
-  geom_segment(aes(yend=stage), size=6) +
-  labs(title="AI 개발자 학습 로드맵", x="단계", y="레벨") +
-  theme(axis.text.y = element_text(size=12))
-```
-
-## 수료 후 다음 단계 커리큘럼 {.smaller}
-
-```{r}
-#| echo: false
-knitr::kable(
-  data.frame(
-    과정 = c("초급", "중급", "고급"),
-    내용 = c("FastAPI, Docker", "MCP 서버 제작", "GitHub 포트폴리오")
+roadmap <- data.frame(
+  Level = factor(
+    rep(c("초급 완료\n(지금)", "중급 목표", "고급 목표"), c(4, 4, 4)),
+    levels = c("초급 완료\n(지금)", "중급 목표", "고급 목표")
   ),
-  caption="수료 후 다음 단계 커리큘럼",
-  align=c("l","r")
+  Skill = c(
+    "Claude Code", "Streamlit", "Telegram Bot", "Quarto",
+    "LangChain/\nLangGraph", "FastAPI", "Docker", "데이터\n파이프라인",
+    "MLOps", "Kubernetes", "LLM\nFine-tuning", "프로덕션\n배포"
+  ),
+  x = c(1:4, 1:4, 1:4),
+  y = c(rep(3, 4), rep(2, 4), rep(1, 4))
 )
+
+ggplot(roadmap, aes(x = x, y = y, label = Skill)) +
+  geom_point(aes(color = Level), size = 18, alpha = 0.85) +
+  geom_text(color = "white", size = 2.8, fontface = "bold") +
+  scale_color_manual(values = c(
+    "초급 완료\n(지금)" = "#27AE60",
+    "중급 목표"         = "#2E75B6",
+    "고급 목표"         = "#9B59B6"
+  )) +
+  xlim(0.3, 4.7) + ylim(0.3, 3.7) +
+  theme_void() +
+  labs(title = "AI 개발자 학습 로드맵", color = "단계") +
+  theme(
+    plot.title     = element_text(color = "white", size = 14, hjust = 0.5),
+    legend.text    = element_text(color = "white"),
+    legend.title   = element_text(color = "white"),
+    legend.position = "right"
+  )
 ```
 
-## 수료 축하 메시지
+## 수료 후 추천 행동 계획 {.smaller}
+
+::: {.panel-tabset}
+
+### 이번 주 (즉시 할 것)
+
+```bash
+# 1. GitHub 프로필 정리
+# README.md에 만든 프로젝트 링크 추가
+# 배포 URL 포함
+
+# 2. LinkedIn 업데이트
+# "AI 바이브 코딩 수료"
+# 배포된 앱 URL 첨부
+
+# 3. 프로젝트 3 코드 정리
+# README 보완
+# requirements.txt 최신화
+```
+
+### 1개월 목표
+
+**중급 스킬 1개 추가**
+
+- FastAPI로 REST API 서버 만들기
+- Docker로 앱 컨테이너화
+- LangChain 기초 튜토리얼 완료
+
+**포트폴리오 강화**
+
+- GitHub에 커밋 기록 지속적으로 쌓기
+- 블로그나 Notion에 학습 과정 기록
+- 디스플레이 관련 AI 프로젝트 1개 추가
+
+### 3개월 목표
+
+**취업 준비 완료 기준**
+
+- GitHub: 스타 받은 레포 1개 이상
+- 배포 URL: 3개 이상 (Streamlit + Railway + Vercel)
+- AI API 통합 프로젝트: 2개 이상
+- 텔레그램 봇 또는 자동화 시스템: 1개
+
+**면접 준비**
+
+- "AI를 어떻게 활용했나요?" → 시연으로 답변
+- "포트폴리오 보여주세요" → URL로 즉시 제시
+
+:::
+
+## 수료 축하 {background="#1F4E79"}
+
+> "코드를 쓰지 않아도 개발자가 될 수 있는 시대.
+> 여러분은 그 첫 번째 세대입니다."
 
 ::: {.fragment .fade-in}
-축하합니다!
-:::
-::: {.fragment .highlight-red}
-당신의 여정은 이제 시작입니다!
+Claude Code로 에이전트 방식 개발 이해 완료
 :::
 
-## 팁과 주의사항
-
-::: {.callout-tip title="팁"}
-GitHub 포트폴리오를 꾸준히 관리하세요.
+::: {.fragment .fade-in}
+Streamlit / Shiny / Quarto로 데이터 앱 3종 완성
 :::
 
-::: {.callout-warning title="주의"}
-과도한 기술 스택 확장은 피하세요.
+::: {.fragment .fade-in}
+AI API 연동 및 텔레그램 봇 구축 완료
 :::
 
-## 코드 예시: FastAPI 서버 {.smaller}
+::: {.fragment .fade-in}
+배포 플랫폼 10종 이해 및 실습 완료
+:::
 
-```python
-from fastapi import FastAPI
-
-app = FastAPI()
-
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
-``` {code-line-numbers="1-2|3|5-7"}
-
-## Q&A
-
-- 질문 환영합니다!
-- 추가 도움 필요 시 연락주세요.
+::: {.fragment .fade-in}
+**다음은 여러분의 포트폴리오가 빛날 차례입니다.**
+:::

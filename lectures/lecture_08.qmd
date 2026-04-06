@@ -1,6 +1,6 @@
 ---
 title: "Google AI Studio + Gemini API 챗봇"
-subtitle: "하루 1,500회 무료 AI API"
+subtitle: "하루 1,500회 무료 — AI API를 내 앱에 심는 방법"
 author: "렛유인 KDC"
 date: today
 engine: knitr
@@ -31,116 +31,453 @@ format:
     margin: 0.1
 ---
 
-# PART 4: Gemini API 무료 제공 {background="#1F4E79"}
+## 하루 1,500회 무료 {background="#1F4E79"}
 
-## 오프닝
-"Google이 Gemini API를 무료로 쏜다. 하루 1500번까지."
+<br>
 
-## Gemini API 구조
-- API Key → Model → generate_content()
+**Gemini 1.5 Flash.**
 
-::: {.columns}
-::: {.column width="45%"}
-- API Key 발급
-:::
-::: {.column width="55%"}
-- generate_content() 사용
-:::
-:::
+Google AI Studio에서 발급한 API Key 하나로
 
-## .env 보안 관리
-dotenv 패턴을 활용하여 API Key를 안전하게 관리합니다.
+**하루 1,500번 무료 호출.**
 
-::: {.callout-tip title="팁"}
-API Key를 코드에 직접 포함하지 말고, .env 파일을 사용하세요.
+<br>
+
+:::{.fragment}
+내 Streamlit 앱에 **AI 두뇌**를 심어보자.
+
+"OLED 번인 현상이 뭔가요?" → AI가 전문가처럼 답변.
+
+디스플레이 Q&A 챗봇을 30분 안에 만듭니다.
 :::
 
-## API 상세 비교 {auto-animate="true"}
-Claude API vs Gemini API
+<br>
 
-## API 상세 비교 {auto-animate="true"}
-Claude API vs Gemini API + 무료한도/모델/맥락창/특기
-
-## 멀티모달 기능
-텍스트, 이미지, 영상 입력 가능
-
-::: {.fragment .fade-in}
-- AI 모델의 다양한 입력 지원
+:::{.fragment}
+> API Key 발급부터 Streamlit 배포까지 — 오늘 수업 하나로 끝.
 :::
 
-## AI API 무료 한도 비교
-```{r}
-#| echo: false
-#| fig-width: 9
-#| fig-height: 4.5
-library(ggplot2)
-api_data <- data.frame(
-  API = c("Gemini", "GPT", "Claude", "Together"),
-  Free_Quota = c(1500, 1000, 2000, 500)
-)
-ggplot(api_data, aes(x=API, y=Free_Quota)) +
-  geom_bar(stat="identity", fill="steelblue") +
-  labs(title="AI API 무료 한도 비교", y="무료 한도 (횟수)") +
-  theme_minimal()
+---
+
+## AI API가 뭔가요?
+
+:::{.columns}
+:::{.column width="55%"}
+### "ChatGPT 같은 AI를 내 앱 안에 넣을 수 있다면?"
+
+**API = Application Programming Interface**
+
+AI 회사의 서버 ↔ 내 앱을 연결하는 다리.
+
+```
+내 앱
+  │  질문(Request) 전송
+  ▼
+AI 서버 (Google/Anthropic/OpenAI)
+  │  답변(Response) 반환
+  ▼
+내 앱에 결과 표시
 ```
 
-## Claude vs Gemini 비교표
+모든 AI API가 이 원리로 작동합니다.
+:::
+:::{.column width="45%"}
+### 주요 AI API 비교
+
+| 회사 | 모델 | 특징 |
+|------|------|------|
+| Google | Gemini 1.5 Flash | **무료 1500회/일** |
+| Anthropic | Claude 3.5 Sonnet | 코딩 최강 |
+| OpenAI | GPT-4o | 가장 유명 |
+| Meta | Llama 3.1 | 오픈소스 |
+
+:::{.fragment}
+**오늘 쓸 것**: Gemini 1.5 Flash
+
+이유: 무료 한도가 가장 넉넉하고 속도가 빠름.
+학습용으로 최적.
+:::
+:::
+:::
+
+---
+
+## Claude vs Gemini API 비교
+
 ```{r}
 #| echo: false
 library(knitr)
+
 comparison <- data.frame(
-  Feature = c("무료한도", "모델", "맥락창", "특기"),
-  Claude = c("2000회", "Claude 모델", "중간", "대화형"),
-  Gemini = c("1500회", "Gemini 모델", "크다", "멀티모달")
+  항목 = c("무료 티어", "컨텍스트 창", "주요 장점", "상대적 단점", "추천 용도"),
+  Claude = c(
+    "제한적 (유료 위주)",
+    "200K 토큰",
+    "긴 문서 분석\n코딩 능력 탁월",
+    "무료 한도 적음",
+    "코딩·분석·긴 문서 처리"
+  ),
+  Gemini = c(
+    "1,500회/일 무료",
+    "1M 토큰",
+    "Google 생태계 연동\n무료 한도 큼",
+    "한국어 다소 약함",
+    "챗봇·빠른 응답·학습용"
+  )
 )
-knitr::kable(comparison, caption="Claude vs Gemini 상세 비교", align=c("l","r","r"))
+
+knitr::kable(
+  comparison,
+  caption = "Claude vs Gemini API 비교 — 학습 시작은 Gemini로",
+  align = c("l", "l", "l")
+)
 ```
 
-## 실습: 디스플레이 기술 Q&A 챗봇
-Gemini API + Streamlit 인터페이스를 사용하여 챗봇을 구성합니다.
+<br>
 
-::: {.fragment .highlight-red}
-- System Prompt: "너는 디스플레이 공정 전문가야"
+:::{.callout-note}
+**컨텍스트 창이란?** AI가 한 번에 처리할 수 있는 텍스트의 양.
+Gemini 1.5 Pro는 1M 토큰 = 소설 약 4권 분량을 한 번에 처리 가능.
 :::
 
-## 대화 히스토리 유지
-챗봇의 대화 히스토리를 유지하여 자연스러운 대화를 지원합니다.
+---
 
-::: {.callout-warning title="주의"}
-대화 히스토리를 저장할 때 개인정보를 주의하세요.
+## API Key 보안 — 절대 실수하면 안 되는 것
+
+:::{.callout-warning}
+## 실제 사례
+
+API Key를 GitHub 공개 레포에 올린 개발자의 이야기:
+- 커밋 후 **3분 만에** 봇이 Key를 탐지
+- 해커가 Key로 API를 무단 사용
+- 하루 만에 **$2,000+ 청구서** 날아옴
+
+**이건 도시 전설이 아닙니다. 매주 발생하는 실제 사건입니다.**
 :::
 
-## Panel tabset: API Key 발급
-::: {.panel-tabset}
-### API Key 발급
-API Key 발급 절차
-### 코드
+<br>
+
+:::{.columns}
+:::{.column width="50%"}
+### .env 파일 생성
+
+```bash
+# 프로젝트 루트에 .env 파일 생성
+GEMINI_API_KEY=AIzaSy...실제키...
+```
+
+### .gitignore에 반드시 추가
+
+```bash
+echo ".env" >> .gitignore
+# 또는 .gitignore 파일을 직접 열어서 추가
+```
+:::
+:::{.column width="50%"}
+### Python에서 불러오기
+
 ```python
-import os
 from dotenv import load_dotenv
+import os
+
+load_dotenv()  # .env 파일 읽기
+api_key = os.getenv("GEMINI_API_KEY")
+```
+
+```bash
+# dotenv 설치
+pip install python-dotenv
+```
+
+:::{.fragment}
+**규칙**: Key는 항상 환경변수로. 코드에 직접 쓰는 순간 위험.
+:::
+:::
+:::
+
+---
+
+## Gemini API 기본 사용법
+
+```python
+import google.generativeai as genai
+from dotenv import load_dotenv
+import os
+
+# 환경변수에서 API Key 로드
+load_dotenv()
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+
+# 모델 초기화
+model = genai.GenerativeModel("gemini-1.5-flash")
+
+# 단순 질문-응답
+response = model.generate_content(
+    "OLED 디스플레이에서 번인 현상이 발생하는 원리를 설명해줘"
+)
+
+print(response.text)
+```
+
+:::{.fragment}
+**출력 예시:**
+```
+OLED는 유기 발광 소자가 스스로 빛을 냅니다. 특정 픽셀에 오랫동안 같은 이미지가
+표시되면 해당 유기 소자가 다른 픽셀보다 빠르게 열화(degradation)됩니다.
+이로 인해 해당 영역이 잔상으로 남는 현상이 '번인(Burn-in)'입니다...
+```
+:::
+
+---
+
+## 실습 앱 — 디스플레이 Q&A 챗봇
+
+```python
+import streamlit as st
+import google.generativeai as genai
+from dotenv import load_dotenv
+import os
 
 load_dotenv()
-api_key = os.getenv("GEMINI_API_KEY")
-``` {code-line-numbers="1-2|3|5-7"}
-### 실행 결과
-API Key가 안전하게 로드되었습니다.
-:::
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+model = genai.GenerativeModel("gemini-1.5-flash")
 
-## 실습 결과 시각화
-```{r}
-#| echo: false
-#| fig-width: 9
-#| fig-height: 4.5
-library(ggplot2)
-result_data <- data.frame(
-  Question = c("공정 효율성?", "수율 향상 방법?", "스펙 관리?"),
-  Response_Time = c(0.5, 0.7, 0.6)
-)
-ggplot(result_data, aes(x=Question, y=Response_Time)) +
-  geom_point(color="darkorange", size=3) +
-  labs(title="챗봇 응답 시간", y="응답 시간 (초)") +
-  theme_minimal()
+st.title("🖥️ 디스플레이 기술 Q&A 챗봇")
+
+SYSTEM_PROMPT = """당신은 디스플레이 기술 전문가입니다.
+OLED, LCD, QLED, 수율 관리, 공정 기술에 대해 전문적으로 답변하세요.
+삼성디스플레이, LG디스플레이 취업 준비생들의 질문에 친절하게 답변하세요."""
+
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
+for msg in st.session_state.messages:
+    with st.chat_message(msg["role"]):
+        st.write(msg["content"])
+
+if prompt := st.chat_input("디스플레이 기술 질문을 입력하세요..."):
+    st.session_state.messages.append({"role": "user", "content": prompt})
+    with st.chat_message("user"):
+        st.write(prompt)
+    full_prompt = f"{SYSTEM_PROMPT}\n\n질문: {prompt}"
+    response = model.generate_content(full_prompt)
+    with st.chat_message("assistant"):
+        st.write(response.text)
+    st.session_state.messages.append(
+        {"role": "assistant", "content": response.text}
+    )
 ```
 
-## 마무리
-Gemini API를 활용한 디스플레이 기술 Q&A 챗봇 구현을 통해 AI의 실용성을 체감하세요.
+---
+
+## API 응답 시간 분포 시뮬레이션
+
+Flash vs Pro — 속도 차이를 데이터로:
+
+```{r}
+#| echo: false
+library(ggplot2)
+
+set.seed(42)
+response_times <- data.frame(
+  ms = c(rnorm(100, mean = 800, sd = 200), rnorm(50, mean = 2000, sd = 400)),
+  Model = c(rep("Gemini 1.5 Flash", 100), rep("Gemini 1.5 Pro", 50))
+)
+
+ggplot(response_times, aes(x = ms, fill = Model)) +
+  geom_histogram(bins = 30, alpha = 0.7, position = "identity") +
+  scale_fill_manual(
+    values = c("Gemini 1.5 Flash" = "#4285F4", "Gemini 1.5 Pro" = "#34A853")
+  ) +
+  geom_vline(xintercept = 800, linetype = "dashed",
+             color = "#4285F4", linewidth = 1) +
+  geom_vline(xintercept = 2000, linetype = "dashed",
+             color = "#34A853", linewidth = 1) +
+  annotate("text", x = 830, y = 18, label = "Flash 평균\n800ms",
+           color = "#4285F4", size = 3.5, hjust = 0) +
+  annotate("text", x = 2030, y = 10, label = "Pro 평균\n2000ms",
+           color = "#34A853", size = 3.5, hjust = 0) +
+  theme_minimal(base_size = 13) +
+  labs(
+    title = "Gemini API 응답 시간 분포 (시뮬레이션)",
+    subtitle = "Flash는 빠른 대화형 앱에, Pro는 정확한 분석이 필요할 때",
+    x = "응답 시간 (ms)", y = "빈도", fill = "모델"
+  )
+```
+
+---
+
+## AI API 가격 비교
+
+무료 단계를 넘으면 얼마나 드나?
+
+```{r}
+#| echo: false
+library(ggplot2)
+
+pricing <- data.frame(
+  Model = c("Gemini 1.5 Flash\n(유료)", "Gemini 1.5 Pro", "Claude 3.5 Sonnet", "GPT-4o"),
+  CostPer1M = c(0.075, 3.5, 15.0, 15.0)
+)
+
+ggplot(pricing, aes(x = reorder(Model, CostPer1M), y = CostPer1M, fill = Model)) +
+  geom_bar(stat = "identity", width = 0.6) +
+  scale_fill_manual(values = c(
+    "Gemini 1.5 Flash\n(유료)" = "#4285F4",
+    "Gemini 1.5 Pro"          = "#34A853",
+    "Claude 3.5 Sonnet"       = "#D4A843",
+    "GPT-4o"                  = "#E74C3C"
+  )) +
+  geom_text(aes(label = paste0("$", CostPer1M)), hjust = -0.15, size = 4) +
+  coord_flip() +
+  theme_minimal(base_size = 12) +
+  theme(legend.position = "none") +
+  scale_y_continuous(limits = c(0, 18)) +
+  labs(
+    title = "AI API 가격 비교 — 입력 토큰 100만 개당 비용 (USD)",
+    subtitle = "Gemini 1.5 Flash 무료 티어: 하루 1,500회 / 분당 15회 / 완전 무료",
+    x = "", y = "비용 (USD / 1M 토큰)"
+  )
+```
+
+---
+
+## 챗봇 고도화 — 대화 이력 관리
+
+단순 Q&A에서 **진짜 대화**로 발전시키기:
+
+```python
+import google.generativeai as genai
+
+model = genai.GenerativeModel("gemini-1.5-flash")
+
+# 대화 세션 시작 (이전 대화를 자동으로 기억)
+chat = model.start_chat(history=[])
+
+# 첫 번째 질문
+response1 = chat.send_message("OLED와 LCD의 차이를 설명해줘")
+print(response1.text)
+
+# 두 번째 질문 — "그것"이 앞 대화를 가리킴
+response2 = chat.send_message("그것의 장단점을 표로 정리해줘")
+print(response2.text)  # 앞 대화 맥락 유지
+
+# 대화 이력 확인
+for turn in chat.history:
+    print(f"[{turn.role}]: {turn.parts[0].text[:50]}...")
+```
+
+:::{.callout-note}
+`model.start_chat(history=[])` — `history` 파라미터에 이전 대화를 넣으면 대화를 이어갈 수 있습니다. Streamlit의 `session_state`와 조합하면 완전한 챗봇 완성.
+:::
+
+---
+
+## 시스템 프롬프트 — AI 페르소나 설정
+
+같은 모델, 다른 전문가:
+
+:::panel-tabset
+
+### 디스플레이 기술 전문가
+```python
+SYSTEM_PROMPT = """당신은 15년 경력의 디스플레이 기술 전문가입니다.
+삼성디스플레이와 LG디스플레이의 OLED, LCD, QLED 기술에 정통합니다.
+수율 관리, TFT 공정, 색재현율, 응답속도에 대해 깊이 설명하세요.
+기술 용어를 사용하되 취업 준비생도 이해할 수 있게 쉽게 풀어주세요."""
+```
+
+### 면접 코치
+```python
+SYSTEM_PROMPT = """당신은 삼성·LG 디스플레이 계열사 취업 전문 면접 코치입니다.
+기술 면접 질문에 대한 모범 답변을 제시하고,
+답변의 강점과 개선점을 솔직하게 피드백해주세요.
+STAR 기법(상황-과제-행동-결과)으로 답변을 구성하도록 도와주세요."""
+```
+
+### 수율 분석 보조
+```python
+SYSTEM_PROMPT = """당신은 디스플레이 공정 수율 분석 전문가입니다.
+CSV 데이터를 붙여넣으면 이상 패턴을 찾아주고,
+어떤 공정 변수가 수율에 영향을 미치는지 분석해주세요.
+통계적 근거를 들어 설명하고 R 또는 Python 분석 코드를 제안하세요."""
+```
+
+:::
+
+---
+
+## 스트리밍 응답 — 타이핑 효과 구현
+
+ChatGPT처럼 글자가 하나씩 나타나는 효과:
+
+```python
+import streamlit as st
+import google.generativeai as genai
+
+model = genai.GenerativeModel("gemini-1.5-flash")
+
+if prompt := st.chat_input("질문을 입력하세요"):
+    with st.chat_message("assistant"):
+        # 빈 placeholder 생성
+        message_placeholder = st.empty()
+        full_response = ""
+
+        # 스트리밍으로 응답 받기
+        for chunk in model.generate_content(prompt, stream=True):
+            if chunk.text:
+                full_response += chunk.text
+                # 글자가 쌓이는 효과
+                message_placeholder.write(full_response + "▌")
+
+        # 커서 제거 후 최종 출력
+        message_placeholder.write(full_response)
+```
+
+:::{.callout-tip}
+`stream=True` 옵션 하나로 사용자 경험(UX)이 크게 향상됩니다.
+전체 응답을 기다리는 것보다 글자가 나타나는 방식이 훨씬 자연스럽습니다.
+:::
+
+---
+
+## 마무리 + 프로젝트 2 예고
+
+:::{.callout-tip}
+## Gemini API + Streamlit = 30분 완성 AI 챗봇
+
+프로젝트 2에서 이 모든 것을 활용한 **디스플레이 기술 분석 앱**을 만듭니다:
+
+- Streamlit으로 대시보드 레이아웃
+- Gemini API로 Q&A 챗봇 탑재
+- 수율 데이터 업로드 & 시각화
+- GitHub + Streamlit Cloud 배포
+:::
+
+<br>
+
+:::{.columns}
+:::{.column width="55%"}
+### 8강 정리
+
+| 개념 | 핵심 |
+|------|------|
+| Gemini API | Google AI Studio에서 Key 발급 |
+| .env 보안 | Key는 절대 코드에 직접 X |
+| 기본 호출 | `model.generate_content()` |
+| 대화 관리 | `model.start_chat()` + `history` |
+| 스트리밍 | `stream=True` → 타이핑 효과 |
+| 시스템 프롬프트 | AI 페르소나 = 앱의 전문성 |
+:::
+:::{.column width="45%"}
+:::{.callout-important}
+## 과제
+
+1. Google AI Studio에서 API Key 발급
+2. `.env` 파일에 저장 + `.gitignore` 설정
+3. 디스플레이 Q&A 챗봇 로컬 실행
+4. Streamlit Cloud 배포 후 URL 제출
+5. **보너스**: 시스템 프롬프트를 바꿔서 나만의 전문가 설정
+:::
+:::
+:::

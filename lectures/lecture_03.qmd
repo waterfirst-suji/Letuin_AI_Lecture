@@ -1,6 +1,6 @@
 ---
 title: "Claude Code Skills & 커스텀 자동화"
-subtitle: "반복 작업을 슬래시 명령어 하나로"
+subtitle: "반복 작업은 AI한테 맡겨라 — /commit 한 번으로 PR까지"
 author: "렛유인 KDC"
 date: today
 engine: knitr
@@ -31,120 +31,516 @@ format:
     margin: 0.1
 ---
 
-# PART 2: AI 활용의 진화 {background="#1F4E79"}
+# 당신의 하루 중 반복 작업이 몇 %? {background="#1F4E79"}
 
-## 오프닝
-"나는 하루 10개 앱을 만든다. AI 덕분에." - Simon Willison
+::: {style="margin-top: 40px; font-size: 1.0em; color: #CBD5E0;"}
+"같은 형식의 수율 보고서를 **매주** 씁니다."
 
-## Claude Code Skills
+"커밋 메시지를 **항상** 같은 패턴으로 씁니다."
 
-### 내장 스킬 vs 커스텀 스킬
-- /commit, /review, /test
-- 커스텀 스킬의 유연성
-
-## 프롬프트 품질 비교
-
-### 나쁜 예 vs 좋은 예
-- 역할, 맥락, 형식, 제약 4요소
-
-::: {.panel-tabset}
-### 나쁜 예
-- 불명확한 역할
-- 부족한 맥락 제공
-
-### 좋은 예
-- 명확한 역할 설정
-- 풍부한 맥락 제공
-
-### 결과 비교
-- 응답 품질 차이
+"코드 리뷰 체크리스트가 **늘 비슷**합니다."
 :::
 
-## 프롬프트 요소 설명표
-
-```{r}
-#| echo: false
-#| results: 'asis'
-df <- data.frame(
-  요소 = c("역할", "맥락", "작업", "출력형식"),
-  설명 = c("AI의 역할 정의", "관련 정보 제공", "수행할 작업", "결과의 형식 설정")
-)
-knitr::kable(df, caption="4대 프롬프트 요소 설명표", align=c("l","r"))
-```
-
-## CLAUDE.md 고급 설정
-
-- 프로젝트별 AI 행동 커스터마이즈
-
-::: {.callout-tip title="팁"}
-AI 설정을 통해 프로젝트 요구에 맞춤 대응
+::: {style="margin-top: 30px; font-size: 1.3em; color: #F6E05E;"}
+이걸 자동화하면 어떻게 될까?
 :::
 
-## cokacdir 소개
+::: {style="margin-top: 30px; font-size: 0.95em; color: #A0AEC0;"}
+슬래시(/) 명령어 하나가 10분 작업을 10초로 줄인다.
 
-- Rust 기반 AI 터미널 파일 매니저
-- 자연어 명령 지원
-
-## R ggplot2 차트: 프롬프트 응답 품질
-
-```{r}
-#| echo: false
-#| fig-width: 9
-#| fig-height: 4.5
-library(ggplot2)
-data <- data.frame(
-  Prompt = c("나쁜 예", "좋은 예"),
-  Quality = c(60, 90)
-)
-
-ggplot(data, aes(x=Prompt, y=Quality, fill=Prompt)) +
-  geom_bar(stat="identity") +
-  labs(title="프롬프트 응답 품질 비교", y="품질 점수") +
-  theme_minimal()
-```
-
-## 실습: /analyze-yield 커스텀 스킬 작성
-
-### 프롬프트 패턴 실습
-- 디스플레이 수율 데이터 분석 요청
-
-::: {.fragment .fade-in}
-분석 결과를 통해 개선안 도출
+오늘 직접 만들고, 직접 쓴다.
 :::
 
-## auto-animate 슬라이드 쌍
+---
 
-## 슬라이드A {auto-animate="true"}
-커스텀 스킬의 필요성
+## Skills란? — 슬래시 명령어의 마법
 
-## 슬라이드B {auto-animate="true"}
-커스텀 스킬의 필요성 + 적용 사례
+::: {style="font-size: 0.9em; color: #CBD5E0; margin-bottom: 20px;"}
+*"/commit을 입력하면 git diff를 분석하고, 한국어 커밋 메시지를 자동 작성하고, PR까지 만들어준다."*
 
-## 코드 예시
-
-```python
-def analyze_yield(data):
-    # 데이터 분석 로직
-    result = process(data)
-    return result
-``` {code-line-numbers="1-2|3|5-7"}
-
-## 결론
-
-### AI 활용의 미래
-- AI와 함께하는 혁신의 가능성
-
-::: {.callout-warning title="주의"}
-AI 의존성 증가에 따른 윤리적 고려 필요
+이게 Skills. 슬래시 명령어 하나가 복잡한 워크플로우를 실행한다.
 :::
-
-## Q&A 및 토론
 
 ::: {.columns}
-::: {.column width="45%"}
-질문 및 답변
+
+::: {.column width="50%"}
+::: {style="background: #1A2942; padding: 20px; border-radius: 10px; border-left: 5px solid #3B82F6;"}
+### 기존 방식 (수동)
+
+1. `git diff` 실행 (1분)
+2. 변경사항 파악 (2분)
+3. 커밋 메시지 작성 (3분)
+4. `git commit -m "..."` (1분)
+5. PR 설명 작성 (5분)
+6. `gh pr create` (2분)
+
+**총 14분**
 :::
+:::
+
+::: {.column width="50%"}
+::: {style="background: #1A3A2A; padding: 20px; border-radius: 10px; border-left: 5px solid #10B981;"}
+### Skills 방식 (자동화)
+
+1. `/commit` 입력 (5초)
+2. AI가 diff 분석 (10초)
+3. 커밋 메시지 자동 생성 (10초)
+4. PR 자동 생성 (15초)
+
+**총 40초**
+
+하루 5번 반복 = **65분 절약**
+:::
+:::
+
+:::
+
+::: {style="margin-top: 20px; text-align: center; color: #F6E05E; font-size: 1.0em;"}
+Skills = `.claude/commands/` 폴더 안의 Markdown 파일. 누구나 만들 수 있다.
+:::
+
+---
+
+## 기본 스킬 체험해보기
+
+::: {.panel-tabset}
+
+### /commit
+
+**사용법**: 터미널에서 `/commit` 입력
+
+**동작 과정**:
+
+1. `git diff --staged` 자동 실행
+2. 변경사항을 AI가 분석
+3. 한국어 커밋 메시지 생성 (제목 + 본문)
+4. 확인 후 커밋 실행
+
+**실제 예시**:
+
+```
+입력: /commit
+
+AI 출력:
+feat: OLED 수율 분석 모듈 추가
+
+- yield_analyzer.py: 공정별 수율 계산 함수 구현
+- 이상값 탐지 알고리즘 (IQR 방식) 적용
+- matplotlib 시각화 통합
+
+커밋하시겠습니까? (y/n)
+```
+
+### /review-pr
+
+**사용법**: PR 번호와 함께 `/review-pr 42` 입력
+
+**동작 과정**:
+
+1. GitHub API로 PR 변경사항 가져오기
+2. 코드 품질, 버그 가능성, 개선점 분석
+3. 체크리스트 형식으로 리뷰 생성
+
+**출력 예시**:
+
+```markdown
+## PR #42 리뷰 결과
+
+### 코드 품질
+- [x] 함수 이름이 명확함
+- [x] 한국어 주석 포함
+- [ ] 에러 핸들링 누락 (line 47)
+
+### 개선 제안
+1. `calculate_yield()` 함수에 타입 힌트 추가 권장
+2. 수율 0% 케이스 처리 로직 필요
+```
+
+### /simplify
+
+**사용법**: 파일 경로와 함께 `/simplify yield_analyzer.py` 입력
+
+**동작 과정**:
+
+1. 지정된 파일 읽기
+2. 중복 코드, 복잡한 로직 파악
+3. 리팩토링된 버전 제안
+
+**효과**: 코드 라인 수 평균 30% 감소, 가독성 향상
+
+:::
+
+---
+
+## cokacdir — AI로 만든 AI 터미널 파일 매니저
+
+::: {style="font-size: 0.9em; color: #CBD5E0; margin-bottom: 20px;"}
+이 강의 강사가 직접 만든 프로젝트. 바이브 코딩의 실제 결과물.
+:::
+
+::: {.columns}
+
 ::: {.column width="55%"}
-토론 주제
+::: {style="background: #1A2942; padding: 20px; border-radius: 10px;"}
+### cokacdir이란?
+
+**자연어로 파일을 관리하는 터미널 도구**
+
+- Rust로 작성 (성능 최우선)
+- "수율 분석 파일들만 압축해줘" → 자동 실행
+- "지난주 수정한 파일 목록 보여줘" → 즉시 표시
+- "CSV 파일 전부 백업 폴더로 옮겨줘" → Done
+
+GitHub: `github.com/[강사아이디]/cokacdir`
 :::
+
+::: {.callout-note}
+## AI로 만든 도구를 AI로 사용한다
+
+처음 버전: Claude Code로 3시간 만에 작성
+
+이후 개선: 매번 Claude Code로 기능 추가
+
+바이브 코딩의 정점이 바로 이것.
+:::
+:::
+
+::: {.column width="45%"}
+::: {style="background: #2D3748; padding: 20px; border-radius: 10px;"}
+### 이 프로젝트에서 배울 점
+
+1. **시작이 반** — 완벽하지 않아도 공개
+2. **AI로 시작** — Rust 잘 몰라도 만듦
+3. **실용성** — 내가 쓰려고 만든 것
+4. **포트폴리오** — GitHub에 공개 → 취업에 활용
+
+**당신도 할 수 있다.**
+
+디스플레이 수율 분석 도구 만들기 → 포트폴리오로
+:::
+:::
+
+:::
+
+---
+
+## 나만의 스킬 만들기 — /yield-report 구현
+
+::: {style="font-size: 0.9em; color: #CBD5E0; margin-bottom: 15px;"}
+Skills는 단순한 Markdown 파일이다. `.claude/commands/` 폴더에 만들면 끝.
+:::
+
+**프로젝트 구조**:
+
+```
+display-portfolio/
+├── .claude/
+│   └── commands/
+│       ├── yield-report.md    ← 직접 만들 스킬!
+│       ├── commit-kr.md
+│       └── review-display.md
+├── CLAUDE.md
+├── data/
+│   └── yield_data.csv
+└── src/
+    └── analyzer.py
+```
+
+**`yield-report.md` 내용**:
+
+```markdown
+# /yield-report — 수율 분석 보고서 자동 생성
+
+당신은 반도체/디스플레이 수율 분석 전문가입니다.
+
+1. `data/yield_data.csv` 파일을 읽어라
+2. 공정별 수율을 계산하고 이상 구간을 탐지하라
+3. R ggplot2로 시각화 코드를 작성하라
+4. `reports/yield_report_[날짜].md` 로 보고서를 저장하라
+5. 핵심 인사이트 3가지를 요약하라
+
+한국어로 보고서를 작성하라.
+```
+
+---
+
+## 자동화 시나리오 — 수동 vs AI 자동화 시간 비교
+
+```{r}
+#| label: automation-comparison
+library(ggplot2)
+library(tidyr)
+
+tasks <- data.frame(
+  Task       = c("커밋 메시지 작성", "코드 리뷰", "문서 업데이트", "테스트 작성", "배포 체크"),
+  Manual_min = c(5, 30, 20, 45, 15),
+  AI_min     = c(0.5, 5, 2, 5, 1)
+)
+
+df_long <- pivot_longer(tasks, cols = c(Manual_min, AI_min),
+                        names_to = "Method", values_to = "Minutes")
+
+ggplot(df_long, aes(x = Task, y = Minutes, fill = Method)) +
+  geom_bar(stat = "identity", position = "dodge", width = 0.6) +
+  scale_fill_manual(
+    values = c("Manual_min" = "#C0392B", "AI_min" = "#27AE60"),
+    labels = c("Manual_min" = "수동 (분)", "AI_min" = "AI 자동화 (분)")
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    plot.background    = element_rect(fill = "#1E2A3A", color = NA),
+    panel.background   = element_rect(fill = "#1E2A3A", color = NA),
+    text               = element_text(color = "white"),
+    axis.text          = element_text(color = "#CBD5E0"),
+    axis.text.x        = element_text(angle = 20, hjust = 1, color = "#CBD5E0"),
+    panel.grid.major.y = element_line(color = "#2D3748"),
+    panel.grid.minor   = element_blank(),
+    panel.grid.major.x = element_blank(),
+    legend.background  = element_rect(fill = "#1E2A3A", color = NA)
+  ) +
+  labs(
+    title = "작업별 소요 시간: 수동 vs AI 자동화",
+    subtitle = "하루 5개 작업 기준 — AI 도입 시 약 100분/일 절약",
+    y = "소요 시간 (분)", x = "", fill = ""
+  ) +
+  geom_text(aes(label = paste0(Minutes, "분")),
+            position = position_dodge(width = 0.6),
+            vjust = -0.4, size = 3.2, color = "white", fontface = "bold")
+```
+
+---
+
+## CLAUDE.md 심화 — Hooks 설정
+
+::: {style="font-size: 0.9em; color: #CBD5E0; margin-bottom: 15px;"}
+Hooks = 특정 이벤트 발생 시 자동 실행되는 명령어. commit 전 자동 테스트, 파일 저장 후 자동 포맷 등.
+:::
+
+::: {.columns}
+
+::: {.column width="50%"}
+**CLAUDE.md의 hooks 섹션 예시**
+
+```markdown
+## Hooks
+
+### Pre-commit (커밋 전 자동 실행)
+- Python 코드 품질 검사: `flake8 src/`
+- 테스트 실행: `pytest tests/ -q`
+- 포맷 정리: `black src/`
+
+### Post-edit (파일 수정 후)
+- 타입 체크: `mypy src/`
+
+### Pre-push (push 전)
+- 전체 테스트: `pytest tests/ -v`
+- 보안 검사: `bandit -r src/`
+```
+:::
+
+::: {.column width="50%"}
+::: {.callout-tip}
+## Hooks의 실전 가치
+
+디스플레이 수율 분석 코드에서:
+
+- **Pre-commit**: 수율 계산식 검증 (0~100% 범위 체크)
+- **Post-edit**: CSV 데이터 형식 검증
+- **Pre-push**: 전체 분석 파이프라인 동작 확인
+
+코드 품질이 자동으로 유지된다.
+
+취업 포트폴리오 코드에 적용하면 채용 담당자 눈에 확 띈다.
+:::
+:::
+
+:::
+
+---
+
+## 실전 스킬: /display-report 직접 만들기
+
+::: {style="margin-top: 10px;"}
+:::
+
+**전체 워크플로우**:
+
+```bash
+# 1. 스킬 파일 생성
+mkdir -p .claude/commands
+claude  # Claude Code 실행
+
+# Claude Code에게 지시:
+# ".claude/commands/display-report.md 파일을 만들어줘.
+#  /display-report 명령어를 실행하면
+#  data/ 폴더의 CSV를 읽고 수율 트렌드 분석 후
+#  마크다운 보고서를 생성하게 해줘."
+```
+
+::: {style="margin-top: 15px;"}
+:::
+
+**사용 예시**:
+
+```bash
+# 프로젝트 폴더에서 Claude Code 실행
+claude
+
+# 슬래시 명령어 입력
+/display-report
+
+# 결과: reports/display_report_2026-04-06.md 자동 생성!
+```
+
+::: {.callout-note}
+## 포인트
+
+명령어를 직접 쓰지 않는다. Claude Code에게 "이 스킬 파일 만들어줘"라고 시키면 된다. 바이브 코딩의 진수.
+:::
+
+---
+
+## AI 도입 후 개발자 1일 활동 분포
+
+```{r}
+#| label: activity-distribution
+library(ggplot2)
+library(dplyr)
+library(scales)
+
+df <- data.frame(
+  Activity = rep(c("반복 작업", "창의적 작업", "회의/소통", "학습", "코딩"), 2),
+  Pct      = c(40, 20, 25, 5, 10,
+               10, 40, 20, 15, 15),
+  Period   = rep(c("AI 이전", "AI 이후"), each = 5)
+)
+
+df$Period <- factor(df$Period, levels = c("AI 이전", "AI 이후"))
+
+ggplot(df, aes(x = Period, y = Pct, fill = Activity)) +
+  geom_bar(stat = "identity", position = "fill", width = 0.5) +
+  scale_y_continuous(labels = function(x) paste0(x * 100, "%")) +
+  scale_fill_brewer(palette = "Set2") +
+  theme_minimal(base_size = 13) +
+  theme(
+    plot.background    = element_rect(fill = "#1E2A3A", color = NA),
+    panel.background   = element_rect(fill = "#1E2A3A", color = NA),
+    text               = element_text(color = "white"),
+    axis.text          = element_text(color = "#CBD5E0", size = 13),
+    panel.grid.major.y = element_line(color = "#2D3748"),
+    panel.grid.minor   = element_blank(),
+    panel.grid.major.x = element_blank(),
+    legend.background  = element_rect(fill = "#1E2A3A", color = NA),
+    legend.text        = element_text(color = "white")
+  ) +
+  labs(
+    title = "AI 도입 후 개발자 1일 활동 분포 변화",
+    subtitle = "반복 작업 40% → 10%, 창의적 작업 20% → 40%",
+    y = "비율", x = "", fill = "활동 유형"
+  )
+```
+
+---
+
+## 실습 과제 — 3가지 미션
+
+::: {.columns}
+
+::: {.column width="60%"}
+### 오늘 실습 순서
+
+**미션 1: /commit 실전 사용**
+
+```bash
+# 프로젝트에서 파일 하나 수정 후
+claude
+/commit
+# AI가 만든 커밋 메시지 확인하기
+```
+
+**미션 2: /display-report 스킬 생성**
+
+Claude Code에게:
+```
+.claude/commands/display-report.md
+파일을 만들어줘. 가상의 수율 CSV
+데이터를 분석하는 스킬로 만들어줘.
+```
+
+**미션 3: CLAUDE.md에 pre-commit hook 추가**
+
+Claude Code에게:
+```
+CLAUDE.md에 Python 파일 저장 시
+flake8 자동 실행 hook을 추가해줘.
+```
+:::
+
+::: {.column width="40%"}
+::: {.callout-important}
+## 제출 체크리스트
+
+- [ ] /commit 스킬 사용 스크린샷
+- [ ] .claude/commands/display-report.md 파일 존재
+- [ ] CLAUDE.md에 hooks 섹션 추가
+- [ ] GitHub에 push 완료
+
+**평가**: 동작 여부 확인
+
+**힌트**: 막히면 Claude에게 "에러 고쳐줘"라고 하면 된다.
+:::
+
+::: {style="background: #1A2942; padding: 15px; border-radius: 10px; margin-top: 15px; font-size: 0.85em;"}
+**4강 예고**
+
+Claude Agent 모드 — AI가 혼자서 파일 열고, 분석하고, 보고서 만들고, GitHub push까지
+:::
+:::
+
+:::
+
+---
+
+## 3강 정리
+
+::: {.columns}
+
+::: {.column width="50%"}
+### 오늘 배운 것
+
+| 개념 | 핵심 |
+|------|------|
+| Skills | 슬래시 명령어 = 워크플로우 자동화 |
+| /commit | diff 분석 → 커밋 메시지 자동 생성 |
+| /review-pr | 코드 리뷰 자동화 |
+| CLAUDE.md hooks | 이벤트 기반 자동 실행 |
+| 커스텀 스킬 | Markdown 파일 하나로 생성 |
+
+::: {style="margin-top: 15px; font-size: 0.85em; color: #A0AEC0;"}
+하루 100분 절약 × 250 근무일 = **연 416시간 절약**
+
+이건 약 52 근무일. 한 달이 넘는 시간.
+:::
+:::
+
+::: {.column width="50%"}
+### 다음 강의 미리보기
+
+::: {style="background: #1A2942; padding: 20px; border-radius: 10px;"}
+### 4강: Claude Agent 모드 + CLI-Anything
+
+Skills는 단일 작업 자동화였다면,
+
+**Agent 모드는 복잡한 멀티스텝 작업을 AI가 스스로 계획하고 실행한다.**
+
+"수율 데이터 분석하고 보고서 만들어줘"
+
+→ AI가 혼자서 5개 파일 작업 후 GitHub push까지
+:::
+
+::: {style="margin-top: 15px; color: #F6E05E; font-size: 0.95em; text-align: center;"}
+Skills < Agent. 오늘 배운 것이 그 기반이다.
+:::
+:::
+
 :::

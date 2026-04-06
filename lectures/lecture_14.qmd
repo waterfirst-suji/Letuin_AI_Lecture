@@ -1,6 +1,6 @@
 ---
 title: "Gemini 봇 + 설비 알람 시스템"
-subtitle: "AI 봇이 수율을 24시간 감시한다"
+subtitle: "AI가 24시간 수율을 감시한다 — 자동화 알람의 모든 것"
 author: "렛유인 KDC"
 date: today
 engine: knitr
@@ -31,143 +31,556 @@ format:
     margin: 0.1
 ---
 
-# gemini_telebot: AI 비서의 시대 {background="#1F4E79"}
+# 새벽 3시, 수율이 90% 밑으로 떨어졌습니다 {background="#1F4E79"}
 
-## gemini_telebot 구조 {.smaller}
+## 당신은 자고 있습니다. 하지만 AI 봇은 깨어있습니다. {.smaller}
 
-- **PDCA 워크플로우**: Plan-Do-Check-Act
-- **Google Workspace 연동**: Gmail, 캘린더, GitHub
-- **설비 알람 패턴**:
-  - CSV 읽기
-  - 임계값 판단
-  - 텔레그램 전송
+:::: {.columns}
 
-## schedule 라이브러리 {.smaller}
+::: {.column width="55%"}
+**기존 방식 (엔지니어가 직접 감시)**
 
-- **주기적 자동 실행**:
-  - Python `schedule` 라이브러리
-  - **APScheduler vs schedule 비교**
+- 야간 당직 엔지니어 필요
+- 사람이 피로하면 놓침
+- 수동 보고서 작성 1~2시간
+- 늦은 대응으로 불량 확산
+- **연간 수억 원의 수율 손실**
 
-::: {.panel-tabset}
-### APScheduler
-- 다양한 트리거 옵션
-- 복잡한 스케줄링 가능
-
-### schedule
-- 간단한 사용법
-- Pythonic 코드 스타일
 :::
 
-## 실습: 수율 모니터링 알람 봇 {.smaller}
+::: {.column width="45%"}
+**AI 봇 자동화 방식**
 
-- **샘플 수율 CSV**: 95% 미만 시 경고 알람
-- **명령어**: `/status`, `/summary`
+- 5분마다 CSV 자동 읽기
+- 수율 95% 미만 → 즉시 텔레그램 알람
+- Gemini AI가 원인 분석까지
+- 엔지니어는 알람 받고 조치만
+- **24시간 무중단 모니터링**
 
-```python
+:::
+
+::::
+
+::: {.callout-important title="오늘의 핵심 질문"}
+당신이 자는 동안 공장을 누가 지킬 것인가?
+AI 봇이 지킵니다.
+:::
+
+## gemini_telebot 레포 소개 {.smaller}
+
+> 이 강의 강사가 직접 만든 오픈소스 프로젝트입니다.
+> Gemini + Google Workspace + 텔레그램을 하나로 연결한 AI 비서.
+> [github.com/waterfirst/gemini_telebot](https://github.com/waterfirst/gemini_telebot)
+
+:::: {.columns}
+
+::: {.column width="55%"}
+**주요 기능**
+
+::: {.fragment .fade-in}
+- PDCA 워크플로우 자동화
+:::
+::: {.fragment .fade-in}
+- Gmail 연동 (중요 메일 요약)
+:::
+::: {.fragment .fade-in}
+- Google 캘린더 연동
+:::
+::: {.fragment .fade-in}
+- GitHub 이슈 모니터링
+:::
+::: {.fragment .fade-in}
+- **수율 모니터링 알람 (오늘 배울 것)**
+:::
+
+:::
+
+::: {.column width="45%"}
+**기술 스택**
+
+| 레이어 | 기술 |
+|--------|------|
+| AI 두뇌 | Google Gemini API |
+| 알림 채널 | Telegram Bot API |
+| 스케줄링 | schedule 라이브러리 |
+| 데이터 | pandas + CSV |
+| 배포 | 로컬 / Railway |
+
+:::
+
+::::
+
+## schedule 라이브러리 — 반복 실행의 핵심 {.smaller}
+
+::: {.panel-tabset}
+
+### schedule (오늘 사용)
+
+```{python}
+#| eval: false
+#| code-line-numbers: "1-2|4-12|14-18"
 import schedule
 import time
 
-def job():
-    print("수율 모니터링 중...")
+def check_yield():
+    """수율 CSV 읽고 임계값 확인 — 5분마다 실행"""
+    pass
 
-schedule.every(10).minutes.do(job)
+def morning_report():
+    """오전 9시 일일 보고서 자동 전송"""
+    pass
+
+def weekly_summary():
+    """매주 월요일 주간 요약 전송"""
+    pass
+
+# 스케줄 등록 — 직관적인 Python 문법
+schedule.every(5).minutes.do(check_yield)
+schedule.every().day.at("09:00").do(morning_report)
+schedule.every().monday.do(weekly_summary)
 
 while True:
     schedule.run_pending()
-    time.sleep(1)
+    time.sleep(30)
 ```
 
-## 수율 데이터 시각화 {.smaller}
+### APScheduler (고급 사용)
+
+```{python}
+#| eval: false
+from apscheduler.schedulers.blocking import BlockingScheduler
+from apscheduler.triggers.cron import CronTrigger
+
+scheduler = BlockingScheduler(timezone="Asia/Seoul")
+
+# 더 복잡한 스케줄 가능
+scheduler.add_job(check_yield, "interval", minutes=5)
+scheduler.add_job(
+    morning_report,
+    CronTrigger(hour=9, minute=0, day_of_week="mon-fri")
+)
+scheduler.add_job(
+    alarm_escalation,
+    "interval", minutes=10,
+    max_instances=1
+)
+scheduler.start()
+```
+
+:::
+
+## 수율 알람 봇 시스템 구조 {.smaller}
 
 ```{r}
 #| echo: false
 #| fig-width: 9
-#| fig-height: 4.5
+#| fig-height: 4.0
 library(ggplot2)
-set.seed(123)
-time <- seq(1, 100, by=1)
-yield <- rnorm(100, mean=96, sd=2)
-df <- data.frame(time, yield)
 
-ggplot(df, aes(x=time, y=yield)) +
-  geom_line(color="blue") +
-  geom_hline(yintercept=95, linetype="dashed", color="red") +
-  labs(title="시간별 수율 데이터", x="시간", y="수율(%)") +
-  theme_minimal()
+components <- data.frame(
+  x     = c(1,   3,   5,   5,   3  ),
+  y     = c(3,   3,   4,   2,   1  ),
+  label = c("CSV\n수율 데이터", "Python\n스케줄러",
+            "95% 이상\n정상", "95% 미만\n알람 발생!", "텔레그램\n메시지"),
+  color = c("#3498DB", "#2E75B6", "#27AE60", "#E74C3C", "#9B59B6")
+)
+
+edges_sys <- data.frame(
+  x    = c(1.4, 3.4, 4.2, 4.2, 4.7),
+  xend = c(2.6, 3.8, 4.8, 4.8, 3.4),
+  y    = c(3.0, 3.0, 3.4, 2.6, 1.5),
+  yend = c(3.0, 3.7, 3.9, 2.1, 1.1)
+)
+
+ggplot() +
+  geom_segment(
+    data = edges_sys,
+    aes(x = x, xend = xend, y = y, yend = yend),
+    arrow = arrow(length = unit(0.12, "inches"), type = "closed"),
+    color = "gray60", linewidth = 1
+  ) +
+  geom_point(
+    data = components,
+    aes(x = x, y = y),
+    size = 22, color = components$color, alpha = 0.85
+  ) +
+  geom_text(
+    data = components,
+    aes(x = x, y = y, label = label),
+    color = "white", size = 3, fontface = "bold"
+  ) +
+  xlim(0.3, 5.8) + ylim(0.3, 4.8) +
+  theme_void() +
+  labs(title = "수율 알람 봇 시스템 구조") +
+  theme(
+    plot.title = element_text(color = "white", size = 14, hjust = 0.5)
+  )
 ```
 
-## 알람 발생 포인트 표시 {.smaller}
+## 핵심 코드 — 수율 CSV 읽고 알람 보내기 {.smaller}
+
+```{python}
+#| eval: false
+#| code-line-numbers: "1-5|7-9|11-25|27-31"
+import pandas as pd
+import requests
+from datetime import datetime
+
+TELEGRAM_TOKEN = "YOUR_TOKEN"
+CHAT_ID = "YOUR_CHAT_ID"
+THRESHOLD = 95.0
+
+def send_telegram(message: str):
+    url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
+    requests.post(url, json={
+        "chat_id": CHAT_ID,
+        "text": message,
+        "parse_mode": "Markdown"
+    })
+
+def check_yield_and_alert():
+    # CSV 읽기 (실제로는 서버나 공유 폴더에서)
+    df = pd.read_csv("yield_data.csv")
+    latest = df.tail(10)  # 최근 10개 데이터
+
+    below_threshold = latest[latest["yield"] < THRESHOLD]
+
+    if len(below_threshold) > 0:
+        lines = below_threshold["line"].tolist()
+        avg_yield = below_threshold["yield"].mean()
+        message = (
+            f"*수율 경고 알람*\n\n"
+            f"시각: {datetime.now().strftime('%Y-%m-%d %H:%M')}\n"
+            f"평균 수율: {avg_yield:.1f}%\n"
+            f"해당 라인: {', '.join(lines)}\n\n"
+            f"즉시 확인이 필요합니다."
+        )
+        send_telegram(message)
+    else:
+        print(f"[{datetime.now().strftime('%H:%M')}] 수율 정상: "
+              f"평균 {latest['yield'].mean():.1f}%")
+```
+
+## 실시간 수율 모니터링 시각화 {.smaller}
 
 ```{r}
-#| echo: false
+#| echo: true
 #| fig-width: 9
-#| fig-height: 4.5
-df$alarm <- ifelse(df$yield < 95, "발생", "정상")
+#| fig-height: 4.0
+library(ggplot2)
+library(dplyr)
 
-ggplot(df, aes(x=time, y=yield, color=alarm)) +
-  geom_line() +
-  geom_point(data=subset(df, alarm=="발생"), size=2) +
-  geom_hline(yintercept=95, linetype="dashed", color="red") +
-  labs(title="수율 데이터 및 알람 포인트", x="시간", y="수율(%)") +
-  scale_color_manual(values=c("blue", "red")) +
-  theme_minimal()
+set.seed(42)
+n <- 200
+yield_df <- data.frame(
+  Time  = seq(as.POSIXct("2024-01-01 00:00"),
+              by = "30 min", length.out = n),
+  Yield = 96 + cumsum(rnorm(n, 0, 0.15)),
+  Line  = rep(c("Line A", "Line B"), each = 100)
+)
+yield_df$Yield <- pmin(pmax(yield_df$Yield, 88), 100)
+alarm_points <- yield_df[yield_df$Yield < 95, ]
+
+ggplot(yield_df, aes(x = Time, y = Yield, color = Line)) +
+  annotate("rect",
+           xmin = min(yield_df$Time), xmax = max(yield_df$Time),
+           ymin = 88, ymax = 95, alpha = 0.07, fill = "#E74C3C") +
+  geom_line(linewidth = 0.8, alpha = 0.9) +
+  geom_point(data = alarm_points, aes(x = Time, y = Yield),
+             color = "#E74C3C", size = 3, shape = 8) +
+  geom_hline(yintercept = 95, linetype = "dashed",
+             color = "#E74C3C", linewidth = 1) +
+  annotate("text", x = max(yield_df$Time), y = 94.3,
+           label = "임계값 95%", color = "#E74C3C",
+           hjust = 1, size = 3.5) +
+  scale_color_manual(values = c("Line A" = "#3498DB", "Line B" = "#27AE60")) +
+  scale_y_continuous(labels = function(x) paste0(x, "%")) +
+  theme_minimal(base_size = 12) +
+  labs(
+    title = "실시간 수율 모니터링 (★ = 알람 발생 포인트)",
+    x = "시간", y = "수율 (%)", color = "라인"
+  )
 ```
 
-## 알람 봇 설계 패턴 {.smaller}
+## 월간 알람 원인별 현황 {.smaller}
 
 ```{r}
-#| echo: false
-knitr::kable(data.frame(
-  단계=c("데이터 수집", "임계값 판단", "알람 전송"),
-  설명=c("CSV 파일에서 데이터 로드", "95% 미만 판단", "경고 메시지 전송")
-), caption="알람 봇 설계 패턴", align=c("l","r"))
+#| echo: true
+#| fig-width: 9
+#| fig-height: 4.0
+library(ggplot2)
+
+alarm_stats <- data.frame(
+  Cause = factor(
+    c("수율 임계값 이하", "설비 온도 이상", "압력 편차",
+      "불량률 급증", "기타"),
+    levels = c("기타", "불량률 급증", "압력 편차",
+               "설비 온도 이상", "수율 임계값 이하")
+  ),
+  Count = c(45, 23, 18, 12, 8)
+)
+
+ggplot(alarm_stats, aes(x = Cause, y = Count, fill = Count)) +
+  geom_bar(stat = "identity", width = 0.6) +
+  coord_flip() +
+  scale_fill_gradient(low = "#F39C12", high = "#E74C3C") +
+  geom_text(aes(label = paste0(Count, "회")),
+            hjust = -0.3, size = 4, fontface = "bold", color = "white") +
+  theme_minimal(base_size = 13) +
+  labs(
+    title = "월간 알람 발생 원인별 현황",
+    subtitle = "수율 임계값 이하가 전체의 42% — 가장 빈번한 알람 유형",
+    x = "", y = "알람 횟수", fill = "횟수"
+  ) +
+  theme(legend.position = "none") +
+  ylim(0, 58)
 ```
 
-## 데이터 수집 → 판단 → 알람 {auto-animate="true"}
+## Gemini API 통합 — 알람에 AI 분석 추가 {.smaller}
 
-### 데이터 수집 단계
-- CSV 파일에서 데이터 로드
+```{python}
+#| eval: false
+#| code-line-numbers: "1-3|5-18|20-32"
+import google.generativeai as genai
+import os
 
-## 데이터 판단 단계 {auto-animate="true"}
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+model = genai.GenerativeModel("gemini-1.5-flash")
 
-### 판단 및 알람
-- 임계값 판단 후 경고 메시지 전송
+def generate_analysis(yield_data: dict) -> str:
+    """수율 저하 원인 분석 및 조치 제안"""
+    prompt = f"""
+    다음 수율 데이터를 분석하고 원인과 조치사항을 제안해주세요:
+    - 현재 수율: {yield_data['current_yield']:.1f}%
+    - 1시간 전 수율: {yield_data['prev_yield']:.1f}%
+    - 저하율: {yield_data['drop_rate']:.1f}%p
+    - 해당 라인: {yield_data['line']}
+    - 공정 단계: {yield_data.get('process', '미상')}
 
-## fragment 애니메이션 예시
+    간결하게 (3줄 이내) 답변하세요. 불필요한 인사말은 생략하세요.
+    """
+    response = model.generate_content(prompt)
+    return response.text
 
-::: {.fragment .fade-in}
-수율 모니터링의 중요성
-:::
-::: {.fragment .highlight-red}
-임계값 이하 시 즉각 알림
-:::
+def check_and_analyze():
+    df = pd.read_csv("yield_data.csv")
+    latest = df.tail(10)
+    below = latest[latest["yield"] < 95.0]
 
-## 컬럼 레이아웃 예시
+    if len(below) > 0:
+        for _, row in below.iterrows():
+            analysis = generate_analysis({
+                "current_yield": row["yield"],
+                "prev_yield": row.get("prev_yield", row["yield"] + 1),
+                "drop_rate": row.get("prev_yield", row["yield"] + 1) - row["yield"],
+                "line": row["line"]
+            })
+            msg = (
+                f"*AI 수율 분석 알람*\n\n"
+                f"라인: {row['line']} | 수율: {row['yield']:.1f}%\n\n"
+                f"*Gemini 분석:*\n{analysis}"
+            )
+            send_telegram(msg)
+```
 
-::: {.columns}
-::: {.column width="45%"}
-### 왼쪽
-수율 데이터 분석
-:::
+## 알람 메시지 레벨 설계 {.smaller}
+
+:::: {.columns}
+
 ::: {.column width="55%"}
-### 오른쪽
-알람 시스템 설계
-:::
+**3단계 알람 체계**
+
+| 수율 | 알람 레벨 | 행동 |
+|------|-----------|------|
+| 97% 이상 | 정상 | 없음 |
+| 95~97% | 주의 | 로그만 기록 |
+| 92~95% | 경고 | 텔레그램 알람 |
+| 92% 미만 | 위험 | 즉시 전화 + 텔레그램 |
+
 :::
 
-## 팁과 주의사항
+::: {.column width="45%"}
+
+```{python}
+#| eval: false
+def get_alarm_level(yield_pct: float):
+    if yield_pct >= 97:
+        return "normal", None
+    elif yield_pct >= 95:
+        return "watch", "INFO"
+    elif yield_pct >= 92:
+        return "warning", "WARNING"
+    else:
+        return "critical", "CRITICAL"
+```
+
+::: {.callout-warning title="현장 조언"}
+임계값은 라인마다 다릅니다.
+Gen 6 OLED와 Gen 8 LCD의 기준 수율은 다릅니다.
+환경에 맞게 조정하세요.
+:::
+
+:::
+
+::::
+
+## schedule 고급 패턴 {.smaller}
+
+::: {.panel-tabset}
+
+### 기본 반복 실행
+
+```{python}
+#| eval: false
+import schedule, time
+
+# 수율 체크: 5분마다
+schedule.every(5).minutes.do(check_yield_and_alert)
+
+# 오전 보고서: 매일 9시
+schedule.every().day.at("09:00").do(morning_report)
+
+# 주간 요약: 매주 월요일 아침
+schedule.every().monday.at("08:30").do(weekly_summary)
+
+# 야간 알람 강화: 22시~6시는 더 자주 확인
+schedule.every(2).minutes.do(night_intensive_check)
+
+while True:
+    schedule.run_pending()
+    time.sleep(30)
+```
+
+### 교대 근무 시간 반영
+
+```{python}
+#| eval: false
+from datetime import datetime
+
+def smart_check():
+    """교대 근무 패턴에 맞는 스마트 체크"""
+    hour = datetime.now().hour
+
+    # 주간 조 (06~18시): 15분마다
+    if 6 <= hour < 18:
+        interval = 15
+    # 야간 조 (18~06시): 5분마다 (더 주의)
+    else:
+        interval = 5
+
+    check_yield_and_alert()
+    # 다음 체크 간격 동적 조정
+    schedule.clear("yield_check")
+    schedule.every(interval).minutes.do(
+        smart_check
+    ).tag("yield_check")
+```
+
+### 에러 핸들링
+
+```{python}
+#| eval: false
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+def safe_check():
+    """에러 발생해도 스케줄 중단 없이 계속"""
+    try:
+        check_yield_and_alert()
+        logger.info("수율 체크 완료")
+    except FileNotFoundError:
+        logger.error("CSV 파일을 찾을 수 없음")
+        send_telegram("CSV 파일 없음 — 데이터 연결 확인 요망")
+    except Exception as e:
+        logger.error(f"예상치 못한 오류: {e}")
+        send_telegram(f"봇 오류 발생: {str(e)[:100]}")
+```
+
+:::
+
+## 실습: gemini_telebot 클론 및 커스터마이징 {.smaller}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+**1단계: 레포 클론**
+
+```bash
+git clone https://github.com/waterfirst/\
+  gemini_telebot.git
+cd gemini_telebot
+pip install -r requirements.txt
+```
+
+**2단계: 환경 변수 설정**
+
+```bash
+cp .env.example .env
+# .env 파일 편집:
+# TELEGRAM_BOT_TOKEN=...
+# GEMINI_API_KEY=...
+```
+
+**3단계: 수율 모니터링 추가**
+
+```bash
+# yield_monitor.py 작성 후
+# main.py에 스케줄 등록
+```
+
+:::
+
+::: {.column width="50%"}
+**실습 목표**
+
+1. gemini_telebot 기본 실행
+2. 수율 CSV 샘플 데이터 생성
+3. 5분마다 자동 체크 스케줄 등록
+4. 임계값 이하 시 알람 발송 테스트
+5. Gemini AI 분석 메시지 포함
 
 ::: {.callout-tip title="팁"}
-gemini_telebot으로 자동화된 워크플로우 구축
-:::
-::: {.callout-warning title="주의"}
-임계값 설정은 환경에 맞게 조정하세요.
+먼저 `print()`로 알람 내용을 화면에 출력해보고,
+테스트 완료 후 텔레그램 전송으로 바꾸세요.
 :::
 
-## 마무리 {.smaller}
+:::
 
-- gemini_telebot의 구조 이해
-- 수율 모니터링 알람 봇 실습
-- 자동화의 중요성 및 활용 방안
+::::
 
-감사합니다!
+## 14강 요약 {.smaller}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+**오늘 배운 것**
+
+- gemini_telebot 오픈소스 구조 이해
+- `schedule` 라이브러리 반복 실행 패턴
+- 수율 CSV 읽기 + 임계값 판단 로직
+- 3단계 알람 레벨 설계
+- Gemini API로 원인 분석 자동화
+- 에러 핸들링으로 안정적인 봇 구현
+
+:::
+
+::: {.column width="50%"}
+**다음 강의 예고**
+
+**15강**: 종합 통합 실습 (60분)
+
+- Streamlit 대시보드 + Gemini + 텔레그램
+- 세 개를 하나로 합치는 60분 마라톤
+- 실제 공장에서 쓸 법한 AI 모니터링 시스템 완성
+- Streamlit Cloud 배포까지
+
+:::
+
+::::
+
+::: {.callout-note title="핵심 한 줄 요약"}
+schedule + pandas + Telegram = 새벽 3시에도 수율을 지키는 AI 야경꾼.
+엔지니어는 잠들어도 됩니다.
+:::

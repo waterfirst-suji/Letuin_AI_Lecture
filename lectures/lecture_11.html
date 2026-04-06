@@ -29,6 +29,72 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #f8f8f2; background-color: #282a36; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #f8f8f2; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #ff79c6; } /* Annotation */
+    code span.at { color: #ff79c6; } /* Attribute */
+    code span.bn { color: #bd93f9; } /* BaseN */
+    code span.bu { color: #8be9fd; } /* BuiltIn */
+    code span.cf { color: #ff79c6; } /* ControlFlow */
+    code span.ch { color: #f1fa8c; } /* Char */
+    code span.cn { color: #bd93f9; font-weight: bold; } /* Constant */
+    code span.co { color: #6272a4; } /* Comment */
+    code span.cv { color: #8be9fd; } /* CommentVar */
+    code span.do { color: #ffb86c; } /* Documentation */
+    code span.dt { color: #8be9fd; font-style: italic; } /* DataType */
+    code span.dv { color: #bd93f9; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #8be9fd; } /* Extension */
+    code span.fl { color: #bd93f9; } /* Float */
+    code span.fu { color: #50fa7b; } /* Function */
+    code span.im { color: #ff79c6; } /* Import */
+    code span.in { color: #f1fa8c; } /* Information */
+    code span.kw { color: #ff79c6; } /* Keyword */
+    code span.op { color: #f8f8f2; } /* Operator */
+    code span.ot { color: #50fa7b; } /* Other */
+    code span.pp { color: #ff79c6; } /* Preprocessor */
+    code span.re { color: #8be9fd; } /* RegionMarker */
+    code span.sc { color: #ff79c6; } /* SpecialChar */
+    code span.ss { color: #f1fa8c; } /* SpecialString */
+    code span.st { color: #f1fa8c; } /* String */
+    code span.va { color: #8be9fd; } /* Variable */
+    code span.vs { color: #f1fa8c; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
   </style>
   <link rel="stylesheet" href="lecture_11_files/libs/revealjs/dist/theme/quarto-329acd3abe71bdd3a4ec42a5a574c26f.css">
   <link href="lecture_11_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -131,7 +197,7 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">배포 플랫폼 10종 총정리</h1>
-  <p class="subtitle">내 앱을 세상에 — 10개 플랫폼 완전 정리</p>
+  <p class="subtitle">Netlify, Vercel, Render, Railway… 어디에 무엇을 올려야 하나</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -144,249 +210,597 @@
   <p class="date">2026-04-06</p>
 </section>
 <section>
-<section id="part-5-앱을-만들었는데-내-컴퓨터에서만-돌아간다면" class="title-slide slide level1 center" data-background="#1F4E79">
-<h1>PART 5: 앱을 만들었는데 내 컴퓨터에서만 돌아간다면?</h1>
+<section id="part-7-플랫폼-10종-각자의-자리가-있다" class="title-slide slide level1 center" data-background="#1F4E79">
+<h1>PART 7: 플랫폼 10종, 각자의 자리가 있다</h1>
 
 </section>
-<section id="강-플랫폼-소개" class="slide level2">
-<h2>11강: 플랫폼 소개</h2>
-<h3 id="개-플랫폼-개요">10개 플랫폼 개요</h3>
-<ul>
-<li>GitHub Pages: HTML/정적, 무료</li>
-<li>Streamlit Cloud: Python, 무료</li>
-<li>shinyapps.io: R Shiny, 제한무료</li>
-</ul>
-<div class="fragment fade-in">
-<ul>
-<li>Netlify: 정적+서버리스, 무료</li>
-<li>Vercel: Next.js/React, 무료</li>
-</ul>
+<section id="여러분은-지금-어떤-플랫폼을-써야-할까요" class="slide level2" data-background="#1F4E79">
+<h2>여러분은 지금 어떤 플랫폼을 써야 할까요?</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<div class="r-fit-text">
+<p><strong>10개</strong></p>
 </div>
-<div class="fragment highlight-red">
+<p>주요 배포 플랫폼의 수</p>
+</div><div class="column" style="width:45%;">
+<div class="fragment">
 <ul>
-<li>Firebase: 웹앱+DB, 무료</li>
-<li>Render: 풀스택, 무료</li>
+<li>GitHub Pages → HTML만</li>
+<li>Streamlit Cloud → Python만</li>
+<li>Firebase → Full-stack만</li>
 </ul>
+<p>각각의 플랫폼은 <strong>존재 이유</strong>가 있다.</p>
+<p>10개를 다 알면 어떤 앱이든 <strong>최적의 집</strong>을 찾아줄 수 있다.</p>
 </div>
-<h3 id="플랫폼-개요-계속">플랫폼 개요 (계속)</h3>
-<ul>
-<li>Fly.io: 컨테이너, 제한무료</li>
-<li>HuggingFace Spaces: AI/ML, 무료</li>
-</ul>
-<div class="fragment fade-in">
-<ul>
-<li>Google Cloud Run: 프로덕션, 유료</li>
-</ul>
-</div>
+</div></div>
 </section>
-<section id="플랫폼-난이도-vs-무료한도" class="slide level2">
-<h2>플랫폼 난이도 vs 무료한도</h2>
-
-<img data-src="lecture_11_files/figure-revealjs/unnamed-chunk-1-1.png" width="864" class="r-stretch"></section>
-<section id="플랫폼-비교표" class="slide level2">
-<h2>플랫폼 비교표</h2>
+<section id="대-플랫폼-한눈에-보기" class="slide level2">
+<h2>10대 플랫폼 한눈에 보기</h2>
 <div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a>ten_platforms <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb1-2"><a href=""></a>  번호       <span class="ot">=</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,</span>
+<span id="cb1-3"><a href=""></a>  플랫폼     <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"GitHub Pages"</span>,<span class="st">"Streamlit Cloud"</span>,<span class="st">"Firebase Studio"</span>,<span class="st">"Vercel"</span>,<span class="st">"Netlify"</span>,</span>
+<span id="cb1-4"><a href=""></a>                <span class="st">"Render"</span>,<span class="st">"Railway"</span>,<span class="st">"Hugging Face"</span>,<span class="st">"Replit"</span>,<span class="st">"Fly.io"</span>),</span>
+<span id="cb1-5"><a href=""></a>  언어_기술  <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"HTML/JS"</span>,<span class="st">"Python"</span>,<span class="st">"Python/JS/Flutter"</span>,<span class="st">"Next.js/React"</span>,<span class="st">"정적/서버리스"</span>,</span>
+<span id="cb1-6"><a href=""></a>                <span class="st">"Docker/Python"</span>,<span class="st">"Docker/Python"</span>,<span class="st">"ML/Python"</span>,<span class="st">"다국어"</span>,<span class="st">"Docker"</span>),</span>
+<span id="cb1-7"><a href=""></a>  무료여부   <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"완전무료"</span>,<span class="st">"완전무료"</span>,<span class="st">"무료티어"</span>,<span class="st">"무료티어"</span>,<span class="st">"무료티어"</span>,</span>
+<span id="cb1-8"><a href=""></a>                <span class="st">"무료티어"</span>,<span class="st">"유료중심"</span>,<span class="st">"무료티어"</span>,<span class="st">"무료티어"</span>,<span class="st">"무료티어"</span>),</span>
+<span id="cb1-9"><a href=""></a>  추천용도   <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"포트폴리오"</span>,<span class="st">"데이터앱"</span>,<span class="st">"풀스택"</span>,<span class="st">"프론트엔드"</span>,<span class="st">"JAMstack"</span>,</span>
+<span id="cb1-10"><a href=""></a>                <span class="st">"API서버"</span>,<span class="st">"백엔드"</span>,<span class="st">"AI모델"</span>,<span class="st">"학습"</span>,<span class="st">"프로덕션"</span>)</span>
+<span id="cb1-11"><a href=""></a>)</span>
+<span id="cb1-12"><a href=""></a>knitr<span class="sc">::</span><span class="fu">kable</span>(ten_platforms,</span>
+<span id="cb1-13"><a href=""></a>             <span class="at">caption=</span><span class="st">"배포 플랫폼 10종 비교"</span>,</span>
+<span id="cb1-14"><a href=""></a>             <span class="at">align=</span><span class="fu">c</span>(<span class="st">"c"</span>,<span class="st">"l"</span>,<span class="st">"l"</span>,<span class="st">"c"</span>,<span class="st">"l"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top">
-<caption>플랫폼 전체 비교</caption>
+<caption>배포 플랫폼 10종 비교</caption>
 <thead>
 <tr class="header">
-<th style="text-align: left;">Platform</th>
-<th style="text-align: right;">Difficulty</th>
-<th style="text-align: right;">FreeLimit</th>
-<th style="text-align: right;">Features</th>
+<th style="text-align: center;">번호</th>
+<th style="text-align: left;">플랫폼</th>
+<th style="text-align: left;">언어_기술</th>
+<th style="text-align: center;">무료여부</th>
+<th style="text-align: left;">추천용도</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
+<td style="text-align: center;">1</td>
 <td style="text-align: left;">GitHub Pages</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">10</td>
+<td style="text-align: left;">HTML/JS</td>
+<td style="text-align: center;">완전무료</td>
+<td style="text-align: left;">포트폴리오</td>
 </tr>
 <tr class="even">
+<td style="text-align: center;">2</td>
 <td style="text-align: left;">Streamlit Cloud</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">8</td>
+<td style="text-align: left;">Python</td>
+<td style="text-align: center;">완전무료</td>
+<td style="text-align: left;">데이터앱</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">shinyapps.io</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">7</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: left;">Firebase Studio</td>
+<td style="text-align: left;">Python/JS/Flutter</td>
+<td style="text-align: center;">무료티어</td>
+<td style="text-align: left;">풀스택</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Netlify</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">9</td>
-</tr>
-<tr class="odd">
+<td style="text-align: center;">4</td>
 <td style="text-align: left;">Vercel</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">9</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Firebase</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">8</td>
+<td style="text-align: left;">Next.js/React</td>
+<td style="text-align: center;">무료티어</td>
+<td style="text-align: left;">프론트엔드</td>
 </tr>
 <tr class="odd">
+<td style="text-align: center;">5</td>
+<td style="text-align: left;">Netlify</td>
+<td style="text-align: left;">정적/서버리스</td>
+<td style="text-align: center;">무료티어</td>
+<td style="text-align: left;">JAMstack</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">6</td>
 <td style="text-align: left;">Render</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">8</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Fly.io</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">6</td>
+<td style="text-align: left;">Docker/Python</td>
+<td style="text-align: center;">무료티어</td>
+<td style="text-align: left;">API서버</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">HuggingFace Spaces</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">8</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: left;">Railway</td>
+<td style="text-align: left;">Docker/Python</td>
+<td style="text-align: center;">유료중심</td>
+<td style="text-align: left;">백엔드</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Google Cloud Run</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">5</td>
+<td style="text-align: center;">8</td>
+<td style="text-align: left;">Hugging Face</td>
+<td style="text-align: left;">ML/Python</td>
+<td style="text-align: center;">무료티어</td>
+<td style="text-align: left;">AI모델</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">9</td>
+<td style="text-align: left;">Replit</td>
+<td style="text-align: left;">다국어</td>
+<td style="text-align: center;">무료티어</td>
+<td style="text-align: left;">학습</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">10</td>
+<td style="text-align: left;">Fly.io</td>
+<td style="text-align: left;">Docker</td>
+<td style="text-align: center;">무료티어</td>
+<td style="text-align: left;">프로덕션</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
 </section>
-<section id="플랫폼-추천" class="slide level2" data-auto-animate="true">
-<h2 data-id="quarto-animate-title">플랫폼 추천</h2>
+<section id="정적-vs-동적-사이트-응답-시간-비교" class="slide level2">
+<h2>정적 vs 동적 사이트 — 응답 시간 비교</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb2-2"><a href=""></a></span>
+<span id="cb2-3"><a href=""></a>requests <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb2-4"><a href=""></a>  <span class="at">Type  =</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"정적 사이트</span><span class="sc">\n</span><span class="st">(GitHub Pages)"</span>,</span>
+<span id="cb2-5"><a href=""></a>                        <span class="st">"동적 사이트</span><span class="sc">\n</span><span class="st">(Streamlit)"</span>), <span class="at">each=</span><span class="dv">4</span>)),</span>
+<span id="cb2-6"><a href=""></a>  <span class="at">Step  =</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"클라이언트</span><span class="sc">\n</span><span class="st">요청"</span>,<span class="st">"CDN/서버"</span>,<span class="st">"처리"</span>,<span class="st">"응답"</span>), <span class="dv">2</span>),</span>
+<span id="cb2-7"><a href=""></a>                 <span class="at">levels=</span><span class="fu">c</span>(<span class="st">"클라이언트</span><span class="sc">\n</span><span class="st">요청"</span>,<span class="st">"CDN/서버"</span>,<span class="st">"처리"</span>,<span class="st">"응답"</span>)),</span>
+<span id="cb2-8"><a href=""></a>  <span class="at">Time_ms =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">20</span>, <span class="dv">20</span>, <span class="dv">30</span>,   <span class="co"># 정적: CDN에서 바로 제공</span></span>
+<span id="cb2-9"><a href=""></a>               <span class="dv">5</span>, <span class="dv">50</span>, <span class="dv">550</span>, <span class="dv">560</span>) <span class="co"># 동적: 서버에서 Python 실행</span></span>
+<span id="cb2-10"><a href=""></a>)</span>
+<span id="cb2-11"><a href=""></a></span>
+<span id="cb2-12"><a href=""></a><span class="fu">ggplot</span>(requests, <span class="fu">aes</span>(<span class="at">x=</span><span class="fu">as.numeric</span>(Step), <span class="at">y=</span>Time_ms,</span>
+<span id="cb2-13"><a href=""></a>                     <span class="at">color=</span>Type, <span class="at">group=</span>Type)) <span class="sc">+</span></span>
+<span id="cb2-14"><a href=""></a>  <span class="fu">geom_line</span>(<span class="at">linewidth=</span><span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb2-15"><a href=""></a>  <span class="fu">geom_point</span>(<span class="at">size=</span><span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb2-16"><a href=""></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>,</span>
+<span id="cb2-17"><a href=""></a>                     <span class="at">labels=</span><span class="fu">c</span>(<span class="st">"요청"</span>,<span class="st">"서버"</span>,<span class="st">"처리"</span>,<span class="st">"응답"</span>)) <span class="sc">+</span></span>
+<span id="cb2-18"><a href=""></a>  <span class="fu">scale_color_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"#3498DB"</span>,<span class="st">"#E67E22"</span>)) <span class="sc">+</span></span>
+<span id="cb2-19"><a href=""></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels=</span><span class="cf">function</span>(x) <span class="fu">paste0</span>(x,<span class="st">"ms"</span>)) <span class="sc">+</span></span>
+<span id="cb2-20"><a href=""></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size=</span><span class="dv">13</span>) <span class="sc">+</span></span>
+<span id="cb2-21"><a href=""></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"정적 vs 동적 사이트 응답 시간 비교"</span>,</span>
+<span id="cb2-22"><a href=""></a>       <span class="at">subtitle=</span><span class="st">"정적 사이트는 CDN 덕분에 압도적으로 빠름 — 동적은 서버 연산 시간 추가"</span>,</span>
+<span id="cb2-23"><a href=""></a>       <span class="at">x=</span><span class="st">"단계"</span>, <span class="at">y=</span><span class="st">"누적 시간"</span>, <span class="at">color=</span><span class="st">"사이트 유형"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+</div>
+<img data-src="lecture_11_files/figure-revealjs/unnamed-chunk-2-1.png" width="864" class="r-stretch"></section>
+<section id="각-플랫폼-실제-배포-데모" class="slide level2">
+<h2>각 플랫폼 실제 배포 데모</h2>
 <div class="panel-tabset">
-<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">입문자 추천</a></li></ul>
+<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">GitHub Pages</a></li><li><a href="#tabset-1-2">Vercel</a></li><li><a href="#tabset-1-3">Render</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1">
-<ul>
-<li>GitHub Pages</li>
-<li>Streamlit Cloud</li>
-<li>HuggingFace Spaces</li>
-</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href=""></a><span class="co"># 방법 1: 직접 HTML 배포</span></span>
+<span id="cb3-2"><a href=""></a><span class="fu">mkdir</span> my-portfolio <span class="kw">&amp;&amp;</span> <span class="bu">cd</span> my-portfolio</span>
+<span id="cb3-3"><a href=""></a><span class="bu">echo</span> <span class="st">"&lt;h1&gt;Display Engineer Portfolio&lt;/h1&gt;"</span> <span class="op">&gt;</span> index.html</span>
+<span id="cb3-4"><a href=""></a></span>
+<span id="cb3-5"><a href=""></a><span class="fu">git</span> init</span>
+<span id="cb3-6"><a href=""></a><span class="fu">git</span> add index.html</span>
+<span id="cb3-7"><a href=""></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Initial commit"</span></span>
+<span id="cb3-8"><a href=""></a></span>
+<span id="cb3-9"><a href=""></a><span class="co"># GitHub에 새 저장소 생성 후</span></span>
+<span id="cb3-10"><a href=""></a><span class="fu">git</span> remote add origin https://github.com/USERNAME/REPO.git</span>
+<span id="cb3-11"><a href=""></a><span class="fu">git</span> push <span class="at">-u</span> origin main</span>
+<span id="cb3-12"><a href=""></a></span>
+<span id="cb3-13"><a href=""></a><span class="co"># Settings → Pages → Source: main branch / (root)</span></span>
+<span id="cb3-14"><a href=""></a><span class="co"># 주소: https://USERNAME.github.io/REPO</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-1-2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href=""></a><span class="co"># Node.js / React / Next.js 앱 배포</span></span>
+<span id="cb4-2"><a href=""></a><span class="ex">npm</span> install <span class="at">-g</span> vercel</span>
+<span id="cb4-3"><a href=""></a></span>
+<span id="cb4-4"><a href=""></a><span class="co"># 프로젝트 폴더에서</span></span>
+<span id="cb4-5"><a href=""></a><span class="ex">vercel</span></span>
+<span id="cb4-6"><a href=""></a></span>
+<span id="cb4-7"><a href=""></a><span class="co"># 질문에 답하면 자동 배포</span></span>
+<span id="cb4-8"><a href=""></a><span class="co"># &gt; Set up and deploy? Y</span></span>
+<span id="cb4-9"><a href=""></a><span class="co"># &gt; Which scope? (개인 계정 선택)</span></span>
+<span id="cb4-10"><a href=""></a><span class="co"># &gt; Link to existing project? N</span></span>
+<span id="cb4-11"><a href=""></a><span class="co"># &gt; Project name: my-display-app</span></span>
+<span id="cb4-12"><a href=""></a></span>
+<span id="cb4-13"><a href=""></a><span class="co"># 완료 후</span></span>
+<span id="cb4-14"><a href=""></a><span class="co"># https://my-display-app.vercel.app</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-1-3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href=""></a><span class="co"># Python API 서버 / FastAPI / Flask 배포</span></span>
+<span id="cb5-2"><a href=""></a></span>
+<span id="cb5-3"><a href=""></a><span class="co"># 1. requirements.txt 확인</span></span>
+<span id="cb5-4"><a href=""></a><span class="va">fastapi</span><span class="op">=</span>=0.109.0</span>
+<span id="cb5-5"><a href=""></a><span class="va">uvicorn</span><span class="op">=</span>=0.27.0</span>
+<span id="cb5-6"><a href=""></a><span class="va">pandas</span><span class="op">=</span>=2.0.3</span>
+<span id="cb5-7"><a href=""></a></span>
+<span id="cb5-8"><a href=""></a><span class="co"># 2. render.yaml 생성 (선택)</span></span>
+<span id="cb5-9"><a href=""></a><span class="ex">services:</span></span>
+<span id="cb5-10"><a href=""></a>  <span class="ex">-</span> type: web</span>
+<span id="cb5-11"><a href=""></a>    <span class="ex">name:</span> display-api</span>
+<span id="cb5-12"><a href=""></a>    <span class="ex">env:</span> python</span>
+<span id="cb5-13"><a href=""></a>    <span class="ex">buildCommand:</span> pip install <span class="at">-r</span> requirements.txt</span>
+<span id="cb5-14"><a href=""></a>    <span class="ex">startCommand:</span> uvicorn main:app <span class="at">--host</span> 0.0.0.0 <span class="at">--port</span> <span class="va">$PORT</span></span>
+<span id="cb5-15"><a href=""></a></span>
+<span id="cb5-16"><a href=""></a><span class="co"># 3. render.com → New → Web Service</span></span>
+<span id="cb5-17"><a href=""></a><span class="co"># GitHub 연결 후 자동 배포</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
-<h3 id="중급자-추천">중급자 추천</h3>
-<ul>
-<li>Netlify</li>
-<li>Vercel</li>
-<li>Firebase :::</li>
-</ul>
-<h3 id="고급자-추천">고급자 추천</h3>
-<ul>
-<li>Fly.io</li>
-<li>Google Cloud Run :::</li>
-</ul>
 </section>
-<section id="플랫폼-추천-1" class="slide level2" data-auto-animate="true">
-<h2 data-id="quarto-animate-title">플랫폼 추천</h2>
-<div class="panel-tabset">
-<ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1">입문자 추천</a></li></ul>
-<div class="tab-content">
-<div id="tabset-2-1">
-<ul>
-<li>GitHub Pages</li>
-<li>Streamlit Cloud</li>
-<li>HuggingFace Spaces</li>
-</ul>
+<section id="플랫폼-선택-플로우차트" class="slide level2">
+<h2>플랫폼 선택 플로우차트</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb6-2"><a href=""></a></span>
+<span id="cb6-3"><a href=""></a>nodes_dt <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb6-4"><a href=""></a>  <span class="at">x     =</span> <span class="fu">c</span>(<span class="dv">5</span>,   <span class="dv">2</span>,   <span class="dv">8</span>,   <span class="dv">1</span>,   <span class="dv">3</span>,    <span class="dv">6</span>,     <span class="dv">9</span>),</span>
+<span id="cb6-5"><a href=""></a>  <span class="at">y     =</span> <span class="fu">c</span>(<span class="dv">4</span>,   <span class="dv">3</span>,   <span class="dv">3</span>,   <span class="dv">2</span>,   <span class="dv">2</span>,    <span class="dv">2</span>,     <span class="dv">2</span>),</span>
+<span id="cb6-6"><a href=""></a>  <span class="at">label =</span> <span class="fu">c</span>(<span class="st">"새 앱</span><span class="sc">\n</span><span class="st">만들기"</span>,</span>
+<span id="cb6-7"><a href=""></a>            <span class="st">"Python</span><span class="sc">\n</span><span class="st">앱?"</span>,</span>
+<span id="cb6-8"><a href=""></a>            <span class="st">"정적</span><span class="sc">\n</span><span class="st">사이트?"</span>,</span>
+<span id="cb6-9"><a href=""></a>            <span class="st">"Streamlit</span><span class="sc">\n</span><span class="st">Cloud"</span>,</span>
+<span id="cb6-10"><a href=""></a>            <span class="st">"Heroku</span><span class="sc">\n</span><span class="st">/Render"</span>,</span>
+<span id="cb6-11"><a href=""></a>            <span class="st">"GitHub</span><span class="sc">\n</span><span class="st">Pages"</span>,</span>
+<span id="cb6-12"><a href=""></a>            <span class="st">"Vercel</span><span class="sc">\n</span><span class="st">/Netlify"</span>),</span>
+<span id="cb6-13"><a href=""></a>  <span class="at">type  =</span> <span class="fu">c</span>(<span class="st">"root"</span>,<span class="st">"branch"</span>,<span class="st">"branch"</span>,<span class="st">"leaf"</span>,<span class="st">"leaf"</span>,<span class="st">"leaf"</span>,<span class="st">"leaf"</span>)</span>
+<span id="cb6-14"><a href=""></a>)</span>
+<span id="cb6-15"><a href=""></a></span>
+<span id="cb6-16"><a href=""></a>edges_dt <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb6-17"><a href=""></a>  <span class="at">x    =</span> <span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">8</span>,<span class="dv">8</span>),</span>
+<span id="cb6-18"><a href=""></a>  <span class="at">xend =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">8</span>,<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">6</span>,<span class="dv">9</span>),</span>
+<span id="cb6-19"><a href=""></a>  <span class="at">y    =</span> <span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">3</span>),</span>
+<span id="cb6-20"><a href=""></a>  <span class="at">yend =</span> <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">2</span>),</span>
+<span id="cb6-21"><a href=""></a>  <span class="at">label=</span> <span class="fu">c</span>(<span class="st">"YES"</span>,<span class="st">"NO"</span>,<span class="st">"YES"</span>,<span class="st">"NO"</span>,<span class="st">"YES"</span>,<span class="st">"NO"</span>)</span>
+<span id="cb6-22"><a href=""></a>)</span>
+<span id="cb6-23"><a href=""></a></span>
+<span id="cb6-24"><a href=""></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb6-25"><a href=""></a>  <span class="fu">geom_segment</span>(<span class="at">data=</span>edges_dt,</span>
+<span id="cb6-26"><a href=""></a>               <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">xend=</span>xend, <span class="at">y=</span>y, <span class="at">yend=</span>yend),</span>
+<span id="cb6-27"><a href=""></a>               <span class="at">color=</span><span class="st">"gray60"</span>, <span class="at">linewidth=</span><span class="dv">1</span>,</span>
+<span id="cb6-28"><a href=""></a>               <span class="at">arrow=</span><span class="fu">arrow</span>(<span class="at">length=</span><span class="fu">unit</span>(<span class="fl">0.15</span>,<span class="st">"inches"</span>), <span class="at">type=</span><span class="st">"closed"</span>)) <span class="sc">+</span></span>
+<span id="cb6-29"><a href=""></a>  <span class="fu">geom_label</span>(<span class="at">data=</span>edges_dt,</span>
+<span id="cb6-30"><a href=""></a>             <span class="fu">aes</span>(<span class="at">x=</span>(x<span class="sc">+</span>xend)<span class="sc">/</span><span class="dv">2</span>, <span class="at">y=</span>(y<span class="sc">+</span>yend)<span class="sc">/</span><span class="dv">2</span>, <span class="at">label=</span>label),</span>
+<span id="cb6-31"><a href=""></a>             <span class="at">size=</span><span class="fl">2.8</span>, <span class="at">fill=</span><span class="st">"gray20"</span>, <span class="at">color=</span><span class="st">"white"</span>) <span class="sc">+</span></span>
+<span id="cb6-32"><a href=""></a>  <span class="fu">geom_point</span>(<span class="at">data=</span>nodes_dt,</span>
+<span id="cb6-33"><a href=""></a>             <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y, <span class="at">color=</span>type), <span class="at">size=</span><span class="dv">14</span>) <span class="sc">+</span></span>
+<span id="cb6-34"><a href=""></a>  <span class="fu">geom_text</span>(<span class="at">data=</span>nodes_dt,</span>
+<span id="cb6-35"><a href=""></a>            <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y, <span class="at">label=</span>label),</span>
+<span id="cb6-36"><a href=""></a>            <span class="at">color=</span><span class="st">"white"</span>, <span class="at">size=</span><span class="fl">2.8</span>, <span class="at">fontface=</span><span class="st">"bold"</span>) <span class="sc">+</span></span>
+<span id="cb6-37"><a href=""></a>  <span class="fu">scale_color_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"root"</span><span class="ot">=</span><span class="st">"#1F4E79"</span>,</span>
+<span id="cb6-38"><a href=""></a>                               <span class="st">"branch"</span><span class="ot">=</span><span class="st">"#2E75B6"</span>,</span>
+<span id="cb6-39"><a href=""></a>                               <span class="st">"leaf"</span><span class="ot">=</span><span class="st">"#27AE60"</span>)) <span class="sc">+</span></span>
+<span id="cb6-40"><a href=""></a>  <span class="fu">xlim</span>(<span class="dv">0</span>, <span class="dv">10</span>) <span class="sc">+</span> <span class="fu">ylim</span>(<span class="dv">1</span>, <span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb6-41"><a href=""></a>  <span class="fu">theme_void</span>(<span class="at">base_size=</span><span class="dv">13</span>) <span class="sc">+</span></span>
+<span id="cb6-42"><a href=""></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"배포 플랫폼 선택 가이드"</span>) <span class="sc">+</span></span>
+<span id="cb6-43"><a href=""></a>  <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"none"</span>,</span>
+<span id="cb6-44"><a href=""></a>        <span class="at">plot.title=</span><span class="fu">element_text</span>(<span class="at">color=</span><span class="st">"gray20"</span>, <span class="at">size=</span><span class="dv">14</span>, <span class="at">hjust=</span><span class="fl">0.5</span>, <span class="at">face=</span><span class="st">"bold"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
 </div>
-</div>
-</div>
-<h3 id="중급자-추천-1">중급자 추천</h3>
-<ul>
-<li>Netlify</li>
-<li>Vercel</li>
-<li>Firebase :::</li>
-</ul>
-<h3 id="고급자-추천-1">고급자 추천</h3>
-<ul>
-<li>Fly.io</li>
-<li>Google Cloud Run</li>
-<li>Render :::</li>
-</ul>
-</section>
-<section id="netlify-배포-실습" class="slide level2">
-<h2>Netlify 배포 실습</h2>
-<ul>
-<li>Netlify의 drag &amp; drop 기능으로 손쉽게 배포</li>
-</ul>
-<div title="팁">
+<img data-src="lecture_11_files/figure-revealjs/unnamed-chunk-3-1.png" width="864" class="r-stretch"></section>
+<section id="netlify-jamstack의-왕좌" class="slide level2">
+<h2>Netlify — JAMstack의 왕좌</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<h3 id="netlify란">Netlify란?</h3>
+<p><strong>JAMstack</strong> (JavaScript + API + Markup) 특화 플랫폼</p>
+<p><strong>강점:</strong> - 드래그 앤 드롭으로 HTML 폴더 배포 - 자동 HTTPS - 폼 처리 (백엔드 없이 문의 폼 구현) - A/B 테스트 기능 - 분기별 프리뷰 URL</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href=""></a><span class="co"># 방법 1: CLI 배포</span></span>
+<span id="cb7-2"><a href=""></a><span class="ex">npm</span> install <span class="at">-g</span> netlify-cli</span>
+<span id="cb7-3"><a href=""></a><span class="ex">netlify</span> deploy <span class="at">--dir</span><span class="op">=</span>./dist <span class="at">--prod</span></span>
+<span id="cb7-4"><a href=""></a></span>
+<span id="cb7-5"><a href=""></a><span class="co"># 방법 2: 드래그 앤 드롭</span></span>
+<span id="cb7-6"><a href=""></a><span class="co"># app.netlify.com에 폴더 드래그</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:45%;">
+<h3 id="netlify-무료-플랜">Netlify 무료 플랜</h3>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>항목</th>
+<th>한도</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>빌드 시간</td>
+<td>300분/월</td>
+</tr>
+<tr class="even">
+<td>대역폭</td>
+<td>100GB/월</td>
+</tr>
+<tr class="odd">
+<td>사이트 수</td>
+<td>무제한</td>
+</tr>
+<tr class="even">
+<td>팀원 수</td>
+<td>1명</td>
+</tr>
+</tbody>
+</table>
+<div title="디스플레이 업 활용">
 <div class="callout callout-tip callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>팁</strong></p>
+<p><strong>디스플레이 업 활용</strong></p>
 </div>
 <div class="callout-content">
-<p>Netlify는 정적 사이트 배포에 최적화되어 있습니다.</p>
+<p>제품 소개 사이트, 스펙 비교 페이지, 이력서/포트폴리오에 최적. GitHub + Netlify = 자동 배포 파이프라인.</p>
 </div>
 </div>
 </div>
 </div>
+</div></div>
 </section>
-<section id="배포-시-주의사항" class="slide level2">
-<h2>배포 시 주의사항</h2>
-<div title="주의">
-<div class="callout callout-warning callout-titled callout-style-default">
+<section id="hugging-face-spaces-ai-모델-배포의-성지" class="slide level2">
+<h2>Hugging Face Spaces — AI 모델 배포의 성지</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<h3 id="ai-모델을-세상에-공개하는-곳">AI 모델을 세상에 공개하는 곳</h3>
+<blockquote>
+<p>“Stable Diffusion, Whisper, 수많은 AI 모델들이 여기 있다.”</p>
+</blockquote>
+<p><strong>Hugging Face Spaces 특징:</strong> - Gradio 또는 Streamlit 앱 무료 배포 - GPU 인스턴스 (유료) 사용 가능 - 모델 허브와 즉시 연동 - 공개 AI 커뮤니티 접점</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href=""></a><span class="co"># Gradio 앱 예시 (display defect classifier)</span></span>
+<span id="cb8-2"><a href=""></a><span class="im">import</span> gradio <span class="im">as</span> gr</span>
+<span id="cb8-3"><a href=""></a></span>
+<span id="cb8-4"><a href=""></a><span class="kw">def</span> classify_defect(image):</span>
+<span id="cb8-5"><a href=""></a>    <span class="co"># OLED 결함 분류 AI 모델</span></span>
+<span id="cb8-6"><a href=""></a>    <span class="cf">return</span> {<span class="st">"정상"</span>: <span class="fl">0.92</span>, <span class="st">"Bright Dot"</span>: <span class="fl">0.05</span>,</span>
+<span id="cb8-7"><a href=""></a>            <span class="st">"Dark Dot"</span>: <span class="fl">0.02</span>, <span class="st">"Mura"</span>: <span class="fl">0.01</span>}</span>
+<span id="cb8-8"><a href=""></a></span>
+<span id="cb8-9"><a href=""></a>gr.Interface(</span>
+<span id="cb8-10"><a href=""></a>    fn<span class="op">=</span>classify_defect,</span>
+<span id="cb8-11"><a href=""></a>    inputs<span class="op">=</span>gr.Image(),</span>
+<span id="cb8-12"><a href=""></a>    outputs<span class="op">=</span>gr.Label()</span>
+<span id="cb8-13"><a href=""></a>).launch()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:45%;">
+<h3 id="취업에-활용하는-법">취업에 활용하는 법</h3>
+<pre><code>Hugging Face Space URL:
+huggingface.co/spaces/yourname/display-inspector
+
+포트폴리오에 추가:
+- OLED 결함 분류 AI
+- 수율 예측 모델
+- 패널 화질 평가기</code></pre>
+<div title="삼성/LG 취업 팁">
+<div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>주의</strong></p>
+<p><strong>삼성/LG 취업 팁</strong></p>
 </div>
 <div class="callout-content">
-<p>유료 플랜을 선택하기 전에 무료 한도를 반드시 확인하세요.</p>
+<p>AI 모델을 Hugging Face에 공개하면 채용담당자가 바로 테스트할 수 있습니다. GitHub + Hugging Face = 완성형 포트폴리오.</p>
 </div>
 </div>
 </div>
 </div>
-</section>
-<section id="플랫폼-기능-요약" class="slide level2">
-<h2>플랫폼 기능 요약</h2>
-<div class="columns">
-<div class="column" style="width:45%;">
-<h3 id="장점">장점</h3>
-<ul>
-<li>다양한 무료 옵션</li>
-<li>쉬운 배포</li>
-</ul>
-</div><div class="column" style="width:55%;">
-<h3 id="단점">단점</h3>
-<ul>
-<li>한정된 기능</li>
-<li>유료 플랜 필요 시 비용 증가</li>
-</ul>
 </div></div>
 </section>
-<section id="코드-예시-netlify-배포" class="slide level2">
-<h2>코드 예시: Netlify 배포</h2>
-<p>```python # Netlify CLI 설치 npm install -g netlify-cli</p>
-</section></section>
-<section>
-<section id="프로젝트-디렉토리에서-배포" class="title-slide slide level1 center">
-<h1>프로젝트 디렉토리에서 배포</h1>
-<p>netlify deploy –prod ``` {code-line-numbers=“1-2|3”}</p>
+<section id="replit-브라우저에서-바로-코딩하고-배포" class="slide level2">
+<h2>Replit — 브라우저에서 바로 코딩하고 배포</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<h3 id="설치-없이-바로-시작">설치 없이 바로 시작</h3>
+<p><strong>Replit의 장점:</strong> - 브라우저만 있으면 개발 가능 - 50+ 언어 지원 (Python, JS, R, …) - 배포 버튼 한 번으로 공개 - 실시간 협업 (구글독스처럼) - AI 코드 어시스턴트 내장</p>
+<p><strong>학습 환경으로 최적:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href=""></a><span class="co"># Replit에서 Python 즉시 실행</span></span>
+<span id="cb10-2"><a href=""></a><span class="co"># → Deploy 클릭</span></span>
+<span id="cb10-3"><a href=""></a><span class="co"># → replit.app URL 생성</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:45%;">
+<h3 id="replit-vs-로컬-환경">Replit vs 로컬 환경</h3>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>항목</th>
+<th>Replit</th>
+<th>로컬</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>설치</td>
+<td>불필요</td>
+<td>필요</td>
+</tr>
+<tr class="even">
+<td>속도</td>
+<td>느림</td>
+<td>빠름</td>
+</tr>
+<tr class="odd">
+<td>협업</td>
+<td>실시간</td>
+<td>Git</td>
+</tr>
+<tr class="even">
+<td>배포</td>
+<td>원클릭</td>
+<td>설정 필요</td>
+</tr>
+<tr class="odd">
+<td>가격</td>
+<td>무료(제한)</td>
+<td>무료</td>
+</tr>
+</tbody>
+</table>
+<div title="추천 사용 시나리오">
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>추천 사용 시나리오</strong></p>
+</div>
+<div class="callout-content">
+<p>강의 시간에 빠르게 데모 앱을 만들어 URL을 공유할 때 가장 빠릅니다.</p>
+</div>
+</div>
+</div>
+</div>
+</div></div>
 </section>
-<section id="마무리" class="slide level2">
-<h2>마무리</h2>
+<section id="플랫폼-평가-히트맵-어떤-상황에-어떤-플랫폼" class="slide level2">
+<h2>플랫폼 평가 히트맵 — 어떤 상황에 어떤 플랫폼?</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb11-2"><a href=""></a></span>
+<span id="cb11-3"><a href=""></a>score_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb11-4"><a href=""></a>  <span class="at">Platform  =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"GitHub Pages"</span>,<span class="st">"Streamlit"</span>,<span class="st">"Firebase"</span>,</span>
+<span id="cb11-5"><a href=""></a>                     <span class="st">"Vercel"</span>,<span class="st">"Render"</span>), <span class="at">each=</span><span class="dv">4</span>),</span>
+<span id="cb11-6"><a href=""></a>  <span class="at">Criterion =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"무료 한도"</span>,<span class="st">"쉬운 설정"</span>,<span class="st">"Python 지원"</span>,<span class="st">"확장성"</span>), <span class="dv">5</span>),</span>
+<span id="cb11-7"><a href=""></a>  <span class="at">Score     =</span> <span class="fu">c</span>(</span>
+<span id="cb11-8"><a href=""></a>    <span class="dv">10</span>, <span class="dv">9</span>, <span class="dv">2</span>, <span class="dv">7</span>,   <span class="co"># GitHub Pages</span></span>
+<span id="cb11-9"><a href=""></a>     <span class="dv">9</span>, <span class="dv">8</span>,<span class="dv">10</span>, <span class="dv">6</span>,   <span class="co"># Streamlit</span></span>
+<span id="cb11-10"><a href=""></a>     <span class="dv">7</span>, <span class="dv">6</span>, <span class="dv">8</span>,<span class="dv">10</span>,   <span class="co"># Firebase</span></span>
+<span id="cb11-11"><a href=""></a>     <span class="dv">8</span>, <span class="dv">8</span>, <span class="dv">5</span>, <span class="dv">9</span>,   <span class="co"># Vercel</span></span>
+<span id="cb11-12"><a href=""></a>     <span class="dv">7</span>, <span class="dv">7</span>, <span class="dv">9</span>, <span class="dv">8</span>    <span class="co"># Render</span></span>
+<span id="cb11-13"><a href=""></a>  )</span>
+<span id="cb11-14"><a href=""></a>)</span>
+<span id="cb11-15"><a href=""></a></span>
+<span id="cb11-16"><a href=""></a><span class="fu">ggplot</span>(score_data, <span class="fu">aes</span>(<span class="at">x=</span>Criterion, <span class="at">y=</span>Platform, <span class="at">fill=</span>Score)) <span class="sc">+</span></span>
+<span id="cb11-17"><a href=""></a>  <span class="fu">geom_tile</span>(<span class="at">color=</span><span class="st">"gray30"</span>, <span class="at">linewidth=</span><span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb11-18"><a href=""></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label=</span>Score), <span class="at">color=</span><span class="st">"white"</span>, <span class="at">fontface=</span><span class="st">"bold"</span>, <span class="at">size=</span><span class="fl">4.5</span>) <span class="sc">+</span></span>
+<span id="cb11-19"><a href=""></a>  <span class="fu">scale_fill_gradient2</span>(<span class="at">low=</span><span class="st">"#E74C3C"</span>, <span class="at">mid=</span><span class="st">"#F39C12"</span>, <span class="at">high=</span><span class="st">"#27AE60"</span>,</span>
+<span id="cb11-20"><a href=""></a>                       <span class="at">midpoint=</span><span class="dv">7</span>, <span class="at">limits=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">10</span>)) <span class="sc">+</span></span>
+<span id="cb11-21"><a href=""></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size=</span><span class="dv">12</span>) <span class="sc">+</span></span>
+<span id="cb11-22"><a href=""></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"배포 플랫폼 평가 히트맵 (10점 만점)"</span>,</span>
+<span id="cb11-23"><a href=""></a>       <span class="at">subtitle=</span><span class="st">"초록=강점, 빨강=약점 — 자신의 필요에 맞는 강점을 보유한 플랫폼 선택"</span>,</span>
+<span id="cb11-24"><a href=""></a>       <span class="at">x=</span><span class="st">""</span>, <span class="at">y=</span><span class="st">""</span>, <span class="at">fill=</span><span class="st">"점수"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+</div>
+<img data-src="lecture_11_files/figure-revealjs/unnamed-chunk-4-1.png" width="864" class="r-stretch"></section>
+<section id="실습-기존-앱-다른-플랫폼에-재배포" class="slide level2">
+<h2>실습 — 기존 앱 다른 플랫폼에 재배포</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<h3 id="미션-동일한-앱을-두-플랫폼에">미션: 동일한 앱을 두 플랫폼에</h3>
+<p>9강에서 만든 <strong>PPI 계산기</strong>를 아래 두 곳에 배포하세요.</p>
+<p><strong>Streamlit Cloud (이미 완료):</strong></p>
+<pre><code>https://yourname-ppi-calc.streamlit.app</code></pre>
+<p><strong>Hugging Face Spaces로 재배포:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href=""></a><span class="co"># 1. Hugging Face 계정 생성</span></span>
+<span id="cb13-2"><a href=""></a><span class="co"># 2. New Space → Streamlit 선택</span></span>
+<span id="cb13-3"><a href=""></a><span class="co"># 3. 파일 업로드 또는 GitHub 연결</span></span>
+<span id="cb13-4"><a href=""></a><span class="co"># 4. app.py, requirements.txt 업로드</span></span>
+<span id="cb13-5"><a href=""></a><span class="co"># 5. 자동 빌드 완료</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>동일한 앱, <strong>다른 URL</strong> — 포트폴리오에 두 링크 모두 추가!</p>
+</div><div class="column" style="width:45%;">
+<h3 id="플랫폼별-url-예시">플랫폼별 URL 예시</h3>
+<pre><code>GitHub Pages:
+  yourname.github.io/display-tools
+
+Streamlit Cloud:
+  yourname-display-tools.streamlit.app
+
+Hugging Face:
+  huggingface.co/spaces/yourname/ppi-calc
+
+Vercel:
+  display-tools-yourname.vercel.app</code></pre>
+<div title="포트폴리오 전략">
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>포트폴리오 전략</strong></p>
+</div>
+<div class="callout-content">
+<p>면접관이 “포트폴리오 보여주세요”라고 했을 때, 3개 이상의 URL을 즉시 꺼낼 수 있어야 합니다.</p>
+</div>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="플랫폼-속도-비교-실제-로딩-타임" class="slide level2">
+<h2>플랫폼 속도 비교 — 실제 로딩 타임</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb15-2"><a href=""></a></span>
+<span id="cb15-3"><a href=""></a>load_times <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb15-4"><a href=""></a>  <span class="at">Platform =</span> <span class="fu">factor</span>(</span>
+<span id="cb15-5"><a href=""></a>    <span class="fu">c</span>(<span class="st">"GitHub Pages"</span>,<span class="st">"Vercel"</span>,<span class="st">"Netlify"</span>,<span class="st">"Streamlit"</span>,<span class="st">"Render"</span>,<span class="st">"Hugging Face"</span>),</span>
+<span id="cb15-6"><a href=""></a>    <span class="at">levels=</span><span class="fu">c</span>(<span class="st">"GitHub Pages"</span>,<span class="st">"Vercel"</span>,<span class="st">"Netlify"</span>,<span class="st">"Streamlit"</span>,<span class="st">"Render"</span>,<span class="st">"Hugging Face"</span>)</span>
+<span id="cb15-7"><a href=""></a>  ),</span>
+<span id="cb15-8"><a href=""></a>  <span class="at">Cold_Start =</span> <span class="fu">c</span>(<span class="fl">0.3</span>, <span class="fl">0.5</span>, <span class="fl">0.4</span>, <span class="fl">8.0</span>, <span class="fl">12.0</span>, <span class="fl">15.0</span>),</span>
+<span id="cb15-9"><a href=""></a>  <span class="at">Warm_Start =</span> <span class="fu">c</span>(<span class="fl">0.3</span>, <span class="fl">0.5</span>, <span class="fl">0.4</span>,  <span class="fl">2.0</span>,  <span class="fl">1.5</span>,  <span class="fl">2.5</span>),</span>
+<span id="cb15-10"><a href=""></a>  <span class="at">Type       =</span> <span class="fu">c</span>(<span class="st">"정적"</span>,<span class="st">"정적"</span>,<span class="st">"정적"</span>,<span class="st">"동적"</span>,<span class="st">"동적"</span>,<span class="st">"동적"</span>)</span>
+<span id="cb15-11"><a href=""></a>)</span>
+<span id="cb15-12"><a href=""></a></span>
+<span id="cb15-13"><a href=""></a>load_long <span class="ot">&lt;-</span> <span class="fu">reshape</span>(load_times,</span>
+<span id="cb15-14"><a href=""></a>  <span class="at">varying=</span><span class="fu">c</span>(<span class="st">"Cold_Start"</span>,<span class="st">"Warm_Start"</span>),</span>
+<span id="cb15-15"><a href=""></a>  <span class="at">v.names=</span><span class="st">"Seconds"</span>,</span>
+<span id="cb15-16"><a href=""></a>  <span class="at">timevar=</span><span class="st">"StartType"</span>,</span>
+<span id="cb15-17"><a href=""></a>  <span class="at">times=</span><span class="fu">c</span>(<span class="st">"콜드 스타트 (첫 방문)"</span>,<span class="st">"웜 스타트 (재방문)"</span>),</span>
+<span id="cb15-18"><a href=""></a>  <span class="at">direction=</span><span class="st">"long"</span></span>
+<span id="cb15-19"><a href=""></a>)</span>
+<span id="cb15-20"><a href=""></a></span>
+<span id="cb15-21"><a href=""></a><span class="fu">ggplot</span>(load_long, <span class="fu">aes</span>(<span class="at">x=</span>Platform, <span class="at">y=</span>Seconds, <span class="at">fill=</span>StartType)) <span class="sc">+</span></span>
+<span id="cb15-22"><a href=""></a>  <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">"identity"</span>, <span class="at">position=</span><span class="st">"dodge"</span>, <span class="at">width=</span><span class="fl">0.65</span>) <span class="sc">+</span></span>
+<span id="cb15-23"><a href=""></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"콜드 스타트 (첫 방문)"</span><span class="ot">=</span><span class="st">"#E74C3C"</span>,</span>
+<span id="cb15-24"><a href=""></a>                              <span class="st">"웜 스타트 (재방문)"</span><span class="ot">=</span><span class="st">"#27AE60"</span>)) <span class="sc">+</span></span>
+<span id="cb15-25"><a href=""></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels=</span><span class="cf">function</span>(x) <span class="fu">paste0</span>(x,<span class="st">"초"</span>)) <span class="sc">+</span></span>
+<span id="cb15-26"><a href=""></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size=</span><span class="dv">12</span>) <span class="sc">+</span></span>
+<span id="cb15-27"><a href=""></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"플랫폼별 페이지 로딩 시간 비교 (초)"</span>,</span>
+<span id="cb15-28"><a href=""></a>       <span class="at">subtitle=</span><span class="st">"정적 사이트 0.3~0.5초 vs 동적 앱 콜드스타트 8~15초 차이 주의"</span>,</span>
+<span id="cb15-29"><a href=""></a>       <span class="at">x=</span><span class="st">""</span>, <span class="at">y=</span><span class="st">"로딩 시간 (초)"</span>, <span class="at">fill=</span><span class="st">""</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+</div>
+<img data-src="lecture_11_files/figure-revealjs/unnamed-chunk-5-1.png" width="864" class="r-stretch"></section>
+<section id="강-핵심-요약" class="slide level2">
+<h2>11강 핵심 요약</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="대-플랫폼-한-줄-요약">10대 플랫폼 한 줄 요약</h3>
+<div class="fragment">
+<p><strong>GitHub Pages</strong>: 정적 포트폴리오, 완전 무료</p>
+</div>
+<div class="fragment">
+<p><strong>Streamlit Cloud</strong>: Python/데이터 앱</p>
+</div>
+<div class="fragment">
+<p><strong>Firebase</strong>: 풀스택, Google 생태계</p>
+</div>
+<div class="fragment">
+<p><strong>Vercel</strong>: React/Next.js, 프론트 최강</p>
+</div>
+<div class="fragment">
+<p><strong>Netlify</strong>: JAMstack, 드래그 앤 드롭</p>
+</div>
+<div class="fragment">
+<p><strong>Render/Railway</strong>: Docker, API 서버</p>
+</div>
+<div class="fragment">
+<p><strong>Hugging Face</strong>: AI 모델 공개</p>
+</div>
+<div class="fragment">
+<p><strong>Replit</strong>: 브라우저 코딩/데모</p>
+</div>
+</div><div class="column" style="width:50%;">
+<h3 id="다음-강의-예고-12강">다음 강의 예고 (12강)</h3>
+<p><strong>환경 관리 &amp; 보안 &amp; GitHub Actions</strong></p>
+<blockquote>
+<p>이 실수를 하면 요금 폭탄이 온다</p>
+</blockquote>
+<p>실화: GitHub에 API Key 올림 → 30분 후 봇 발견 → $50,000 청구</p>
 <ul>
-<li>다양한 플랫폼을 통해 앱을 손쉽게 배포하세요.</li>
-<li>각 플랫폼의 장단점을 고려하여 선택하세요.</li>
+<li>.env 파일</li>
+<li>.gitignore</li>
+<li>GitHub Secrets</li>
+<li>CI/CD 자동화</li>
 </ul>
+</div></div>
 
 </section></section>
     </div>
