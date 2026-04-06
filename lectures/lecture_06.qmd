@@ -1,0 +1,143 @@
+---
+title: "R Shiny 대시보드 제작 & 배포"
+subtitle: "수율 트렌드를 한눈에 — R Shiny & shinyapps.io"
+author: "렛유인 KDC 강의"
+date: today
+execute:
+  echo: true
+  warning: false
+lightbox: true
+format:
+  revealjs:
+    theme: moon
+    controls: true
+    slide-number: true
+    show-slide-number: all
+    center: false
+    incremental: true
+    transition: slide
+    background-transition: fade
+    transition-speed: slow
+    highlight-style: github
+    footer: "KDC AI 바이브 코딩 실전 | 6강"
+    css: ../styles.css
+    width: 1280
+    height: 720
+---
+
+# 오프닝 훅 {.section-title}
+
+## "R은 통계학자들이 만든 언어. 데이터 분석에서는 Python보다 강력한 면이 있다. Shiny는 R로 웹앱을 만드는 마법 같은 라이브러리."
+
+---
+
+# 이 강의에서 배우는 것 {.section-title}
+
+## 학습 목표
+- R 기반 대시보드 제작 능력 배양
+- Shiny를 활용한 웹앱 개발
+- shinyapps.io를 통한 배포 경험
+
+---
+
+# 이론 {.section-title}
+
+## R Shiny 소개
+- R Shiny 앱의 기본 구조
+  - UI: 사용자 인터페이스 정의
+  - Server: 서버 로직 구현
+
+## Streamlit vs Shiny 비교
+- Streamlit
+  - Python 기반
+  - 빠른 프로토타입 개발
+- Shiny
+  - R 기반
+  - 강력한 데이터 분석 지원
+
+## shinydashboard로 전문 대시보드 만들기
+- shinydashboard 패키지 소개
+- 대시보드 레이아웃 구성
+
+## shinyapps.io 무료 배포 방법
+- 계정 생성 및 설정
+- 앱 배포 단계
+
+## Claude Code로 R Shiny 코드 생성하는 방법
+- 자동화된 코드 생성의 장점
+- 예시: Claude를 활용한 기본 코드 생성
+
+---
+
+# 코드/실습 {.section-title}
+
+## 실습 앱: "수율 트렌드 모니터링 대시보드" {.smaller}
+::: {.columns}
+::: {.column width="50%"}
+- CSV 파일 업로드 → 자동 시각화
+- 날짜 범위 선택, 라인별 필터링
+- 이상 구간 자동 하이라이트
+:::
+::: {.column width="50%"}
+```r
+library(shiny)
+library(ggplot2)
+
+ui <- fluidPage(
+  titlePanel("수율 트렌드"),
+  sidebarLayout(
+    sidebarPanel(fileInput("file", "CSV 업로드")),
+    mainPanel(plotOutput("trend_plot"))
+  )
+)
+
+server <- function(input, output) {
+  output$trend_plot <- renderPlot({
+    # 데이터 처리 및 시각화 코드
+  })
+}
+
+shinyApp(ui, server)
+```
+:::
+:::
+
+---
+
+# 실습 앱 결과 / 데모 {.section-title}
+
+## 앱 주요 기능 데모
+- ggplot2 트렌드 차트 + 통계 요약
+- 이상 구간(수율 95% 미만) 자동 하이라이트
+- shinyapps.io 배포 후 앱 접근
+
+---
+
+# 핵심 정리 / 다음 강의 예고 {.section-title}
+
+## 핵심 정리
+- R Shiny 대시보드의 기본 개념
+- 데이터 시각화 및 대시보드 제작 과정
+- shinyapps.io를 이용한 앱 배포
+
+## 다음 강의 예고
+- PART 4: 데이터 시각화 고급 기법
+- 인터랙티브 차트 및 사용자 입력 처리
+
+---
+
+# 강사 체크 {.section-title}
+
+## 수강생 준비 사항 확인
+- R 및 RStudio 설치 여부 확인
+- shinyapps.io 계정 생성 여부 확인
+
+---
+
+# Q&A {.section-title}
+
+## 질문 & 답변
+- 강의 내용 관련 질문 받습니다.
+- 실습 중 궁금한 점 해결
+
+---

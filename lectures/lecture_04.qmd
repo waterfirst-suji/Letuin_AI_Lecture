@@ -1,0 +1,126 @@
+---
+title: "Claude Agent 모드 + CLI-Anything"
+subtitle: "AI가 20개 파일을 알아서 만든다 — 에이전트 모드의 세계"
+author: "렛유인 KDC 강의"
+date: today
+execute:
+  echo: true
+  warning: false
+lightbox: true
+format:
+  revealjs:
+    theme: moon
+    controls: true
+    slide-number: true
+    show-slide-number: all
+    center: false
+    incremental: true
+    transition: slide
+    background-transition: fade
+    transition-speed: slow
+    highlight-style: github
+    footer: "KDC AI 바이브 코딩 실전 | 4강"
+    css: ../styles.css
+    width: 1280
+    height: 720
+---
+
+# 오프닝 훅 {.section-title}
+
+## 
+"Claude에게 '앱 만들어줘'라고 하면 1개의 파일을 만든다. 에이전트 모드로 '앱 만들어줘'라고 하면 20개의 파일을, 테스트까지 하면서 만든다."
+
+# 이 강의에서 배우는 것 {.section-title}
+
+## 학습 목표
+- 에이전트 모드와 일반 대화 모드의 차이점 이해
+- CLI-Anything을 통해 AI 에이전트용 CLI 자동 변환
+- Claude for Work를 통한 기업 AI 활용 전략
+- 멀티 에이전트 구조의 이해
+
+# 이론: 에이전트 모드 vs 일반 대화 모드 {.section-title}
+
+## 에이전트 모드 vs 일반 대화 모드
+- 에이전트 모드는 더 많은 파일과 테스트를 포함
+- 일반 대화 모드는 단일 파일 생성
+
+## 에이전트 모드 시연 {.smaller}
+1. "앱 만들어줘" 요청 시 데모
+   - 일반 모드: 1개의 파일 생성
+   - 에이전트 모드: 20개의 파일 및 테스트 생성
+
+# CLI-Anything 소개 {.section-title}
+
+## CLI-Anything
+- 어떤 소프트웨어든 AI 에이전트용 CLI로 자동 변환
+- 7단계 파이프라인:
+  ① Analyze → ② Design → ③ Implement → ④ Test
+  → ⑤ Document → ⑥ Publish
+
+## CLI-Anything GitHub 페이지
+- GitHub Repository: [CLI-Anything](https://github.com/waterfirst/CLI-Anything)
+
+# Claude for Work {.section-title}
+
+## Claude for Work — 기업 환경에서의 AI 활용 전략
+- 사내 AI 제한 현실
+  - 보안 및 데이터 유출 우려
+- Claude Pro의 개인 활용법
+
+## 멀티 에이전트 구조
+- 오케스트레이터 + 서브에이전트
+  - 여러 에이전트가 협력하여 작업 수행
+
+# 실습: /feature-dev 워크플로우 체험 {.section-title}
+
+## 워크플로우 체험
+- 프롬프트: "디스플레이 수율 분석 대시보드 만들어줘"
+- Plan → Explore → Code → Review 과정 관찰
+
+## 생성된 코드 구조 이해
+```python
+# 코드 예제
+def analyze_yield(data):
+    # 수율 분석 로직
+    pass
+
+def create_dashboard(data):
+    # 대시보드 생성 로직
+    pass
+```
+
+# CLI-Anything으로 AI 도구 만들기 {.section-title}
+
+## 나만의 AI 도구 만들기
+- CLI-Anything을 활용하여 CLI 도구 생성
+
+## GitHub에 코드 푸시
+```bash
+git add .
+git commit -m "Add AI tool for display analysis"
+git push origin main
+```
+
+# 프로젝트 1 예고 {.section-title}
+
+## 나의 디스플레이 관심 분야 소개 웹페이지
+- GitHub Pages를 통한 배포
+- 프로젝트 목표: 에이전트 방식 이해 및 CLI 도구 AI 전환
+
+## 다음 강의 예고
+- GitHub Pages 설정 및 웹페이지 기본 구조 작성
+
+# 핵심 정리 {.section-title}
+
+## 오늘의 핵심 정리
+- 에이전트 모드의 우수성 확인
+- CLI-Anything을 통해 AI 도구 제작 가능성 탐색
+- 기업 환경에서의 AI 활용법 이해
+
+## 다음 강의 미리보기
+- GitHub Pages로 웹페이지 실습
+- 디스플레이 관심 분야의 웹사이트 제작 시작
+
+---
+
+이렇게 구성된 4강은 Claude의 에이전트 모드와 CLI-Anything을 통한 AI 도구 제작의 심화된 내용을 다루게 됩니다. 

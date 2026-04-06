@@ -1,0 +1,129 @@
+---
+title: "GitHub + Claude Code 환경 세팅"
+subtitle: "취업 포트폴리오의 시작 — Git, GitHub, Claude Code"
+author: "렛유인 KDC 강의"
+date: today
+execute:
+  echo: true
+  warning: false
+lightbox: true
+format:
+  revealjs:
+    theme: moon
+    controls: true
+    slide-number: true
+    show-slide-number: all
+    center: false
+    incremental: true
+    transition: slide
+    background-transition: fade
+    transition-speed: slow
+    highlight-style: github
+    footer: "KDC AI 바이브 코딩 실전 | 2강"
+    css: ../styles.css
+    width: 1280
+    height: 720
+---
+
+# 오프닝 훅 {.section-title}
+
+## "Pieter Levels의 성공 사례"
+
+- Pieter Levels(@levelsio)는 혼자서 AI를 이용해 연 수익 $5M(약 65억원)짜리 서비스를 만들었다.
+- 그의 도구? GitHub + AI.
+- 지금 이 환경을 세팅한다.
+
+# 이 강의에서 배우는 것 {.section-title}
+
+## 학습 목표
+
+- GitHub 계정 + Claude Code 실행 환경 완성
+- Git과 GitHub의 핵심 개념 이해
+- GitHub를 취업 포트폴리오로 활용하는 전략
+
+# 이론 {.section-title}
+
+## Git vs GitHub — 버전 관리 핵심 개념
+
+- Git: 로컬에서 버전 관리 시스템
+- GitHub: 클라우드 기반 저장소로 협업 지원
+
+## Repository, Commit, Branch, Pull Request
+
+- Repository: 프로젝트의 저장소
+- Commit: 변경 사항의 스냅샷
+- Branch: 독립적인 작업 공간
+- Pull Request: 변경 사항 병합 요청
+
+## GitHub Stars로 보는 인기 프로젝트
+
+- GitHub Stars로 인기 프로젝트 실시간 확인
+- 2024~2025년에 주목해야 할 프로젝트
+
+## Claude Code 소개
+
+- Claude Code: 터미널 기반 AI 코딩 에이전트
+- AI를 활용한 코딩 환경
+
+## CLAUDE.md — AI에게 나를 소개하기
+
+- CLAUDE.md 파일로 AI에게 나의 정보를 제공
+- 디스플레이 관련 정보 포함
+
+## 취업 포트폴리오로서 GitHub 활용 전략
+
+- 프로젝트를 공개하여 실력을 증명
+- 협업 프로젝트 참여로 네트워크 구축
+
+# 실습 {.section-title}
+
+## GitHub 계정 생성 & 첫 Repository 만들기
+
+```bash
+# GitHub에서 계정 생성 후 로그인
+# 첫 번째 Repository 생성
+```
+
+## Claude Code 설치
+
+```bash
+# Claude Code 설치 명령어
+npm install -g @anthropic-ai/claude-code
+```
+
+## 나만의 CLAUDE.md 작성
+
+```markdown
+# CLAUDE.md 예시
+이름: 홍길동
+전공: 디스플레이 공학
+목표: 디스플레이 소프트웨어 엔지니어
+```
+
+## 첫 commit + push
+
+```bash
+git init
+git add CLAUDE.md
+git commit -m "Add CLAUDE.md for display"
+git push origin main
+```
+
+# 실습 앱 결과 / 데모 {.section-title}
+
+## GitHub에서의 첫 Repository
+
+- 첫 Repository에 CLAUDE.md 파일 확인
+- GitHub 페이지에서 변경 사항 확인 가능
+
+# 핵심 정리 / 다음 강의 예고 {.section-title}
+
+## 핵심 정리
+
+- GitHub와 Claude Code로 코딩 환경 세팅
+- Git의 기본 명령어 이해 및 실습
+
+## 다음 강의 예고
+
+- PART 2: 클론 코딩과 협업 프로젝트 시작
+- GitHub를 활용한 팀 프로젝트 관리 방법

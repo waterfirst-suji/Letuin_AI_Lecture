@@ -1,0 +1,138 @@
+---
+title: "AI 시뮬레이션 만들기"
+subtitle: "픽셀의 색이 만들어지는 원리를 눈으로 — RGB 색역 시뮬레이터"
+author: "렛유인 KDC 강의"
+date: today
+execute:
+  echo: true
+  warning: false
+lightbox: true
+format:
+  revealjs:
+    theme: moon
+    controls: true
+    slide-number: true
+    show-slide-number: all
+    center: false
+    incremental: true
+    transition: slide
+    background-transition: fade
+    transition-speed: slow
+    highlight-style: github
+    footer: "KDC AI 바이브 코딩 실전 | 9강"
+    css: ../styles.css
+    width: 1280
+    height: 720
+---
+
+# AI 시뮬레이션 만들기 {.section-title}
+
+## "픽셀 하나가 어떻게 색을 만드는지 눈으로 보여줄 수 있다면? 포토공정에서 노광 패턴이 어떻게 생기는지 시뮬레이션할 수 있다면?"
+
+---
+
+## 이 강의에서 배우는 것
+
+- 다양한 시뮬레이션 종류 이해
+- 디스플레이 관련 시뮬레이션 아이디어 탐색
+- Claude Code로 시뮬레이션 앱 생성
+- RGB 색상 혼합 시뮬레이터 구축
+- Gemini API 활용법 배우기
+
+---
+
+# 시뮬레이션의 종류 {.section-title}
+
+## 시뮬레이션의 종류
+
+- 물리 시뮬레이션
+- 광학 시뮬레이션
+- 공정 시뮬레이션
+- 통계 시뮬레이션
+
+---
+
+## 디스플레이 관련 시뮬레이션 아이디어들 {.smaller}
+
+- RGB 서브픽셀 레이아웃
+  - Diamond, Stripe, PenTile
+- 색공간 변환
+  - sRGB ↔ DCI-P3 ↔ Adobe RGB
+- 포토리소그래피 노광 패턴 시뮬레이터
+- 잉크젯 도포 균일성 시뮬레이터
+  - 커피링 효과 포함
+
+---
+
+## Claude Code로 시뮬레이션 앱 생성하는 방법 {.smaller}
+
+- 코드 작성 → 시뮬레이션 앱 생성
+- 초기 설정 → 사용자 인터페이스 디자인
+- 데이터 입력/출력 처리 → 시뮬레이션 결과 확인
+
+---
+
+# 실습: RGB 픽셀 색상 혼합 & 색역 시뮬레이터 {.section-title}
+
+## 실습 앱: RGB 픽셀 색상 혼합 & 색역 시뮬레이터
+
+- R, G, B 슬라이더로 실시간 색상 조합
+- sRGB / DCI-P3 / Adobe RGB 영역 시각화
+- "이 색은 DCI-P3에서만 표현 가능합니다" AI 해설
+- Gemini API로 색상 용도 설명 자동 생성
+
+---
+
+## 코드 예제: Streamlit을 사용한 RGB 슬라이더
+
+```python
+import streamlit as st
+
+# 슬라이더 입력
+R = st.slider('Red', 0, 255, 128)
+G = st.slider('Green', 0, 255, 128)
+B = st.slider('Blue', 0, 255, 128)
+
+# 색상 출력
+st.write(f'RGB: ({R}, {G}, {B})')
+
+# 색상 미리보기
+st.color_picker('Color Preview', f'#{R:02x}{G:02x}{B:02x}')
+```
+
+---
+
+## 실습 앱 시연
+
+- Streamlit Cloud에 배포된 앱 시연
+- 실시간 색상 조합 및 색역 시각화
+- Gemini API 활용 예시
+
+---
+
+## 디스플레이 색공간 지식 {.smaller}
+
+- **sRGB**: 일반 모니터/인터넷 표준 (Coverage 100%)
+- **DCI-P3**: 영화관 표준 (sRGB보다 26% 넓음)
+- **Adobe RGB**: 인쇄 전문가용
+- **Rec.2020**: 미래 HDR TV 표준
+
+---
+
+# 핵심 정리 / 다음 강의 예고 {.section-title}
+
+## 핵심 정리
+
+- 다양한 시뮬레이션 종류 및 디스플레이 관련 아이디어
+- Claude Code로 시뮬레이션 앱 생성
+- 실습 통해 RGB 색상 혼합 및 색역 시뮬레이터 구축
+
+---
+
+## 다음 강의 예고
+
+- 고급 시뮬레이션 기법
+- AI 기반 자동 분석 도구 개발
+- 실시간 데이터 시각화 기술 탐구
+
+---

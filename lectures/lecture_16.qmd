@@ -1,0 +1,182 @@
+---
+title: "최신 AI 트렌드 & 수료"
+subtitle: "다음 단계는? — AI 개발자의 미래 로드맵"
+author: "렛유인 KDC 강의"
+date: today
+execute:
+  echo: true
+  warning: false
+lightbox: true
+format:
+  revealjs:
+    theme: moon
+    controls: true
+    slide-number: true
+    show-slide-number: all
+    center: false
+    incremental: true
+    transition: slide
+    background-transition: fade
+    transition-speed: slow
+    highlight-style: github
+    footer: "KDC AI 바이브 코딩 실전 | 16강"
+    css: ../styles.css
+    width: 1280
+    height: 720
+---
+
+# 최신 AI 트렌드 & 수료 {.section-title}
+
+---
+
+## 오프닝 훅
+
+> "AI는 우리가 상상하는 속도보다 더 빠르게 진화하고 있습니다."  
+> — 익명의 AI 연구자
+
+---
+
+## 이 강의에서 배우는 것
+
+- 최신 AI 뉴스와 트렌드
+- 디스플레이 × AI 연구 사례
+- 프로젝트 발표 및 피드백
+- AI 개발의 다음 단계 로드맵
+
+---
+
+# 오늘의 AI 뉴스 {.section-title}
+
+---
+
+## 최신 Claude 모델 변화 타임라인
+
+- Claude 3 → 3.5 → 3.7 → 4.6
+  - 각 버전의 주요 개선점
+  - 업계에 미친 영향
+
+---
+
+## GitHub Trending 지금 Top 10
+
+- 실시간 확인 가능한 방법
+- 현재 인기 있는 프로젝트 소개
+  - AI 관련 프로젝트
+  - 디스플레이 관련 프로젝트
+
+```bash
+# GitHub CLI를 사용하여 트렌딩 확인
+gh trending --language python
+```
+
+---
+
+## 디스플레이 × AI 최신 연구 소식 {.smaller}
+
+::: {.columns}
+::: {.column width="50%"}
+
+- 삼성전자 AI 수율 예측 시스템
+- LG Display AI 기반 불량 검사
+
+:::
+::: {.column width="50%"}
+
+- BOE AI 공정 최적화
+  - AI 기술로 품질 향상
+  - 비용 절감 사례
+
+:::
+:::
+
+---
+
+# 프로젝트 3 발표 {.section-title}
+
+---
+
+## 프로젝트 3 시연
+
+- 각자 3분 시연
+  - 기술 설명
+  - 어려웠던 점 공유
+
+---
+
+## 평가 기준과 피드백
+
+- 배포 URL 동작
+- 도메인 활용도
+- 코드 완성도
+
+```python
+def main():
+    print("프로젝트가 성공적으로 배포되었습니다!")
+
+if __name__ == "__main__":
+    main()
+```
+
+---
+
+# 다음 단계 로드맵 {.section-title}
+
+---
+
+## 초급 → 중급
+
+::: {.panel-tabset}
+### LangChain / LlamaIndex
+- AI 앱 심화 학습
+
+### FastAPI
+- 백엔드 서버 구축
+
+### Docker
+- 컨테이너 배포
+:::
+
+---
+
+## 중급 → 고급
+
+- MCP 서버 만들기
+  - Claude가 당신의 앱을 직접 사용하게
+- Rust로 CLI 도구 만들기
+- RAG (검색 증강 생성)
+
+---
+
+## 취업/이직 활용
+
+- GitHub 포트폴리오 3개 프로젝트
+- AI 도구로 실제 앱 배포 경험
+- 디스플레이 도메인 지식 + AI 개발
+
+---
+
+# 수료 조건 및 마무리 {.section-title}
+
+---
+
+## 수료 조건
+
+- 프로젝트 1·2·3 모두 제출
+- 수료증 발급 후 Q&A
+
+---
+
+## 다음 강의 예고
+
+- "AI와 디스플레이 기술의 융합: 미래 전망"
+- 새로운 프로젝트와 실제 사례 분석
+
+---
+
+## Q&A 및 마무리
+
+- 강의에 대한 질문
+- 다음 단계에 대한 조언
+- 네트워킹 기회 제공
+
+감사합니다!

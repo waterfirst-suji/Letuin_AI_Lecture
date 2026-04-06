@@ -1,0 +1,137 @@
+---
+title: "AI 마인드셋 + Claude Pro 시작"
+subtitle: "바이브 코딩이란? — 코드 없이 AI로 앱을 만드는 시대"
+author: "렛유인 KDC 강의"
+date: today
+execute:
+  echo: true
+  warning: false
+lightbox: true
+format:
+  revealjs:
+    theme: moon
+    controls: true
+    slide-number: true
+    show-slide-number: all
+    center: false
+    incremental: true
+    transition: slide
+    background-transition: fade
+    transition-speed: slow
+    highlight-style: github
+    footer: "KDC AI 바이브 코딩 실전 | 1강"
+    css: ../styles.css
+    width: 1280
+    height: 720
+---
+
+# 오프닝 훅 {.section-title}
+
+## "바이브 코딩의 시대"
+- "2024년 2월, Andrej Karpathy(전 Tesla AI 디렉터)가 트윗을 올렸다."
+- "나는 이제 코드를 거의 직접 쓰지 않는다. 전부 AI한테 시킨다."
+- 6시간 만에 50만 뷰
+- 이것이 바이브 코딩이다
+
+---
+
+# 이 강의에서 배우는 것 {.section-title}
+
+## 학습 목표
+- AI 에이전트 방식 이해
+- Claude Pro 활성화 방법
+- 디스플레이 엔지니어를 위한 AI 활용법
+
+---
+
+# 이론: 바이브 코딩이란? {.section-title}
+
+## 바이브 코딩이란?
+- Andrej Karpathy가 말한 진짜 의미
+- AI를 활용한 새로운 코딩 패러다임
+- 인간과 AI의 협업을 극대화
+
+---
+
+## AI 개발 생태계 2025 지형도
+- Claude vs GPT vs Gemini 비교
+- 각 AI의 강점과 약점
+- 시장 점유율 및 트렌드 예측
+
+---
+
+## [흥미 포인트] Claude의 유출된 System Prompt
+- Anthropic의 숨겨진 지시들
+- Constitutional AI란?
+- "착한 AI"를 만드는 방법
+
+---
+
+## Claude Pro의 장점
+- 무제한 Claude 3.7 Sonnet
+- Projects: 나만의 AI 비서 공간
+- 확장 컨텍스트 (200K 토큰)
+
+---
+
+## 디스플레이 엔지니어의 AI 활용 이유
+- 삼성/LG 현업 활용 사례
+- AI를 통한 생산성 향상
+- 혁신적인 디스플레이 기술 개발
+
+---
+
+# 실습: Claude Pro 활성화 {.section-title}
+
+## 실습: Claude.ai 로그인
+- Claude.ai 웹사이트 접속
+- Pro 기능 활성화 절차
+- 회원 가입 및 설정 방법
+
+```python
+# Claude Pro 활성화 예제 코드
+import claudelib
+
+client = claudelib.Client(api_key="YOUR_API_KEY")
+client.activate_pro()
+```
+
+---
+
+## Projects 기능 사용하기
+- "디스플레이 학습 프로젝트" 생성
+- 프로젝트 관리 및 활용 방법
+- 협업 기능 소개
+
+---
+
+## 첫 번째 프롬프트 실습 {.smaller}
+- 목표: 인상적인 포트폴리오 앱 제안
+- 프롬프트 예시:
+  - 나는 디스플레이 산업 취업준비생이야.
+  - AI로 만들 수 있는 가장 인상적인 포트폴리오 앱 5가지를 제안해줘.
+  - 각각 어떤 기술 스택을 쓸지도 알려줘.
+
+---
+
+# 실습 앱 결과 / 데모 {.section-title}
+
+## 실습 결과
+- Claude의 프롬프트 처리 결과
+- 제안된 포트폴리오 앱 리스트
+- 각 앱의 기술 스택 설명
+
+---
+
+# 핵심 정리 / 다음 강의 예고 {.section-title}
+
+## 핵심 정리
+- AI 에이전트 방식의 이해
+- Claude Pro의 유용성
+- 실습을 통한 AI 활용 능력 강화
+
+## 다음 강의 예고
+- PART 2: Claude Pro로 실전 코딩 시작
+- AI와 협업하여 디스플레이 앱 개발하기
+
+---

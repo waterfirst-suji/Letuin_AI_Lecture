@@ -1,0 +1,118 @@
+---
+title: "웹앱 배포 플랫폼 심화"
+subtitle: "같은 앱, 다른 플랫폼 — GitHub Pages / Streamlit / Firebase 비교"
+author: "렛유인 KDC 강의"
+date: today
+execute:
+  echo: true
+  warning: false
+lightbox: true
+format:
+  revealjs:
+    theme: moon
+    controls: true
+    slide-number: true
+    show-slide-number: all
+    center: false
+    incremental: true
+    transition: slide
+    background-transition: fade
+    transition-speed: slow
+    highlight-style: github
+    footer: "KDC AI 바이브 코딩 실전 | 10강"
+    css: ../styles.css
+    width: 1280
+    height: 720
+---
+
+# 웹앱 배포 플랫폼 심화 {.section-title}
+
+## 오프닝 훅
+
+"같은 앱을 GitHub Pages / Streamlit Cloud / Firebase Studio 어디에 올리느냐에 따라 성능·비용·유지보수가 완전히 달라진다. 오늘은 플랫폼을 '골라 쓰는 눈'을 기른다."
+
+## 이 강의에서 배우는 것 {.smaller}
+
+- 다양한 배포 플랫폼의 특성 이해
+- 웹앱 배포 시 플랫폼 선택 기준
+- 디스플레이 스펙 비교 웹앱 실습
+- 플랫폼별 배포 경험
+
+## 배포 플랫폼 비교 {.smaller}
+
+- GitHub Pages
+  - 정적 HTML/JS
+  - 무제한 무료
+  - 가장 빠름, 서버 없음
+
+- Streamlit Cloud
+  - Python 데이터앱
+  - 1앱 무료
+  - 배포 1분, Python 그대로
+
+- Firebase Studio
+  - Full-stack
+  - 스파크 플랜 무료
+  - Google AI 통합
+
+- Render
+  - 모든 앱
+  - 750h/월 무료
+  - Node.js/Python/Docker
+
+## 선택 기준
+
+- 포트폴리오 소개 페이지 → GitHub Pages
+- Python 데이터 분석 앱 → Streamlit Cloud
+- AI 풀스택 앱 → Firebase Studio
+- API 서버 → Render
+
+## 실습 앱 소개 {.smaller}
+
+디스플레이 스펙 비교 웹앱
+
+- 주요 스마트폰/TV 디스플레이 스펙 내장 데이터
+- 사용자가 기기 선택 → 스펙 비교 시각화 (PPI, 색역, 밝기 등)
+
+## 실습: Streamlit Cloud에 배포
+
+```python
+import streamlit as st
+
+# 앱 제목
+st.title('디스플레이 스펙 비교')
+
+# 기기 선택
+device = st.selectbox('기기를 선택하세요', ['스마트폰 A', 'TV B'])
+
+# 스펙 비교
+if device == '스마트폰 A':
+    st.write('PPI: 401, 색역: sRGB, 밝기: 500nits')
+elif device == 'TV B':
+    st.write('PPI: 120, 색역: DCI-P3, 밝기: 800nits')
+```
+
+## 실습: Firebase Studio에 배포
+
+- 동일 앱을 Firebase Studio에 배포하여 성능 비교
+- 배포 과정은 유사하나, AI 통합 가능성 확인
+
+## 실습 결과 및 비교 {.smaller}
+
+- Streamlit Cloud: 빠르고 간편한 Python 데이터앱 배포
+- Firebase Studio: Google AI와의 통합 가능성 확인
+- 두 플랫폼에서의 성능 및 사용자 경험 비교
+
+## 핵심 정리
+
+- 플랫폼 선택 기준에 따라 앱 배포 전략 수립
+- 각 플랫폼의 장단점 이해
+- 실습을 통해 플랫폼 간 성능 및 편의성 비교
+
+## 다음 강의 예고
+
+이후 프로젝트 2 시작:
+- 디스플레이 공정 시뮬레이터
+- 데이터 분석 앱
+
+다음 강의에서는 실제 공정 시뮬레이터를 구축하고 배포해보겠습니다.

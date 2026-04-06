@@ -1,0 +1,146 @@
+---
+title: "텔레그램 봇 기초 + Claude API 연결"
+subtitle: "AI가 내 폰에 메시지를 보낸다 — 디스플레이 상담 봇 만들기"
+author: "렛유인 KDC 강의"
+date: today
+execute:
+  echo: true
+  warning: false
+lightbox: true
+format:
+  revealjs:
+    theme: moon
+    controls: true
+    slide-number: true
+    show-slide-number: all
+    center: false
+    incremental: true
+    transition: slide
+    background-transition: fade
+    transition-speed: slow
+    highlight-style: github
+    footer: "KDC AI 바이브 코딩 실전 | 13강"
+    css: ../styles.css
+    width: 1280
+    height: 720
+---
+
+# 텔레그램 봇 기초 + Claude API 연결 {.section-title}
+
+## 오프닝 훅
+
+"텔레그램 봇은 2016년부터 있었다. 그런데 AI가 들어가자 완전히 달라졌다. 지금 전 세계에서 공장 설비 알람, 주식 알림, 뉴스 요약 봇을 만들고 있다."
+
+---
+
+## 이 강의에서 배우는 것
+
+- 텔레그램 봇의 기본 작동 구조 이해
+- BotFather를 통해 봇 생성 및 관리
+- python-telegram-bot 라이브러리 사용법
+- Claude API와 텔레그램 봇 연동하기
+- 간단한 봇 기능 구현
+
+---
+
+# 텔레그램 봇 작동 구조 {.section-title}
+
+## BotFather → Bot Token 발급
+
+- BotFather는 텔레그램 봇 생성을 위한 공식 계정입니다.
+- 새로운 봇을 생성하고 토큰을 발급받습니다.
+- → /newbot 명령어로 시작
+
+---
+
+## Polling vs Webhook
+
+- Polling: 주기적으로 서버에 요청을 보내어 새로운 메시지를 확인
+- Webhook: 특정 이벤트가 발생할 때 서버가 자동으로 요청을 받음
+- 두 방법 모두 장단점이 있으며, 상황에 맞게 선택
+
+---
+
+## python-telegram-bot 라이브러리 구조
+
+- python-telegram-bot: 파이썬에서 텔레그램 봇을 쉽게 개발할 수 있게 해주는 라이브러리
+- 주요 컴포넌트:
+  - `ApplicationBuilder`: 봇 애플리케이션 빌더
+  - `CommandHandler`: 명령어 처리기
+  - `MessageHandler`: 일반 메시지 처리기
+
+---
+
+## Claude API 연동 구조
+
+- Claude API: 자연어 처리 및 생성 AI API
+- 텔레그램 봇에서 Claude API 호출하여 답변 제공
+- 실제 사례: 설비 데이터 → 텔레그램 알람 봇
+
+---
+
+# 실습: 디스플레이 기술 상담 봇 {.section-title}
+
+## 나만의 봇 생성
+
+1. BotFather에서 시작: `@BotFather → /newbot`
+2. 봇 이름과 사용자명을 설정
+3. 발급받은 토큰을 기록
+
+---
+
+## 봇 기능 구현
+
+- `/start` → 환영 메시지
+- `/help` → 사용법 안내
+- `/explain [공정명]` → Claude API 답변
+- 일반 텍스트 입력 시 Claude 자유 답변
+
+---
+
+# 핵심 코드 구조 {.section-title}
+
+## 텔레그램 봇 코드 예제
+
+```python
+from telegram import Update
+from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler
+import anthropic
+
+async def explain_command(update, context):
+    process = " ".join(context.args)
+    response = call_claude(f"{process} 공정을 설명해줘")
+    await update.message.reply_text(response)
+
+app = ApplicationBuilder().token(BOT_TOKEN).build()
+app.add_handler(CommandHandler("explain", explain_command))
+app.run_polling()
+```
+
+---
+
+# 실습 결과 / 데모 {.section-title}
+
+## 디스플레이 기술 상담 봇 데모
+
+- 봇에게 `/start`를 입력하면 환영 메시지 확인
+- `/explain 포토` 명령어로 Claude API 활용해 설명 받기
+- 일반 텍스트 입력 시 Claude의 자유 답변 확인
+
+---
+
+# 핵심 정리 / 다음 강의 예고 {.section-title}
+
+## 핵심 정리
+
+- 텔레그램 봇의 기본 구조와 BotFather 사용법
+- python-telegram-bot 라이브러리 활용
+- Claude API를 연동하여 실질적인 봇 기능 구현
+
+## 다음 강의 예고
+
+- 고급 봇 기능: 사용자 데이터 저장 및 분석
+- 사용자 인터페이스 개선: 키보드 및 버튼 활용
+- 더 나은 사용자 경험을 위한 대화 흐름 설계
+
+---

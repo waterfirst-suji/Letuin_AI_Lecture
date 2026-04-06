@@ -28,8 +28,31 @@
 | 🎯 프로젝트 1 | 소개 웹페이지 (상/중/하) | [project1/](projects/project1/README.md) |
 | 🎯 프로젝트 2 | 공정 시뮬레이터 (상/중/하) | [project2/](projects/project2/README.md) |
 | 🎯 프로젝트 3 | AI 디스플레이 도구 (상/중/하) | [project3/](projects/project3/README.md) |
-| 📦 강의 자료 | 파트별 강의 슬라이드/예제 | [lectures/](lectures/) |
+| 📦 강의 슬라이드 | Quarto RevealJS 강의록 (1~16강) | [lectures/](lectures/) |
 | 📎 참고 자료 | 치트시트, 링크 모음 | [resources/cheatsheets.md](resources/cheatsheets.md) |
+
+### 📑 강의별 슬라이드 (Quarto RevealJS)
+
+| 강 | 제목 | 슬라이드 |
+|----|------|---------|
+| 1강 | AI 마인드셋 + Claude Pro 시작 | [lecture_01.qmd](lectures/lecture_01.qmd) |
+| 2강 | GitHub + Claude Code 환경 세팅 | [lecture_02.qmd](lectures/lecture_02.qmd) |
+| 3강 | Claude Code Skills & 커스텀 자동화 | [lecture_03.qmd](lectures/lecture_03.qmd) |
+| 4강 | Claude Agent 모드 + CLI-Anything | [lecture_04.qmd](lectures/lecture_04.qmd) |
+| 5강 | Python Streamlit 앱 제작 & 배포 | [lecture_05.qmd](lectures/lecture_05.qmd) |
+| 6강 | R Shiny 대시보드 제작 & 배포 | [lecture_06.qmd](lectures/lecture_06.qmd) |
+| 7강 | Quarto 공정 분석 보고서 & GitHub Pages | [lecture_07.qmd](lectures/lecture_07.qmd) |
+| 8강 | Google AI Studio + Gemini API 챗봇 | [lecture_08.qmd](lectures/lecture_08.qmd) |
+| 9강 | AI 시뮬레이션 만들기 | [lecture_09.qmd](lectures/lecture_09.qmd) |
+| 10강 | 웹앱 배포 플랫폼 심화 | [lecture_10.qmd](lectures/lecture_10.qmd) |
+| 11강 | 배포 플랫폼 10종 총정리 | [lecture_11.qmd](lectures/lecture_11.qmd) |
+| 12강 | 환경 관리 & 보안 & GitHub Actions | [lecture_12.qmd](lectures/lecture_12.qmd) |
+| 13강 | 텔레그램 봇 기초 + Claude API 연결 | [lecture_13.qmd](lectures/lecture_13.qmd) |
+| 14강 | Gemini 봇 + 설비 알람 시스템 | [lecture_14.qmd](lectures/lecture_14.qmd) |
+| 15강 ⏱️60분 | 종합 통합 실습 (Streamlit + Gemini + 텔레그램) | [lecture_15.qmd](lectures/lecture_15.qmd) |
+| 16강 | 최신 AI 트렌드 & 수료 | [lecture_16.qmd](lectures/lecture_16.qmd) |
+
+> **렌더링 방법**: `quarto render lectures/lecture_01.qmd` → HTML 슬라이드 생성
 
 ---
 
@@ -200,6 +223,7 @@ pip install streamlit pandas plotly python-dotenv google-generativeai anthropic 
 
 | 날짜 | 내용 |
 |------|------|
+| 2026-04-06 | GPT-4o로 1~16강 Quarto RevealJS 강의록 자동 생성 (lectures/lecture_01~16.qmd) |
 | 2026-04-06 | 렛유인 KDC 강의계획서 xlsx 추가 (수강 대상 명확화: 대학 3~4학년·취업준비생 주 대상, 재직자·이직준비생 확대 대상 반영) |
 | 2026-04-05 | 리뷰 피드백 반영: 예제 코드 추가, Antigravity→Firebase Studio 교체, R/RStudio 사전 준비 안내, 텔레그램 치트시트, 공개 데이터셋, Claude vs Gemini 비교표, 사전 테스트 F파트 보너스 분리, 15강 60분 조정, 강사용 타임테이블 재편 |
 | 2026-04-04 | 초안 작성 (16강 커리큘럼, 사전 테스트 35문항, 프로젝트 3종 상/중/하) |

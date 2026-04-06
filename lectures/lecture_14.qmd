@@ -1,0 +1,136 @@
+---
+title: "Gemini 봇 + 설비 알람 시스템"
+subtitle: "AI 봇이 수율을 감시한다 — 자동 알람 시스템 구축"
+author: "렛유인 KDC 강의"
+date: today
+execute:
+  echo: true
+  warning: false
+lightbox: true
+format:
+  revealjs:
+    theme: moon
+    controls: true
+    slide-number: true
+    show-slide-number: all
+    center: false
+    incremental: true
+    transition: slide
+    background-transition: fade
+    transition-speed: slow
+    highlight-style: github
+    footer: "KDC AI 바이브 코딩 실전 | 14강"
+    css: ../styles.css
+    width: 1280
+    height: 720
+---
+
+# Gemini 봇 + 설비 알람 시스템 {.section-title}
+
+## 오프닝 훅
+
+"gemini_telebot 레포를 보면 텔레그램 봇이 Gmail 읽고, 캘린더 관리하고, GitHub에 자동 커밋까지 한다. AI 봇이 비서가 되는 시대. → [github.com/waterfirst/gemini_telebot](https://github.com/waterfirst/gemini_telebot)"
+
+---
+
+## 이 강의에서 배우는 것 {.smaller}
+
+- Gemini 봇의 기본 구조 이해
+- 설비 알람 봇의 설계 패턴 학습
+- 실시간 알람 시스템 구축 방법
+- Gemini API와 텔레그램 통합 실습
+
+---
+
+## gemini_telebot 레포 구조 탐색
+
+- PDCA 워크플로우 봇
+  - /pdca plan
+  - /pdca do
+  - /pdca report
+
+- Google Workspace 연동
+  - Gmail
+  - Calendar
+  - Drive
+
+- 550+ AI 스킬 라이브러리
+
+---
+
+## 설비 알람 봇 설계 패턴
+
+- 데이터 수집 (CSV/DB/API)
+- 임계값 판단 (수율 < 95%?)
+- 텔레그램 알람 전송
+
+---
+
+## 실습 봇: 디스플레이 수율 모니터링 알람 봇
+
+- 샘플 수율 데이터(CSV) 주기적 읽기
+- 수율 95% 미만 → 경고 알람 자동 전송
+- /status → 현재 수율 현황 리포트
+- /ai [질문] → Gemini가 답변
+- /summary → 오늘의 수율 요약 (Gemini 자동 작성)
+
+---
+
+## 핵심 알람 코드
+
+```python
+import schedule
+import time
+import pandas as pd
+
+def check_yield():
+    data = pd.read_csv("yield_data.csv")
+    current_yield = data.iloc[-1]["yield"]
+    if current_yield < 95:
+        send_telegram_alert(f"⚠️ 수율 경고: {current_yield}% (기준: 95%)")
+
+schedule.every(1).hours.do(check_yield)
+```
+
+---
+
+## 실습 앱 결과 / 데모 슬라이드
+
+::: {.columns}
+::: {.column width="50%"}
+- 데이터 수집 및 분석
+- 알람 전송 테스트
+:::
+::: {.column width="50%"}
+- 실시간 수율 모니터링
+- Gemini와의 상호작용 데모
+:::
+:::
+
+---
+
+## ::: {.callout-tip}
+### 팁: 텔레그램 봇 개발 팁
+
+- BotFather를 통해 봇 생성 및 토큰 발급
+- Python 텔레그램 API 활용
+- Gemini API와의 연동으로 기능 확장
+:::
+
+---
+
+## 핵심 정리
+
+- Gemini 봇은 다양한 업무 자동화 가능
+- 설비 알람 봇은 실시간 모니터링의 핵심 도구
+- API 연동을 통한 기능 확장 및 자동화의 중요성
+
+---
+
+## 다음 강의 예고
+
+- PART 7 — 실시간 데이터 대시보드 설계
+- 데이터 시각화 툴 활용법
+- 대시보드와 알람 시스템의 통합
+
+---

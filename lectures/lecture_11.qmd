@@ -1,0 +1,134 @@
+---
+title: "배포 플랫폼 10종 총정리"
+subtitle: "내 앱을 세상에 — 10개 플랫폼 비교 완전 정리"
+author: "렛유인 KDC 강의"
+date: today
+execute:
+  echo: true
+  warning: false
+lightbox: true
+format:
+  revealjs:
+    theme: moon
+    controls: true
+    slide-number: true
+    show-slide-number: all
+    center: false
+    incremental: true
+    transition: slide
+    background-transition: fade
+    transition-speed: slow
+    highlight-style: github
+    footer: "KDC AI 바이브 코딩 실전 | 11강"
+    css: ../styles.css
+    width: 1280
+    height: 720
+---
+
+# 배포 플랫폼 10종 총정리 {.section-title}
+
+## 오프닝 훅
+
+- "앱을 만들었는데 내 컴퓨터에서만 돌아간다면 의미가 없다."
+- "10개 플랫폼 비교하고, 상황에 맞는 선택을 배운다."
+
+## 이 강의에서 배우는 것 {.smaller}
+
+- 10개 배포 플랫폼의 장단점 비교
+- 프로젝트에 맞는 배포 플랫폼 선택 방법
+- 무료 배포 전략 및 실습
+
+# 플랫폼 비교 {.section-title}
+
+## 10개 플랫폼 전체 비교 (1/2)
+
+::: {.columns}
+::: {.column width="50%"}
+1. **GitHub Pages**
+   - HTML/정적 사이트
+   - 완전 무료
+   - 난이도 ⭐
+2. **Streamlit Cloud**
+   - Python 앱
+   - 무료
+   - 난이도 ⭐
+3. **shinyapps.io**
+   - R Shiny 앱
+   - 제한 무료
+   - 난이도 ⭐
+4. **Netlify**
+   - 정적 + 서버리스
+   - 무료
+   - 난이도 ⭐⭐
+5. **Vercel**
+   - Next.js/React
+   - 무료
+   - 난이도 ⭐⭐
+:::
+::: {.column width="50%"}
+6. **Firebase Hosting**
+   - 웹앱+DB
+   - 무료
+   - 난이도 ⭐⭐
+7. **Render**
+   - 풀스택 앱
+   - 무료
+   - 난이도 ⭐⭐
+8. **Fly.io**
+   - 컨테이너 앱
+   - 제한 무료
+   - 난이도 ⭐⭐⭐
+9. **HuggingFace Spaces**
+   - AI/ML 앱
+   - 무료
+   - 난이도 ⭐⭐
+10. **Google Cloud Run**
+    - 프로덕션급
+    - 유료
+    - 난이도 ⭐⭐⭐
+:::
+:::
+
+## 결정 가이드 (2/2)
+
+- HTML 파일 → **GitHub Pages** (가장 먼저 시도)
+- Python 데이터 앱 → **Streamlit Cloud** (가장 쉬움)
+- R 앱 → **shinyapps.io**
+- AI/ML 모델 → **HuggingFace Spaces**
+- 빠른 배포 → **Netlify/Vercel** (drag & drop)
+
+# 실습: Netlify 배포 {.section-title}
+
+## 프로젝트 1 결과물을 Netlify에 배포
+
+```bash
+# Netlify에 정적 사이트 배포
+1. Netlify에 로그인
+2. "New site from Git" 클릭
+3. GitHub 연결하여 저장소 선택
+4. "Deploy site" 클릭
+```
+
+- URL을 통해 배포 확인 가능
+
+## 배포 URL 비교
+
+::: {.panel-tabset}
+### GitHub Pages
+- GitHub Pages URL 예시: `https://username.github.io/project`
+
+### Netlify
+- Netlify URL 예시: `https://project-netlify.netlify.app`
+:::
+
+# 핵심 정리 & 다음 강의 예고 {.section-title}
+
+## 핵심 정리
+
+- 다양한 배포 플랫폼의 활용법 학습
+- 상황에 맞는 플랫폼 선택 능력 강화
+- 무료 배포 전략 이해 및 실습
+
+## 다음 강의 예고
+
+- **PART 6**: "보안과 스케일링"에서 웹앱의 보안을 강화하고 확장성 있는 배포 방법을 알아봅니다.

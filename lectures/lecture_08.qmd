@@ -1,0 +1,138 @@
+---
+title: "Google AI Studio + Gemini API 챗봇"
+subtitle: "하루 1,500회 무료 AI API — 디스플레이 Q&A 챗봇 만들기"
+author: "렛유인 KDC 강의"
+date: today
+execute:
+  echo: true
+  warning: false
+lightbox: true
+format:
+  revealjs:
+    theme: moon
+    controls: true
+    slide-number: true
+    show-slide-number: all
+    center: false
+    incremental: true
+    transition: slide
+    background-transition: fade
+    transition-speed: slow
+    highlight-style: github
+    footer: "KDC AI 바이브 코딩 실전 | 8강"
+    css: ../styles.css
+    width: 1280
+    height: 720
+---
+
+# 오프닝 훅 {.section-title}
+
+## "Google이 Gemini API를 무료로 쏜다. 하루 1500번까지. 이걸 이용하면 당신의 앱에 AI를 무료로 넣을 수 있다."
+
+---
+
+# 이 강의에서 배우는 것 {.section-title}
+
+## 학습 목표
+
+- 외부 AI API 활용하기
+- Claude API와 Gemini API의 차이점 이해하기
+- 실습으로 디스플레이 기술 Q&A 챗봇 만들기
+
+---
+
+# 이론: Google AI Studio 소개 {.section-title}
+
+## Google AI Studio & Gemini API 구조
+
+- Google AI Studio의 역할
+- Gemini API의 기본 구조
+- AI 서비스를 앱에 추가하는 방법
+
+---
+
+## API Key 발급 및 보안 관리
+
+::: {.columns}
+::: {.column width="50%"}
+
+- API Key 발급 절차
+- 보안 관리
+  - `.env` 파일 활용
+  - `.gitignore`로 보안 유지
+
+:::
+::: {.column width="50%"}
+
+```bash
+# .env 파일 예시
+GEMINI_API_KEY=your_api_key_here
+```
+
+:::
+:::
+
+---
+
+## Gemini의 멀티모달 능력
+
+- 텍스트, 이미지, 영상 처리 가능
+- 다양한 입력 형식을 통한 정보 생성
+
+---
+
+## Claude API vs Gemini API 비교
+
+| 항목       | Claude API       | Gemini API       |
+|------------|------------------|------------------|
+| 무료한도   | API 유료         | 하루 1,500회 무료 |
+| 최강모델   | Claude Sonnet 4.6| Gemini 1.5 Pro   |
+| 맥락창     | 200K 토큰        | 1M 토큰          |
+| 장점       | 코딩/분석 정확도 | 무료, Google 통합|
+| 이 강의 활용 | 텔레그램 봇(13~14강) | 챗봇·시뮬레이션(8~9강) |
+
+---
+
+# 실습 앱: 디스플레이 기술 Q&A 챗봇 {.section-title}
+
+## Gemini API 연동
+
+- System Prompt 설정: "너는 디스플레이 공정 전문가야"
+- Streamlit 인터페이스 사용
+- 대화 히스토리 유지 방법
+
+---
+
+## 핵심 코드
+
+```python
+import google.generativeai as genai
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+model = genai.GenerativeModel('gemini-1.5-flash')
+response = model.generate_content("OLED 포토공정 설명해줘")
+print(response.text)
+```
+
+---
+
+# 실습 앱 결과 / 데모 {.section-title}
+
+## 디스플레이 기술 Q&A 챗봇 데모
+
+- 챗봇이 어떻게 질문에 답하는지 실시간으로 확인
+- 다양한 질문 예시와 응답 시연
+
+---
+
+# 핵심 정리 / 다음 강의 예고 {.section-title}
+
+## 핵심 정리
+
+- Google AI Studio와 Gemini API의 역할 이해
+- 실습을 통해 API 활용 경험
+- Claude와 Gemini의 비교 및 활용 차이점 이해
+
+## 다음 강의 예고
+
+- 텔레그램 봇과의 통합 (13~14강)
+- AI를 활용한 시뮬레이션 심화 (9강)

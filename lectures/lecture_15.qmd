@@ -1,0 +1,119 @@
+---
+title: "종합 통합 실습 — 모든 것을 하나로"
+subtitle: "Streamlit + Gemini AI + 텔레그램 알람 — 풀스택 완성"
+author: "렛유인 KDC 강의"
+date: today
+execute:
+  echo: true
+  warning: false
+lightbox: true
+format:
+  revealjs:
+    theme: moon
+    controls: true
+    slide-number: true
+    show-slide-number: all
+    center: false
+    incremental: true
+    transition: slide
+    background-transition: fade
+    transition-speed: slow
+    highlight-style: github
+    footer: "KDC AI 바이브 코딩 실전 | 15강"
+    css: ../styles.css
+    width: 1280
+    height: 720
+---
+
+# 종합 통합 실습 — 모든 것을 하나로 {.section-title}
+
+## 이 강의에서 배우는 것
+
+- 전체 스택 통합을 통한 디스플레이 수율 모니터링 시스템 구축
+- Claude Code를 활용한 시스템 아키텍처 설계
+- Streamlit, Gemini AI, 텔레그램 알람의 연계 구현
+- GitHub Actions를 통한 자동 배포
+
+## 시스템 구성도 {.section-title}
+
+::: {.columns}
+::: {.column width="50%"}
+- **수율 데이터 시뮬레이션** → 실시간 수율 데이터 생성
+- **Streamlit 대시보드** ← Gemini AI 분석과 연동
+- **이상 감지 시 텔레그램 알람** → 즉시 알림 전송
+- **GitHub에 자동 저장** → Actions로 자동 배포
+:::
+::: {.column width="50%"}
+![시스템 구성도](images/system_diagram.png)
+:::
+:::
+
+## 전체 아키텍처 설계 요청 {.smaller}
+
+- **프롬프트**: "디스플레이 수율 모니터링 시스템을 만들어줘. Streamlit 대시보드 + Gemini AI 분석 + 텔레그램 알람이 연결된 구조로."
+- Claude에게 아키텍처 설계 요청
+
+## Claude Code로 각 파트 코드 생성
+
+::: {.panel-tabset}
+### data_simulator.py
+
+```python
+def simulate_yield_data():
+    import random
+    return random.uniform(85, 100)
+```
+
+### app.py
+
+```python
+import streamlit as st
+
+def display_dashboard():
+    st.title("수율 모니터링 대시보드")
+    # Gemini AI 분석 결과를 포함
+```
+
+### alert_bot.py
+
+```python
+from telegram import Bot
+
+def send_alert(message):
+    bot = Bot(token='YOUR_TELEGRAM_TOKEN')
+    bot.send_message(chat_id='YOUR_CHAT_ID', text=message)
+```
+:::
+
+## 연결 테스트 & 디버깅 {.smaller}
+
+- 에러 발생 시 Claude에게 "이 에러 고쳐줘" 프롬프트 사용
+- 예: ImportError, SyntaxError 등
+
+## GitHub Push + Streamlit 배포
+
+```bash
+git add .
+git commit -m "Add integrated monitoring system"
+git push origin main
+```
+
+- Streamlit에서 배포 상태 확인
+- GitHub Actions 설정 검토
+
+## 완성 시스템 기능 {.section-title}
+
+- 실시간 수율 데이터 시뮬레이션
+- Streamlit에서 시각화 + Gemini AI 이상 원인 분석
+- 수율 95% 미만 → 텔레그램 자동 경고
+- GitHub Actions로 자동 배포
+
+## 다음 강의 예고: 프로젝트 3 시작
+
+::: {.callout-note}
+- **프로젝트 3**: 나만의 AI 디스플레이 도구 개발
+- **학습 목표**: 전체 스택 통합, 풀스택 AI 앱 완성
+:::
+
+- 자유 주제로 진행
+- 기존 프로젝트의 경험을 바탕으로 창의적인 도전
