@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="lecture_14_files/libs/clipboard/clipboard.min.js"></script>
+<script src="lecture_14_files/libs/quarto-html/tabby.min.js"></script>
+<script src="lecture_14_files/libs/quarto-html/popper.min.js"></script>
+<script src="lecture_14_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="lecture_14_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="lecture_14_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="lecture_14_files/libs/quarto-html/quarto-syntax-highlighting-dark-fc8d3d93f0a84b7619e1f8ff6eb63d42.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.26">
+
+  <meta name="author" content="렛유인 KDC">
+  <meta name="dcterms.date" content="2026-04-06">
+  <title>Gemini 봇 + 설비 알람 시스템</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="lecture_14_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="lecture_14_files/libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #f8f8f2; background-color: #282a36; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #f8f8f2; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #ff79c6; } /* Annotation */
+    code span.at { color: #ff79c6; } /* Attribute */
+    code span.bn { color: #bd93f9; } /* BaseN */
+    code span.bu { color: #8be9fd; } /* BuiltIn */
+    code span.cf { color: #ff79c6; } /* ControlFlow */
+    code span.ch { color: #f1fa8c; } /* Char */
+    code span.cn { color: #bd93f9; font-weight: bold; } /* Constant */
+    code span.co { color: #6272a4; } /* Comment */
+    code span.cv { color: #8be9fd; } /* CommentVar */
+    code span.do { color: #ffb86c; } /* Documentation */
+    code span.dt { color: #8be9fd; font-style: italic; } /* DataType */
+    code span.dv { color: #bd93f9; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #8be9fd; } /* Extension */
+    code span.fl { color: #bd93f9; } /* Float */
+    code span.fu { color: #50fa7b; } /* Function */
+    code span.im { color: #ff79c6; } /* Import */
+    code span.in { color: #f1fa8c; } /* Information */
+    code span.kw { color: #ff79c6; } /* Keyword */
+    code span.op { color: #f8f8f2; } /* Operator */
+    code span.ot { color: #50fa7b; } /* Other */
+    code span.pp { color: #ff79c6; } /* Preprocessor */
+    code span.re { color: #8be9fd; } /* RegionMarker */
+    code span.sc { color: #ff79c6; } /* SpecialChar */
+    code span.ss { color: #f1fa8c; } /* SpecialString */
+    code span.st { color: #f1fa8c; } /* String */
+    code span.va { color: #8be9fd; } /* Variable */
+    code span.vs { color: #f1fa8c; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="lecture_14_files/libs/revealjs/dist/theme/quarto-329acd3abe71bdd3a4ec42a5a574c26f.css">
+  <link href="lecture_14_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="lecture_14_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="lecture_14_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="lecture_14_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="lecture_14_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="lecture_14_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-dark">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Gemini 봇 + 설비 알람 시스템</h1>
+  <p class="subtitle">AI가 24시간 수율을 감시한다 — 자동화 알람의 모든 것</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+렛유인 KDC 
+</div>
+</div>
+</div>
+
+  <p class="date">2026-04-06</p>
+</section>
+<section>
+<section id="새벽-3시-수율이-90-밑으로-떨어졌습니다" class="title-slide slide level1 center" data-background="#1F4E79">
+<h1>새벽 3시, 수율이 90% 밑으로 떨어졌습니다</h1>
+
+</section>
+<section id="당신은-자고-있습니다.-하지만-ai-봇은-깨어있습니다." class="slide level2 smaller">
+<h2>당신은 자고 있습니다. 하지만 AI 봇은 깨어있습니다.</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p><strong>기존 방식 (엔지니어가 직접 감시)</strong></p>
+<ul>
+<li>야간 당직 엔지니어 필요</li>
+<li>사람이 피로하면 놓침</li>
+<li>수동 보고서 작성 1~2시간</li>
+<li>늦은 대응으로 불량 확산</li>
+<li><strong>연간 수억 원의 수율 손실</strong></li>
+</ul>
+</div><div class="column" style="width:45%;">
+<p><strong>AI 봇 자동화 방식</strong></p>
+<ul>
+<li>5분마다 CSV 자동 읽기</li>
+<li>수율 95% 미만 → 즉시 텔레그램 알람</li>
+<li>Gemini AI가 원인 분석까지</li>
+<li>엔지니어는 알람 받고 조치만</li>
+<li><strong>24시간 무중단 모니터링</strong></li>
+</ul>
+</div></div>
+<div title="오늘의 핵심 질문">
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>오늘의 핵심 질문</strong></p>
+</div>
+<div class="callout-content">
+<p>당신이 자는 동안 공장을 누가 지킬 것인가? AI 봇이 지킵니다.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="gemini_telebot-레포-소개" class="slide level2 smaller">
+<h2>gemini_telebot 레포 소개</h2>
+<blockquote>
+<p>이 강의 강사가 직접 만든 오픈소스 프로젝트입니다. Gemini + Google Workspace + 텔레그램을 하나로 연결한 AI 비서. <a href="https://github.com/waterfirst/gemini_telebot">github.com/waterfirst/gemini_telebot</a></p>
+</blockquote>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p><strong>주요 기능</strong></p>
+<div class="fragment fade-in">
+<ul>
+<li>PDCA 워크플로우 자동화</li>
+</ul>
+</div>
+<div class="fragment fade-in">
+<ul>
+<li>Gmail 연동 (중요 메일 요약)</li>
+</ul>
+</div>
+<div class="fragment fade-in">
+<ul>
+<li>Google 캘린더 연동</li>
+</ul>
+</div>
+<div class="fragment fade-in">
+<ul>
+<li>GitHub 이슈 모니터링</li>
+</ul>
+</div>
+<div class="fragment fade-in">
+<ul>
+<li><strong>수율 모니터링 알람 (오늘 배울 것)</strong></li>
+</ul>
+</div>
+</div><div class="column" style="width:45%;">
+<p><strong>기술 스택</strong></p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>레이어</th>
+<th>기술</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>AI 두뇌</td>
+<td>Google Gemini API</td>
+</tr>
+<tr class="even">
+<td>알림 채널</td>
+<td>Telegram Bot API</td>
+</tr>
+<tr class="odd">
+<td>스케줄링</td>
+<td>schedule 라이브러리</td>
+</tr>
+<tr class="even">
+<td>데이터</td>
+<td>pandas + CSV</td>
+</tr>
+<tr class="odd">
+<td>배포</td>
+<td>로컬 / Railway</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+</section>
+<section id="schedule-라이브러리-반복-실행의-핵심" class="slide level2 smaller">
+<h2>schedule 라이브러리 — 반복 실행의 핵심</h2>
+<div class="panel-tabset">
+<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">schedule (오늘 사용)</a></li><li><a href="#tabset-1-2">APScheduler (고급 사용)</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" data-code-line-numbers="1-2|4-12|14-18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href=""></a><span class="im">import</span> schedule</span>
+<span id="cb1-2"><a href=""></a><span class="im">import</span> time</span>
+<span id="cb1-3"><a href=""></a></span>
+<span id="cb1-4"><a href=""></a><span class="kw">def</span> check_yield():</span>
+<span id="cb1-5"><a href=""></a>    <span class="co">"""수율 CSV 읽고 임계값 확인 — 5분마다 실행"""</span></span>
+<span id="cb1-6"><a href=""></a>    <span class="cf">pass</span></span>
+<span id="cb1-7"><a href=""></a></span>
+<span id="cb1-8"><a href=""></a><span class="kw">def</span> morning_report():</span>
+<span id="cb1-9"><a href=""></a>    <span class="co">"""오전 9시 일일 보고서 자동 전송"""</span></span>
+<span id="cb1-10"><a href=""></a>    <span class="cf">pass</span></span>
+<span id="cb1-11"><a href=""></a></span>
+<span id="cb1-12"><a href=""></a><span class="kw">def</span> weekly_summary():</span>
+<span id="cb1-13"><a href=""></a>    <span class="co">"""매주 월요일 주간 요약 전송"""</span></span>
+<span id="cb1-14"><a href=""></a>    <span class="cf">pass</span></span>
+<span id="cb1-15"><a href=""></a></span>
+<span id="cb1-16"><a href=""></a><span class="co"># 스케줄 등록 — 직관적인 Python 문법</span></span>
+<span id="cb1-17"><a href=""></a>schedule.every(<span class="dv">5</span>).minutes.do(check_yield)</span>
+<span id="cb1-18"><a href=""></a>schedule.every().day.at(<span class="st">"09:00"</span>).do(morning_report)</span>
+<span id="cb1-19"><a href=""></a>schedule.every().monday.do(weekly_summary)</span>
+<span id="cb1-20"><a href=""></a></span>
+<span id="cb1-21"><a href=""></a><span class="cf">while</span> <span class="va">True</span>:</span>
+<span id="cb1-22"><a href=""></a>    schedule.run_pending()</span>
+<span id="cb1-23"><a href=""></a>    time.sleep(<span class="dv">30</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<div id="tabset-1-2">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href=""></a><span class="im">from</span> apscheduler.schedulers.blocking <span class="im">import</span> BlockingScheduler</span>
+<span id="cb2-2"><a href=""></a><span class="im">from</span> apscheduler.triggers.cron <span class="im">import</span> CronTrigger</span>
+<span id="cb2-3"><a href=""></a></span>
+<span id="cb2-4"><a href=""></a>scheduler <span class="op">=</span> BlockingScheduler(timezone<span class="op">=</span><span class="st">"Asia/Seoul"</span>)</span>
+<span id="cb2-5"><a href=""></a></span>
+<span id="cb2-6"><a href=""></a><span class="co"># 더 복잡한 스케줄 가능</span></span>
+<span id="cb2-7"><a href=""></a>scheduler.add_job(check_yield, <span class="st">"interval"</span>, minutes<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb2-8"><a href=""></a>scheduler.add_job(</span>
+<span id="cb2-9"><a href=""></a>    morning_report,</span>
+<span id="cb2-10"><a href=""></a>    CronTrigger(hour<span class="op">=</span><span class="dv">9</span>, minute<span class="op">=</span><span class="dv">0</span>, day_of_week<span class="op">=</span><span class="st">"mon-fri"</span>)</span>
+<span id="cb2-11"><a href=""></a>)</span>
+<span id="cb2-12"><a href=""></a>scheduler.add_job(</span>
+<span id="cb2-13"><a href=""></a>    alarm_escalation,</span>
+<span id="cb2-14"><a href=""></a>    <span class="st">"interval"</span>, minutes<span class="op">=</span><span class="dv">10</span>,</span>
+<span id="cb2-15"><a href=""></a>    max_instances<span class="op">=</span><span class="dv">1</span></span>
+<span id="cb2-16"><a href=""></a>)</span>
+<span id="cb2-17"><a href=""></a>scheduler.start()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="수율-알람-봇-시스템-구조" class="slide level2 smaller">
+<h2>수율 알람 봇 시스템 구조</h2>
+
+<img data-src="lecture_14_files/figure-revealjs/unnamed-chunk-3-1.png" width="864" class="r-stretch"></section>
+<section id="핵심-코드-수율-csv-읽고-알람-보내기" class="slide level2 smaller">
+<h2>핵심 코드 — 수율 CSV 읽고 알람 보내기</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" data-code-line-numbers="1-5|7-9|11-25|27-31"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb3-2"><a href=""></a><span class="im">import</span> requests</span>
+<span id="cb3-3"><a href=""></a><span class="im">from</span> datetime <span class="im">import</span> datetime</span>
+<span id="cb3-4"><a href=""></a></span>
+<span id="cb3-5"><a href=""></a>TELEGRAM_TOKEN <span class="op">=</span> <span class="st">"YOUR_TOKEN"</span></span>
+<span id="cb3-6"><a href=""></a>CHAT_ID <span class="op">=</span> <span class="st">"YOUR_CHAT_ID"</span></span>
+<span id="cb3-7"><a href=""></a>THRESHOLD <span class="op">=</span> <span class="fl">95.0</span></span>
+<span id="cb3-8"><a href=""></a></span>
+<span id="cb3-9"><a href=""></a><span class="kw">def</span> send_telegram(message: <span class="bu">str</span>):</span>
+<span id="cb3-10"><a href=""></a>    url <span class="op">=</span> <span class="ss">f"https://api.telegram.org/bot</span><span class="sc">{</span>TELEGRAM_TOKEN<span class="sc">}</span><span class="ss">/sendMessage"</span></span>
+<span id="cb3-11"><a href=""></a>    requests.post(url, json<span class="op">=</span>{</span>
+<span id="cb3-12"><a href=""></a>        <span class="st">"chat_id"</span>: CHAT_ID,</span>
+<span id="cb3-13"><a href=""></a>        <span class="st">"text"</span>: message,</span>
+<span id="cb3-14"><a href=""></a>        <span class="st">"parse_mode"</span>: <span class="st">"Markdown"</span></span>
+<span id="cb3-15"><a href=""></a>    })</span>
+<span id="cb3-16"><a href=""></a></span>
+<span id="cb3-17"><a href=""></a><span class="kw">def</span> check_yield_and_alert():</span>
+<span id="cb3-18"><a href=""></a>    <span class="co"># CSV 읽기 (실제로는 서버나 공유 폴더에서)</span></span>
+<span id="cb3-19"><a href=""></a>    df <span class="op">=</span> pd.read_csv(<span class="st">"yield_data.csv"</span>)</span>
+<span id="cb3-20"><a href=""></a>    latest <span class="op">=</span> df.tail(<span class="dv">10</span>)  <span class="co"># 최근 10개 데이터</span></span>
+<span id="cb3-21"><a href=""></a></span>
+<span id="cb3-22"><a href=""></a>    below_threshold <span class="op">=</span> latest[latest[<span class="st">"yield"</span>] <span class="op">&lt;</span> THRESHOLD]</span>
+<span id="cb3-23"><a href=""></a></span>
+<span id="cb3-24"><a href=""></a>    <span class="cf">if</span> <span class="bu">len</span>(below_threshold) <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb3-25"><a href=""></a>        lines <span class="op">=</span> below_threshold[<span class="st">"line"</span>].tolist()</span>
+<span id="cb3-26"><a href=""></a>        avg_yield <span class="op">=</span> below_threshold[<span class="st">"yield"</span>].mean()</span>
+<span id="cb3-27"><a href=""></a>        message <span class="op">=</span> (</span>
+<span id="cb3-28"><a href=""></a>            <span class="ss">f"*수율 경고 알람*</span><span class="ch">\n\n</span><span class="ss">"</span></span>
+<span id="cb3-29"><a href=""></a>            <span class="ss">f"시각: </span><span class="sc">{</span>datetime<span class="sc">.</span>now()<span class="sc">.</span>strftime(<span class="st">'%Y-%m-</span><span class="sc">%d</span><span class="st"> %H:%M'</span>)<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span></span>
+<span id="cb3-30"><a href=""></a>            <span class="ss">f"평균 수율: </span><span class="sc">{</span>avg_yield<span class="sc">:.1f}</span><span class="ss">%</span><span class="ch">\n</span><span class="ss">"</span></span>
+<span id="cb3-31"><a href=""></a>            <span class="ss">f"해당 라인: </span><span class="sc">{</span><span class="st">', '</span><span class="sc">.</span>join(lines)<span class="sc">}</span><span class="ch">\n\n</span><span class="ss">"</span></span>
+<span id="cb3-32"><a href=""></a>            <span class="ss">f"즉시 확인이 필요합니다."</span></span>
+<span id="cb3-33"><a href=""></a>        )</span>
+<span id="cb3-34"><a href=""></a>        send_telegram(message)</span>
+<span id="cb3-35"><a href=""></a>    <span class="cf">else</span>:</span>
+<span id="cb3-36"><a href=""></a>        <span class="bu">print</span>(<span class="ss">f"[</span><span class="sc">{</span>datetime<span class="sc">.</span>now()<span class="sc">.</span>strftime(<span class="st">'%H:%M'</span>)<span class="sc">}</span><span class="ss">] 수율 정상: "</span></span>
+<span id="cb3-37"><a href=""></a>              <span class="ss">f"평균 </span><span class="sc">{</span>latest[<span class="st">'yield'</span>]<span class="sc">.</span>mean()<span class="sc">:.1f}</span><span class="ss">%"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="실시간-수율-모니터링-시각화" class="slide level2 smaller">
+<h2>실시간 수율 모니터링 시각화</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb4-2"><a href=""></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb4-3"><a href=""></a></span>
+<span id="cb4-4"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb4-5"><a href=""></a>n <span class="ot">&lt;-</span> <span class="dv">200</span></span>
+<span id="cb4-6"><a href=""></a>yield_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb4-7"><a href=""></a>  <span class="at">Time  =</span> <span class="fu">seq</span>(<span class="fu">as.POSIXct</span>(<span class="st">"2024-01-01 00:00"</span>),</span>
+<span id="cb4-8"><a href=""></a>              <span class="at">by =</span> <span class="st">"30 min"</span>, <span class="at">length.out =</span> n),</span>
+<span id="cb4-9"><a href=""></a>  <span class="at">Yield =</span> <span class="dv">96</span> <span class="sc">+</span> <span class="fu">cumsum</span>(<span class="fu">rnorm</span>(n, <span class="dv">0</span>, <span class="fl">0.15</span>)),</span>
+<span id="cb4-10"><a href=""></a>  <span class="at">Line  =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"Line A"</span>, <span class="st">"Line B"</span>), <span class="at">each =</span> <span class="dv">100</span>)</span>
+<span id="cb4-11"><a href=""></a>)</span>
+<span id="cb4-12"><a href=""></a>yield_df<span class="sc">$</span>Yield <span class="ot">&lt;-</span> <span class="fu">pmin</span>(<span class="fu">pmax</span>(yield_df<span class="sc">$</span>Yield, <span class="dv">88</span>), <span class="dv">100</span>)</span>
+<span id="cb4-13"><a href=""></a>alarm_points <span class="ot">&lt;-</span> yield_df[yield_df<span class="sc">$</span>Yield <span class="sc">&lt;</span> <span class="dv">95</span>, ]</span>
+<span id="cb4-14"><a href=""></a></span>
+<span id="cb4-15"><a href=""></a><span class="fu">ggplot</span>(yield_df, <span class="fu">aes</span>(<span class="at">x =</span> Time, <span class="at">y =</span> Yield, <span class="at">color =</span> Line)) <span class="sc">+</span></span>
+<span id="cb4-16"><a href=""></a>  <span class="fu">annotate</span>(<span class="st">"rect"</span>,</span>
+<span id="cb4-17"><a href=""></a>           <span class="at">xmin =</span> <span class="fu">min</span>(yield_df<span class="sc">$</span>Time), <span class="at">xmax =</span> <span class="fu">max</span>(yield_df<span class="sc">$</span>Time),</span>
+<span id="cb4-18"><a href=""></a>           <span class="at">ymin =</span> <span class="dv">88</span>, <span class="at">ymax =</span> <span class="dv">95</span>, <span class="at">alpha =</span> <span class="fl">0.07</span>, <span class="at">fill =</span> <span class="st">"#E74C3C"</span>) <span class="sc">+</span></span>
+<span id="cb4-19"><a href=""></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">0.8</span>, <span class="at">alpha =</span> <span class="fl">0.9</span>) <span class="sc">+</span></span>
+<span id="cb4-20"><a href=""></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> alarm_points, <span class="fu">aes</span>(<span class="at">x =</span> Time, <span class="at">y =</span> Yield),</span>
+<span id="cb4-21"><a href=""></a>             <span class="at">color =</span> <span class="st">"#E74C3C"</span>, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">shape =</span> <span class="dv">8</span>) <span class="sc">+</span></span>
+<span id="cb4-22"><a href=""></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">95</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>,</span>
+<span id="cb4-23"><a href=""></a>             <span class="at">color =</span> <span class="st">"#E74C3C"</span>, <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb4-24"><a href=""></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="fu">max</span>(yield_df<span class="sc">$</span>Time), <span class="at">y =</span> <span class="fl">94.3</span>,</span>
+<span id="cb4-25"><a href=""></a>           <span class="at">label =</span> <span class="st">"임계값 95%"</span>, <span class="at">color =</span> <span class="st">"#E74C3C"</span>,</span>
+<span id="cb4-26"><a href=""></a>           <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="fl">3.5</span>) <span class="sc">+</span></span>
+<span id="cb4-27"><a href=""></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Line A"</span> <span class="ot">=</span> <span class="st">"#3498DB"</span>, <span class="st">"Line B"</span> <span class="ot">=</span> <span class="st">"#27AE60"</span>)) <span class="sc">+</span></span>
+<span id="cb4-28"><a href=""></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> <span class="cf">function</span>(x) <span class="fu">paste0</span>(x, <span class="st">"%"</span>)) <span class="sc">+</span></span>
+<span id="cb4-29"><a href=""></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
+<span id="cb4-30"><a href=""></a>  <span class="fu">labs</span>(</span>
+<span id="cb4-31"><a href=""></a>    <span class="at">title =</span> <span class="st">"실시간 수율 모니터링 (★ = 알람 발생 포인트)"</span>,</span>
+<span id="cb4-32"><a href=""></a>    <span class="at">x =</span> <span class="st">"시간"</span>, <span class="at">y =</span> <span class="st">"수율 (%)"</span>, <span class="at">color =</span> <span class="st">"라인"</span></span>
+<span id="cb4-33"><a href=""></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+</div>
+<img data-src="lecture_14_files/figure-revealjs/unnamed-chunk-5-1.png" width="864" class="r-stretch"></section>
+<section id="월간-알람-원인별-현황" class="slide level2 smaller">
+<h2>월간 알람 원인별 현황</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb5-2"><a href=""></a></span>
+<span id="cb5-3"><a href=""></a>alarm_stats <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb5-4"><a href=""></a>  <span class="at">Cause =</span> <span class="fu">factor</span>(</span>
+<span id="cb5-5"><a href=""></a>    <span class="fu">c</span>(<span class="st">"수율 임계값 이하"</span>, <span class="st">"설비 온도 이상"</span>, <span class="st">"압력 편차"</span>,</span>
+<span id="cb5-6"><a href=""></a>      <span class="st">"불량률 급증"</span>, <span class="st">"기타"</span>),</span>
+<span id="cb5-7"><a href=""></a>    <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"기타"</span>, <span class="st">"불량률 급증"</span>, <span class="st">"압력 편차"</span>,</span>
+<span id="cb5-8"><a href=""></a>               <span class="st">"설비 온도 이상"</span>, <span class="st">"수율 임계값 이하"</span>)</span>
+<span id="cb5-9"><a href=""></a>  ),</span>
+<span id="cb5-10"><a href=""></a>  <span class="at">Count =</span> <span class="fu">c</span>(<span class="dv">45</span>, <span class="dv">23</span>, <span class="dv">18</span>, <span class="dv">12</span>, <span class="dv">8</span>)</span>
+<span id="cb5-11"><a href=""></a>)</span>
+<span id="cb5-12"><a href=""></a></span>
+<span id="cb5-13"><a href=""></a><span class="fu">ggplot</span>(alarm_stats, <span class="fu">aes</span>(<span class="at">x =</span> Cause, <span class="at">y =</span> Count, <span class="at">fill =</span> Count)) <span class="sc">+</span></span>
+<span id="cb5-14"><a href=""></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">width =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb5-15"><a href=""></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb5-16"><a href=""></a>  <span class="fu">scale_fill_gradient</span>(<span class="at">low =</span> <span class="st">"#F39C12"</span>, <span class="at">high =</span> <span class="st">"#E74C3C"</span>) <span class="sc">+</span></span>
+<span id="cb5-17"><a href=""></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste0</span>(Count, <span class="st">"회"</span>)),</span>
+<span id="cb5-18"><a href=""></a>            <span class="at">hjust =</span> <span class="sc">-</span><span class="fl">0.3</span>, <span class="at">size =</span> <span class="dv">4</span>, <span class="at">fontface =</span> <span class="st">"bold"</span>, <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
+<span id="cb5-19"><a href=""></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">13</span>) <span class="sc">+</span></span>
+<span id="cb5-20"><a href=""></a>  <span class="fu">labs</span>(</span>
+<span id="cb5-21"><a href=""></a>    <span class="at">title =</span> <span class="st">"월간 알람 발생 원인별 현황"</span>,</span>
+<span id="cb5-22"><a href=""></a>    <span class="at">subtitle =</span> <span class="st">"수율 임계값 이하가 전체의 42% — 가장 빈번한 알람 유형"</span>,</span>
+<span id="cb5-23"><a href=""></a>    <span class="at">x =</span> <span class="st">""</span>, <span class="at">y =</span> <span class="st">"알람 횟수"</span>, <span class="at">fill =</span> <span class="st">"횟수"</span></span>
+<span id="cb5-24"><a href=""></a>  ) <span class="sc">+</span></span>
+<span id="cb5-25"><a href=""></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb5-26"><a href=""></a>  <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="dv">58</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+</div>
+<img data-src="lecture_14_files/figure-revealjs/unnamed-chunk-6-1.png" width="864" class="r-stretch"></section>
+<section id="gemini-api-통합-알람에-ai-분석-추가" class="slide level2 smaller">
+<h2>Gemini API 통합 — 알람에 AI 분석 추가</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6" data-code-line-numbers="1-3|5-18|20-32"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href=""></a><span class="im">import</span> google.generativeai <span class="im">as</span> genai</span>
+<span id="cb6-2"><a href=""></a><span class="im">import</span> os</span>
+<span id="cb6-3"><a href=""></a></span>
+<span id="cb6-4"><a href=""></a>genai.configure(api_key<span class="op">=</span>os.getenv(<span class="st">"GEMINI_API_KEY"</span>))</span>
+<span id="cb6-5"><a href=""></a>model <span class="op">=</span> genai.GenerativeModel(<span class="st">"gemini-1.5-flash"</span>)</span>
+<span id="cb6-6"><a href=""></a></span>
+<span id="cb6-7"><a href=""></a><span class="kw">def</span> generate_analysis(yield_data: <span class="bu">dict</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb6-8"><a href=""></a>    <span class="co">"""수율 저하 원인 분석 및 조치 제안"""</span></span>
+<span id="cb6-9"><a href=""></a>    prompt <span class="op">=</span> <span class="ss">f"""</span></span>
+<span id="cb6-10"><a href=""></a><span class="ss">    다음 수율 데이터를 분석하고 원인과 조치사항을 제안해주세요:</span></span>
+<span id="cb6-11"><a href=""></a><span class="ss">    - 현재 수율: </span><span class="sc">{</span>yield_data[<span class="st">'current_yield'</span>]<span class="sc">:.1f}</span><span class="ss">%</span></span>
+<span id="cb6-12"><a href=""></a><span class="ss">    - 1시간 전 수율: </span><span class="sc">{</span>yield_data[<span class="st">'prev_yield'</span>]<span class="sc">:.1f}</span><span class="ss">%</span></span>
+<span id="cb6-13"><a href=""></a><span class="ss">    - 저하율: </span><span class="sc">{</span>yield_data[<span class="st">'drop_rate'</span>]<span class="sc">:.1f}</span><span class="ss">%p</span></span>
+<span id="cb6-14"><a href=""></a><span class="ss">    - 해당 라인: </span><span class="sc">{</span>yield_data[<span class="st">'line'</span>]<span class="sc">}</span></span>
+<span id="cb6-15"><a href=""></a><span class="ss">    - 공정 단계: </span><span class="sc">{</span>yield_data<span class="sc">.</span>get(<span class="st">'process'</span>, <span class="st">'미상'</span>)<span class="sc">}</span></span>
+<span id="cb6-16"><a href=""></a></span>
+<span id="cb6-17"><a href=""></a><span class="ss">    간결하게 (3줄 이내) 답변하세요. 불필요한 인사말은 생략하세요.</span></span>
+<span id="cb6-18"><a href=""></a><span class="ss">    """</span></span>
+<span id="cb6-19"><a href=""></a>    response <span class="op">=</span> model.generate_content(prompt)</span>
+<span id="cb6-20"><a href=""></a>    <span class="cf">return</span> response.text</span>
+<span id="cb6-21"><a href=""></a></span>
+<span id="cb6-22"><a href=""></a><span class="kw">def</span> check_and_analyze():</span>
+<span id="cb6-23"><a href=""></a>    df <span class="op">=</span> pd.read_csv(<span class="st">"yield_data.csv"</span>)</span>
+<span id="cb6-24"><a href=""></a>    latest <span class="op">=</span> df.tail(<span class="dv">10</span>)</span>
+<span id="cb6-25"><a href=""></a>    below <span class="op">=</span> latest[latest[<span class="st">"yield"</span>] <span class="op">&lt;</span> <span class="fl">95.0</span>]</span>
+<span id="cb6-26"><a href=""></a></span>
+<span id="cb6-27"><a href=""></a>    <span class="cf">if</span> <span class="bu">len</span>(below) <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb6-28"><a href=""></a>        <span class="cf">for</span> _, row <span class="kw">in</span> below.iterrows():</span>
+<span id="cb6-29"><a href=""></a>            analysis <span class="op">=</span> generate_analysis({</span>
+<span id="cb6-30"><a href=""></a>                <span class="st">"current_yield"</span>: row[<span class="st">"yield"</span>],</span>
+<span id="cb6-31"><a href=""></a>                <span class="st">"prev_yield"</span>: row.get(<span class="st">"prev_yield"</span>, row[<span class="st">"yield"</span>] <span class="op">+</span> <span class="dv">1</span>),</span>
+<span id="cb6-32"><a href=""></a>                <span class="st">"drop_rate"</span>: row.get(<span class="st">"prev_yield"</span>, row[<span class="st">"yield"</span>] <span class="op">+</span> <span class="dv">1</span>) <span class="op">-</span> row[<span class="st">"yield"</span>],</span>
+<span id="cb6-33"><a href=""></a>                <span class="st">"line"</span>: row[<span class="st">"line"</span>]</span>
+<span id="cb6-34"><a href=""></a>            })</span>
+<span id="cb6-35"><a href=""></a>            msg <span class="op">=</span> (</span>
+<span id="cb6-36"><a href=""></a>                <span class="ss">f"*AI 수율 분석 알람*</span><span class="ch">\n\n</span><span class="ss">"</span></span>
+<span id="cb6-37"><a href=""></a>                <span class="ss">f"라인: </span><span class="sc">{</span>row[<span class="st">'line'</span>]<span class="sc">}</span><span class="ss"> | 수율: </span><span class="sc">{</span>row[<span class="st">'yield'</span>]<span class="sc">:.1f}</span><span class="ss">%</span><span class="ch">\n\n</span><span class="ss">"</span></span>
+<span id="cb6-38"><a href=""></a>                <span class="ss">f"*Gemini 분석:*</span><span class="ch">\n</span><span class="sc">{</span>analysis<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb6-39"><a href=""></a>            )</span>
+<span id="cb6-40"><a href=""></a>            send_telegram(msg)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="알람-메시지-레벨-설계" class="slide level2 smaller">
+<h2>알람 메시지 레벨 설계</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p><strong>3단계 알람 체계</strong></p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>수율</th>
+<th>알람 레벨</th>
+<th>행동</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>97% 이상</td>
+<td>정상</td>
+<td>없음</td>
+</tr>
+<tr class="even">
+<td>95~97%</td>
+<td>주의</td>
+<td>로그만 기록</td>
+</tr>
+<tr class="odd">
+<td>92~95%</td>
+<td>경고</td>
+<td>텔레그램 알람</td>
+</tr>
+<tr class="even">
+<td>92% 미만</td>
+<td>위험</td>
+<td>즉시 전화 + 텔레그램</td>
+</tr>
+</tbody>
+</table>
+</div><div class="column" style="width:45%;">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href=""></a><span class="kw">def</span> get_alarm_level(yield_pct: <span class="bu">float</span>):</span>
+<span id="cb7-2"><a href=""></a>    <span class="cf">if</span> yield_pct <span class="op">&gt;=</span> <span class="dv">97</span>:</span>
+<span id="cb7-3"><a href=""></a>        <span class="cf">return</span> <span class="st">"normal"</span>, <span class="va">None</span></span>
+<span id="cb7-4"><a href=""></a>    <span class="cf">elif</span> yield_pct <span class="op">&gt;=</span> <span class="dv">95</span>:</span>
+<span id="cb7-5"><a href=""></a>        <span class="cf">return</span> <span class="st">"watch"</span>, <span class="st">"INFO"</span></span>
+<span id="cb7-6"><a href=""></a>    <span class="cf">elif</span> yield_pct <span class="op">&gt;=</span> <span class="dv">92</span>:</span>
+<span id="cb7-7"><a href=""></a>        <span class="cf">return</span> <span class="st">"warning"</span>, <span class="st">"WARNING"</span></span>
+<span id="cb7-8"><a href=""></a>    <span class="cf">else</span>:</span>
+<span id="cb7-9"><a href=""></a>        <span class="cf">return</span> <span class="st">"critical"</span>, <span class="st">"CRITICAL"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div title="현장 조언">
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>현장 조언</strong></p>
+</div>
+<div class="callout-content">
+<p>임계값은 라인마다 다릅니다. Gen 6 OLED와 Gen 8 LCD의 기준 수율은 다릅니다. 환경에 맞게 조정하세요.</p>
+</div>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="schedule-고급-패턴" class="slide level2 smaller">
+<h2>schedule 고급 패턴</h2>
+<div class="panel-tabset">
+<ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1">기본 반복 실행</a></li><li><a href="#tabset-2-2">교대 근무 시간 반영</a></li><li><a href="#tabset-2-3">에러 핸들링</a></li></ul>
+<div class="tab-content">
+<div id="tabset-2-1">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href=""></a><span class="im">import</span> schedule, time</span>
+<span id="cb8-2"><a href=""></a></span>
+<span id="cb8-3"><a href=""></a><span class="co"># 수율 체크: 5분마다</span></span>
+<span id="cb8-4"><a href=""></a>schedule.every(<span class="dv">5</span>).minutes.do(check_yield_and_alert)</span>
+<span id="cb8-5"><a href=""></a></span>
+<span id="cb8-6"><a href=""></a><span class="co"># 오전 보고서: 매일 9시</span></span>
+<span id="cb8-7"><a href=""></a>schedule.every().day.at(<span class="st">"09:00"</span>).do(morning_report)</span>
+<span id="cb8-8"><a href=""></a></span>
+<span id="cb8-9"><a href=""></a><span class="co"># 주간 요약: 매주 월요일 아침</span></span>
+<span id="cb8-10"><a href=""></a>schedule.every().monday.at(<span class="st">"08:30"</span>).do(weekly_summary)</span>
+<span id="cb8-11"><a href=""></a></span>
+<span id="cb8-12"><a href=""></a><span class="co"># 야간 알람 강화: 22시~6시는 더 자주 확인</span></span>
+<span id="cb8-13"><a href=""></a>schedule.every(<span class="dv">2</span>).minutes.do(night_intensive_check)</span>
+<span id="cb8-14"><a href=""></a></span>
+<span id="cb8-15"><a href=""></a><span class="cf">while</span> <span class="va">True</span>:</span>
+<span id="cb8-16"><a href=""></a>    schedule.run_pending()</span>
+<span id="cb8-17"><a href=""></a>    time.sleep(<span class="dv">30</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<div id="tabset-2-2">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href=""></a><span class="im">from</span> datetime <span class="im">import</span> datetime</span>
+<span id="cb9-2"><a href=""></a></span>
+<span id="cb9-3"><a href=""></a><span class="kw">def</span> smart_check():</span>
+<span id="cb9-4"><a href=""></a>    <span class="co">"""교대 근무 패턴에 맞는 스마트 체크"""</span></span>
+<span id="cb9-5"><a href=""></a>    hour <span class="op">=</span> datetime.now().hour</span>
+<span id="cb9-6"><a href=""></a></span>
+<span id="cb9-7"><a href=""></a>    <span class="co"># 주간 조 (06~18시): 15분마다</span></span>
+<span id="cb9-8"><a href=""></a>    <span class="cf">if</span> <span class="dv">6</span> <span class="op">&lt;=</span> hour <span class="op">&lt;</span> <span class="dv">18</span>:</span>
+<span id="cb9-9"><a href=""></a>        interval <span class="op">=</span> <span class="dv">15</span></span>
+<span id="cb9-10"><a href=""></a>    <span class="co"># 야간 조 (18~06시): 5분마다 (더 주의)</span></span>
+<span id="cb9-11"><a href=""></a>    <span class="cf">else</span>:</span>
+<span id="cb9-12"><a href=""></a>        interval <span class="op">=</span> <span class="dv">5</span></span>
+<span id="cb9-13"><a href=""></a></span>
+<span id="cb9-14"><a href=""></a>    check_yield_and_alert()</span>
+<span id="cb9-15"><a href=""></a>    <span class="co"># 다음 체크 간격 동적 조정</span></span>
+<span id="cb9-16"><a href=""></a>    schedule.clear(<span class="st">"yield_check"</span>)</span>
+<span id="cb9-17"><a href=""></a>    schedule.every(interval).minutes.do(</span>
+<span id="cb9-18"><a href=""></a>        smart_check</span>
+<span id="cb9-19"><a href=""></a>    ).tag(<span class="st">"yield_check"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<div id="tabset-2-3">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href=""></a><span class="im">import</span> logging</span>
+<span id="cb10-2"><a href=""></a></span>
+<span id="cb10-3"><a href=""></a>logging.basicConfig(level<span class="op">=</span>logging.INFO)</span>
+<span id="cb10-4"><a href=""></a>logger <span class="op">=</span> logging.getLogger(<span class="va">__name__</span>)</span>
+<span id="cb10-5"><a href=""></a></span>
+<span id="cb10-6"><a href=""></a><span class="kw">def</span> safe_check():</span>
+<span id="cb10-7"><a href=""></a>    <span class="co">"""에러 발생해도 스케줄 중단 없이 계속"""</span></span>
+<span id="cb10-8"><a href=""></a>    <span class="cf">try</span>:</span>
+<span id="cb10-9"><a href=""></a>        check_yield_and_alert()</span>
+<span id="cb10-10"><a href=""></a>        logger.info(<span class="st">"수율 체크 완료"</span>)</span>
+<span id="cb10-11"><a href=""></a>    <span class="cf">except</span> <span class="pp">FileNotFoundError</span>:</span>
+<span id="cb10-12"><a href=""></a>        logger.error(<span class="st">"CSV 파일을 찾을 수 없음"</span>)</span>
+<span id="cb10-13"><a href=""></a>        send_telegram(<span class="st">"CSV 파일 없음 — 데이터 연결 확인 요망"</span>)</span>
+<span id="cb10-14"><a href=""></a>    <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb10-15"><a href=""></a>        logger.error(<span class="ss">f"예상치 못한 오류: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb10-16"><a href=""></a>        send_telegram(<span class="ss">f"봇 오류 발생: </span><span class="sc">{</span><span class="bu">str</span>(e)[:<span class="dv">100</span>]<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="실습-gemini_telebot-클론-및-커스터마이징" class="slide level2 smaller">
+<h2>실습: gemini_telebot 클론 및 커스터마이징</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>1단계: 레포 클론</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href=""></a><span class="fu">git</span> clone https://github.com/waterfirst/<span class="dt">\</span></span>
+<span id="cb11-2"><a href=""></a>  gemini_telebot.git</span>
+<span id="cb11-3"><a href=""></a><span class="bu">cd</span> gemini_telebot</span>
+<span id="cb11-4"><a href=""></a><span class="ex">pip</span> install <span class="at">-r</span> requirements.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>2단계: 환경 변수 설정</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href=""></a><span class="fu">cp</span> .env.example .env</span>
+<span id="cb12-2"><a href=""></a><span class="co"># .env 파일 편집:</span></span>
+<span id="cb12-3"><a href=""></a><span class="co"># TELEGRAM_BOT_TOKEN=...</span></span>
+<span id="cb12-4"><a href=""></a><span class="co"># GEMINI_API_KEY=...</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>3단계: 수율 모니터링 추가</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href=""></a><span class="co"># yield_monitor.py 작성 후</span></span>
+<span id="cb13-2"><a href=""></a><span class="co"># main.py에 스케줄 등록</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:50%;">
+<p><strong>실습 목표</strong></p>
+<ol type="1">
+<li>gemini_telebot 기본 실행</li>
+<li>수율 CSV 샘플 데이터 생성</li>
+<li>5분마다 자동 체크 스케줄 등록</li>
+<li>임계값 이하 시 알람 발송 테스트</li>
+<li>Gemini AI 분석 메시지 포함</li>
+</ol>
+<div title="팁">
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>팁</strong></p>
+</div>
+<div class="callout-content">
+<p>먼저 <code>print()</code>로 알람 내용을 화면에 출력해보고, 테스트 완료 후 텔레그램 전송으로 바꾸세요.</p>
+</div>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="강-요약" class="slide level2 smaller">
+<h2>14강 요약</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>오늘 배운 것</strong></p>
+<ul>
+<li>gemini_telebot 오픈소스 구조 이해</li>
+<li><code>schedule</code> 라이브러리 반복 실행 패턴</li>
+<li>수율 CSV 읽기 + 임계값 판단 로직</li>
+<li>3단계 알람 레벨 설계</li>
+<li>Gemini API로 원인 분석 자동화</li>
+<li>에러 핸들링으로 안정적인 봇 구현</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>다음 강의 예고</strong></p>
+<p><strong>15강</strong>: 종합 통합 실습 (60분)</p>
+<ul>
+<li>Streamlit 대시보드 + Gemini + 텔레그램</li>
+<li>세 개를 하나로 합치는 60분 마라톤</li>
+<li>실제 공장에서 쓸 법한 AI 모니터링 시스템 완성</li>
+<li>Streamlit Cloud 배포까지</li>
+</ul>
+</div></div>
+<div title="핵심 한 줄 요약">
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>핵심 한 줄 요약</strong></p>
+</div>
+<div class="callout-content">
+<p>schedule + pandas + Telegram = 새벽 3시에도 수율을 지키는 AI 야경꾼. 엔지니어는 잠들어도 됩니다.</p>
+</div>
+</div>
+</div>
+</div>
+
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+<p>렛유인 KDC | AI 바이브 코딩 실전 | 14강</p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="lecture_14_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="lecture_14_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="lecture_14_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="lecture_14_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="lecture_14_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="lecture_14_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="lecture_14_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="lecture_14_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="lecture_14_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="lecture_14_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="lecture_14_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': true,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'slide',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'fade',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1280,
+
+        height: 720,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+
+    <script>
+
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+
+      // slide changes (different for each slide format).
+
+      (function () {
+
+        // dispatch for htmlwidgets
+
+        function fireSlideEnter() {
+
+          const event = window.document.createEvent("Event");
+
+          event.initEvent("slideenter", true, true);
+
+          window.document.dispatchEvent(event);
+
+        }
+
+    
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+
+          fireSlideEnter();
+
+    
+
+          // dispatch for shiny
+
+          if (window.jQuery) {
+
+            if (previousSlide) {
+
+              window.jQuery(previousSlide).trigger("hidden");
+
+            }
+
+            if (currentSlide) {
+
+              window.jQuery(currentSlide).trigger("shown");
+
+            }
+
+          }
+
+        }
+
+    
+
+        // hookup for slidy
+
+        if (window.w3c_slidy) {
+
+          window.w3c_slidy.add_observer(function (slide_num) {
+
+            // slide_num starts at position 1
+
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+
+          });
+
+        }
+
+    
+
+      })();
+
+    </script>
+
+    
+
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

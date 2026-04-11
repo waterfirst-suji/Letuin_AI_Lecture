@@ -1,0 +1,609 @@
+---
+title: "취업 및 커리어 전략"
+subtitle: "AI 포트폴리오로 디스플레이 업계 취업하기"
+author: "렛유인 KDC"
+date: today
+engine: knitr
+execute:
+  echo: true
+  warning: false
+  message: false
+  fig-width: 9
+  fig-height: 4.5
+format:
+  revealjs:
+    theme: [moon, ../custom.scss]
+    slide-number: c/t
+    show-slide-number: all
+    controls: true
+    progress: true
+    center: false
+    incremental: false
+    transition: slide
+    background-transition: fade
+    chalkboard: true
+    preview-links: auto
+    highlight-style: dracula
+    code-line-numbers: true
+    footer: "렛유인 KDC | AI 바이브 코딩 실전 | 20강"
+    width: 1280
+    height: 720
+    margin: 0.1
+---
+
+# 당신은 이미 특별합니다 {background="#1F4E79"}
+
+::: {style="margin-top: 40px; font-size: 1.3em; color: #FFD700;"}
+**20강 동안 만든 것들을 돌아보세요**
+:::
+
+::: {style="margin-top: 30px; font-size: 0.95em; color: #CBD5E0;"}
+3주 전, 당신은 코드를 한 줄도 쓸 수 없었습니다.
+
+지금, 당신은 AI와 협업해서 실제 앱을 만들고 배포할 수 있습니다.
+:::
+
+::: {style="margin-top: 40px; font-size: 1.1em;"}
+**당신이 만든 것들:**
+- 📊 스펙 계산기 (미션 1)
+- 🚨 지능형 감시 시스템 (미션 2)
+- 🤖 나만의 AI 솔루션 (최종 프로젝트)
+- 🎯 GitHub 포트폴리오 (전체 코드)
+:::
+
+---
+
+## 이 강의의 진짜 목표 {auto-animate="true"}
+
+::: {.columns}
+
+::: {.column width="48%"}
+::: {style="background: #2D3748; padding: 20px; border-radius: 10px; border-top: 4px solid #3B82F6;"}
+### ❌ 목표가 아닌 것
+- Python 문법 외우기
+- 알고리즘 숙달
+- 프레임워크 마스터
+- 코딩 테스트 통과
+:::
+
+::: {style="background: #DC2626; padding: 20px; border-radius: 10px; margin-top: 20px; color: #FEE2E2;"}
+**왜?**
+AI가 이미 다 해줍니다.
+:::
+:::
+
+::: {.column width="48%"}
+::: {style="background: #2D3748; padding: 20px; border-radius: 10px; border-top: 4px solid #10B981;"}
+### ✅ 진짜 목표
+- **문제 정의 능력**
+- **AI 활용 능력**
+- **결과 검증 능력**
+- **배포 및 운영 경험**
+:::
+
+::: {style="background: #059669; padding: 20px; border-radius: 10px; margin-top: 20px; color: #D1FAE5;"}
+**이것이 2026년의 개발자입니다.**
+:::
+:::
+
+:::
+
+---
+
+## 디스플레이 업계가 원하는 인재상 {auto-animate="true"}
+
+::: {style="font-size: 0.9em; color: #CBD5E0; margin-bottom: 30px;"}
+삼성디스플레이, LG디스플레이, BOE 등 글로벌 기업의 채용 공고 분석 결과
+:::
+
+### Top 5 필수 역량
+
+::: {.columns}
+
+::: {.column width="48%"}
+::: {style="background: #1F2937; padding: 20px; border-radius: 10px; border-left: 5px solid #3B82F6;"}
+**1. 데이터 분석 능력**
+- 공정 데이터 해석
+- 수율 분석
+- 통계적 의사결정
+
+**→ 당신의 강점**: Streamlit 대시보드, 시각화 경험
+:::
+
+::: {style="background: #1F2937; padding: 20px; border-radius: 10px; border-left: 5px solid #10B981; margin-top: 20px;"}
+**2. 자동화 능력**
+- 반복 작업 자동화
+- 모니터링 시스템
+- 리포트 자동 생성
+
+**→ 당신의 강점**: 텔레그램 봇, 크론잡, GitHub Actions
+:::
+:::
+
+::: {.column width="48%"}
+::: {style="background: #1F2937; padding: 20px; border-radius: 10px; border-left: 5px solid #F59E0B;"}
+**3. AI 활용 능력**
+- LLM API 연동
+- 프롬프트 엔지니어링
+- AI 도구 활용
+
+**→ 당신의 강점**: Claude/Gemini API, AI 챗봇 구축
+:::
+
+::: {style="background: #1F2937; padding: 20px; border-radius: 10px; border-left: 5px solid #EF4444; margin-top: 20px;"}
+**4. 빠른 학습 능력**
+- 새로운 기술 습득
+- 문서 독해 능력
+- 문제 해결 능력
+
+**→ 당신의 강점**: 20강을 완주한 학습 능력
+:::
+:::
+
+:::
+
+---
+
+## 포트폴리오 최적화 전략 {background="#2C5F2D"}
+
+### GitHub 프로필 최적화 (15분)
+
+::: {style="background: #1F2937; padding: 20px; border-radius: 10px; margin-top: 20px;"}
+**README.md 구조:**
+
+```markdown
+# 안녕하세요, [이름]입니다 👋
+
+## 🎯 관심 분야
+디스플레이 공정 최적화 · AI 자동화 · 데이터 분석
+
+## 💼 프로젝트
+### [프로젝트 1명]
+![스크린샷](screenshot.png)
+- **기술**: Streamlit, Claude API, SQLite
+- **기능**: [핵심 기능 3가지]
+- **배포**: [라이브 링크](https://xxx.streamlit.app)
+- **코드**: [GitHub](https://github.com/xxx)
+
+### [프로젝트 2명]
+...
+
+## 🛠️ 기술 스택
+![Python](https://img.shields.io/badge/-Python-3776AB?logo=python&logoColor=white)
+![Streamlit](https://img.shields.io/badge/-Streamlit-FF4B4B?logo=streamlit&logoColor=white)
+![Claude](https://img.shields.io/badge/-Claude-000000?logo=anthropic&logoColor=white)
+
+## 📊 GitHub Stats
+![GitHub stats](https://github-readme-stats.vercel.app/api?username=xxx&show_icons=true)
+```
+:::
+
+---
+
+## 프로젝트별 README 최적화 {auto-animate="true"}
+
+### 필수 포함 요소
+
+::: {.columns}
+
+::: {.column width="48%"}
+::: {style="background: #1F2937; padding: 20px; border-radius: 10px; border-left: 5px solid #3B82F6;"}
+**1. 명확한 제목 & 설명**
+```markdown
+# 디스플레이 수율 예측 시스템
+
+AI로 공정 데이터를 분석하고
+수율을 예측하는 실시간 대시보드
+
+[🚀 라이브 데모](https://xxx.streamlit.app)
+```
+:::
+
+::: {style="background: #1F2937; padding: 20px; border-radius: 10px; border-left: 5px solid #10B981; margin-top: 20px;"}
+**2. 스크린샷/GIF**
+```markdown
+## 📸 스크린샷
+![메인 화면](docs/screenshot1.png)
+![데이터 분석](docs/screenshot2.png)
+```
+:::
+:::
+
+::: {.column width="48%"}
+::: {style="background: #1F2937; padding: 20px; border-radius: 10px; border-left: 5px solid #F59E0B;"}
+**3. 기술 스택 & 기능**
+```markdown
+## 🛠️ 기술 스택
+- Python 3.11
+- Streamlit
+- Claude API
+- SQLite
+
+## ✨ 주요 기능
+- 실시간 데이터 모니터링
+- AI 기반 이상 탐지
+- 텔레그램 알림
+```
+:::
+
+::: {style="background: #1F2937; padding: 20px; border-radius: 10px; border-left: 5px solid #EF4444; margin-top: 20px;"}
+**4. 실행 방법**
+```markdown
+## 🚀 실행 방법
+\`\`\`bash
+git clone ...
+pip install -r requirements.txt
+streamlit run app.py
+\`\`\`
+```
+:::
+:::
+
+:::
+
+---
+
+## 자소서 작성 전략 {auto-animate="true"}
+
+### STAR 기법 + 프로젝트 증명
+
+::: {style="background: #1F2937; padding: 20px; border-radius: 10px; margin-top: 20px;"}
+**❌ 나쁜 예:**
+> "Python과 AI를 활용한 데이터 분석 능력을 보유하고 있습니다."
+
+**→ 추상적이고 증명 불가**
+:::
+
+::: {style="background: #065F46; padding: 20px; border-radius: 10px; margin-top: 20px; color: #D1FAE5;"}
+**✅ 좋은 예 (STAR + 증거):**
+
+**S** (Situation): 디스플레이 제조 공정에서 수율 저하 문제를 발견했습니다.
+
+**T** (Task): 실시간 모니터링 및 이상 탐지 시스템 구축을 목표로 했습니다.
+
+**A** (Action): Python Streamlit과 Claude AI를 활용해 자동 감지 시스템을 개발했습니다. 텔레그램 API로 즉시 알림을 보내도록 구현했습니다.
+
+**R** (Result): 3주 만에 MVP를 완성하고 Streamlit Cloud에 배포했습니다. GitHub에 전체 코드를 공개하고 문서화했습니다.
+
+**증거**: [GitHub 링크] | [라이브 데모]
+:::
+
+---
+
+## 면접 대비: 기술 질문 {auto-animate="true"}
+
+### 예상 질문 & 답변 전략
+
+::: {.columns}
+
+::: {.column width="48%"}
+::: {style="background: #1F2937; padding: 20px; border-radius: 10px;"}
+**Q: "Python을 얼마나 할 줄 아나요?"**
+
+**❌ 나쁜 답변:**
+"음... 기초는 알고 있습니다."
+
+**✅ 좋은 답변:**
+"Streamlit으로 웹 앱을 3개 만들었고, AI API 연동 경험이 있습니다. 제 GitHub에서 확인하실 수 있습니다."
+:::
+:::
+
+::: {.column width="48%"}
+::: {style="background: #1F2937; padding: 20px; border-radius: 10px;"}
+**Q: "AI를 어떻게 활용하나요?"**
+
+**❌ 나쁜 답변:**
+"ChatGPT로 공부합니다."
+
+**✅ 좋은 답변:**
+"Claude Code로 프로젝트를 구축하고, Gemini API로 챗봇을 만들었습니다. 비용 최적화를 위해 Haiku 모델도 활용합니다."
+:::
+:::
+
+:::
+
+::: {style="background: #B45309; padding: 20px; border-radius: 10px; margin-top: 20px; color: #FED7AA;"}
+**핵심 전략**: 추상적 답변 NO → 구체적 프로젝트 YES
+:::
+
+---
+
+## 면접 대비: 프로젝트 설명 (5분) {background="#2C5F2D"}
+
+### 준비할 것
+
+::: {style="background: #1F2937; padding: 20px; border-radius: 10px; margin-top: 20px;"}
+**1. 엘리베이터 피치 (30초)**
+> "제가 만든 [프로젝트명]은 디스플레이 공정에서 [문제]를 해결하기 위한 시스템입니다. [기술 스택]을 사용했고, [핵심 기능]을 구현했습니다. [결과]를 달성했습니다."
+:::
+
+::: {style="background: #1F2937; padding: 20px; border-radius: 10px; margin-top: 20px;"}
+**2. 상세 설명 (3분)**
+- **문제 정의**: 왜 이 프로젝트를 시작했나?
+- **기술 선택**: 왜 이 기술을 사용했나?
+- **구현 과정**: 어떤 어려움이 있었나?
+- **결과**: 무엇을 배웠나?
+:::
+
+::: {style="background: #1F2937; padding: 20px; border-radius: 10px; margin-top: 20px;"}
+**3. 데모 준비**
+- 노트북에 실행 환경 준비
+- 주요 기능 시연 시나리오 작성
+- 예외 상황 대비 (인터넷 끊김 등)
+:::
+
+---
+
+## 네트워킹 전략 {auto-animate="true"}
+
+### 온라인 네트워킹
+
+::: {.columns}
+
+::: {.column width="48%"}
+::: {style="background: #1F2937; padding: 20px; border-radius: 10px; border-left: 5px solid #3B82F6;"}
+**LinkedIn 최적화**
+- 헤드라인: "AI 활용 디스플레이 공정 최적화"
+- 경험: 프로젝트 3개 등록
+- 기술: Python, Streamlit, AI API
+- 추천: 강사님께 추천사 요청
+:::
+
+::: {style="background: #1F2937; padding: 20px; border-radius: 10px; border-left: 5px solid #10B981; margin-top: 20px;"}
+**커뮤니티 활동**
+- GitHub Stars 주기
+- Stack Overflow 답변
+- 블로그 작성 (velog, tistory)
+- 디스플레이 관련 커뮤니티 활동
+:::
+:::
+
+::: {.column width="48%"}
+::: {style="background: #1F2937; padding: 20px; border-radius: 10px; border-left: 5px solid #F59E0B;"}
+**오프라인 네트워킹**
+- 디스플레이 산업전 참가
+- 채용 박람회 참석
+- 동문 네트워크 활용
+- 멘토 찾기
+:::
+
+::: {style="background: #1F2937; padding: 20px; border-radius: 10px; border-left: 5px solid #EF4444; margin-top: 20px;"}
+**콜드 이메일**
+- 채용 담당자에게 포트폴리오 발송
+- 간결하고 명확하게
+- GitHub 링크 필수
+- 후속 조치 (1주일 후)
+:::
+:::
+
+:::
+
+---
+
+## AI 시대의 경쟁력 {auto-animate="true"}
+
+### 2026년 채용 트렌드
+
+```{mermaid}
+%%| fig-width: 10
+%%| fig-height: 5
+graph LR
+    A[전통적 개발자] -->|코딩 능력| B[기업]
+    C[AI 협업 개발자] -->|문제 정의| B
+    C -->|AI 활용| B
+    C -->|빠른 프로토타입| B
+    C -->|배포 경험| B
+
+    style A fill:#EF4444,stroke:#B91C1C,color:#fff
+    style C fill:#10B981,stroke:#059669,color:#fff
+    style B fill:#3B82F6,stroke:#1E40AF,color:#fff
+```
+
+::: {style="margin-top: 30px; text-align: center; font-size: 1.1em; color: #F6E05E;"}
+**핵심**: "코드를 얼마나 잘 쓰는가?"가 아니라 "AI와 얼마나 잘 협업하는가?"
+:::
+
+---
+
+## 지속적인 학습 로드맵 {auto-animate="true"}
+
+### 다음 3개월 학습 계획
+
+::: {.columns}
+
+::: {.column width="32%"}
+::: {style="background: #065F46; padding: 20px; border-radius: 10px; text-align: center;"}
+### 🟢 1개월차
+**깊이 있게**
+- Python 심화
+- SQL 기초
+- Git 고급 기능
+- 클린 코드
+
+**목표:**
+기존 프로젝트 리팩토링
+:::
+:::
+
+::: {.column width="32%"}
+::: {style="background: #B45309; padding: 20px; border-radius: 10px; text-align: center;"}
+### 🟡 2개월차
+**넓게**
+- FastAPI
+- Docker
+- PostgreSQL
+- 머신러닝 기초
+
+**목표:**
+새로운 프로젝트 1개
+:::
+:::
+
+::: {.column width="32%"}
+::: {style="background: #991B1B; padding: 20px; border-radius: 10px; text-align: center;"}
+### 🔴 3개월차
+**실전**
+- 오픈소스 기여
+- 기술 블로그 운영
+- 해커톤 참가
+- 사이드 프로젝트
+
+**목표:**
+포트폴리오 강화
+:::
+:::
+
+:::
+
+---
+
+## 추천 학습 자료 {auto-animate="true"}
+
+### 무료 리소스
+
+::: {.columns}
+
+::: {.column width="48%"}
+::: {style="background: #1F2937; padding: 20px; border-radius: 10px;"}
+**공식 문서**
+- [Streamlit Docs](https://docs.streamlit.io)
+- [Claude API Docs](https://docs.anthropic.com)
+- [Gemini API Docs](https://ai.google.dev)
+- [Python Telegram Bot](https://python-telegram-bot.org)
+
+**커뮤니티**
+- [Stack Overflow](https://stackoverflow.com)
+- [GitHub Discussions](https://github.com)
+- [Reddit r/MachineLearning](https://reddit.com/r/MachineLearning)
+:::
+:::
+
+::: {.column width="48%"}
+::: {style="background: #1F2937; padding: 20px; border-radius: 10px;"}
+**강의 & 코스**
+- [FastAPI 튜토리얼](https://fastapi.tiangolo.com/tutorial/)
+- [Real Python](https://realpython.com)
+- [freeCodeCamp](https://www.freecodecamp.org)
+- [Kaggle Learn](https://www.kaggle.com/learn)
+
+**블로그 & 뉴스레터**
+- [Hacker News](https://news.ycombinator.com)
+- [TLDR Newsletter](https://tldr.tech)
+- [The Batch (Andrew Ng)](https://www.deeplearning.ai/the-batch/)
+:::
+:::
+
+:::
+
+---
+
+## 강의를 마치며 {background="#1F4E79"}
+
+::: {style="margin-top: 40px; font-size: 1.3em; color: #FFD700; text-align: center;"}
+**20강의 여정, 수고하셨습니다**
+:::
+
+::: {style="margin-top: 30px; font-size: 0.95em; color: #CBD5E0; text-align: center;"}
+당신은 이제 "AI와 협업하는 개발자"입니다.
+
+전통적인 개발자보다 10배 빠르게 프로토타입을 만들고,
+
+전통적인 개발자가 못하는 일을 AI와 함께 해냅니다.
+:::
+
+::: {style="margin-top: 40px; font-size: 1.1em; text-align: center;"}
+**명심하세요:**
+- 코드는 도구일 뿐, 문제 해결이 본질입니다
+- AI는 동료입니다, 적이 아닙니다
+- 배움은 끝이 없습니다, 계속 성장하세요
+- 실패는 배움의 기회입니다, 두려워하지 마세요
+:::
+
+---
+
+## 수료 기념 {background="#7C2D12"}
+
+::: {style="text-align: center; margin-top: 60px;"}
+### 🎓 수료를 축하합니다!
+
+::: {style="margin-top: 40px; font-size: 1.2em; color: #FCD34D;"}
+**당신이 완성한 것들:**
+:::
+
+::: {.columns style="margin-top: 30px;"}
+::: {.column width="48%"}
+::: {style="background: #2D3748; padding: 25px; border-radius: 10px; border-left: 5px solid #10B981;"}
+✅ 포트폴리오 웹사이트
+
+✅ 스펙 계산기 앱
+
+✅ 공정 감시 시스템
+
+✅ AI 솔루션 앱
+:::
+:::
+
+::: {.column width="48%"}
+::: {style="background: #2D3748; padding: 25px; border-radius: 10px; border-left: 5px solid #F59E0B;"}
+✅ GitHub 프로필
+
+✅ 텔레그램 봇
+
+✅ AI API 연동 경험
+
+✅ 클라우드 배포 경험
+:::
+:::
+:::
+:::
+
+::: {style="margin-top: 50px; text-align: center; font-size: 1.3em; color: #FFD700;"}
+**디스플레이 업계에서 만나요! 🚀**
+:::
+
+---
+
+## 계속 연락해요 {background="#1E293B"}
+
+### 강의 후 지원
+
+::: {style="background: #1F2937; padding: 20px; border-radius: 10px; margin-top: 20px;"}
+**GitHub 저장소**
+- [강의 자료](https://github.com/waterfirst-suji/Letuin_AI_Lecture)
+- [예제 코드](https://github.com/waterfirst-suji/Letuin_AI_Lecture/tree/main/lectures/examples)
+- [프로젝트 템플릿](https://github.com/waterfirst-suji/Letuin_AI_Lecture/tree/main/projects)
+:::
+
+::: {style="background: #1F2937; padding: 20px; border-radius: 10px; margin-top: 20px;"}
+**질문 & 피드백**
+- [GitHub Issues](https://github.com/waterfirst-suji/Letuin_AI_Lecture/issues)
+- [GitHub Discussions](https://github.com/waterfirst-suji/Letuin_AI_Lecture/discussions)
+- 이메일: [강사 이메일]
+:::
+
+::: {style="background: #1F2937; padding: 20px; border-radius: 10px; margin-top: 20px;"}
+**커뮤니티**
+- 수강생 Discord 서버
+- LinkedIn 그룹
+- 월간 온라인 모임
+:::
+
+---
+
+## 마지막 조언 {background="#1F4E79"}
+
+::: {style="margin-top: 60px; font-size: 1.5em; color: #FCD34D; text-align: center; font-style: italic;"}
+"The best way to predict the future is to invent it."
+:::
+
+::: {style="margin-top: 20px; text-align: center; color: #CBD5E0;"}
+— Alan Kay
+:::
+
+::: {style="margin-top: 60px; font-size: 1.2em; text-align: center; color: #FFD700;"}
+**AI와 함께, 당신의 미래를 만들어가세요.**
+:::
+
+::: {style="margin-top: 40px; text-align: center; font-size: 1.4em; color: #FCD34D;"}
+**감사합니다! 🙏**
+:::

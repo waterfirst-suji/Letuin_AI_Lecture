@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="lecture_07_files/libs/clipboard/clipboard.min.js"></script>
+<script src="lecture_07_files/libs/quarto-html/tabby.min.js"></script>
+<script src="lecture_07_files/libs/quarto-html/popper.min.js"></script>
+<script src="lecture_07_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="lecture_07_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="lecture_07_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="lecture_07_files/libs/quarto-html/quarto-syntax-highlighting-dark-fc8d3d93f0a84b7619e1f8ff6eb63d42.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.26">
+
+  <meta name="author" content="렛유인 KDC">
+  <meta name="dcterms.date" content="2026-04-06">
+  <title>Quarto 공정 분석 보고서 &amp; GitHub Pages</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="lecture_07_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="lecture_07_files/libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #f8f8f2; background-color: #282a36; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #f8f8f2; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #ff79c6; } /* Annotation */
+    code span.at { color: #ff79c6; } /* Attribute */
+    code span.bn { color: #bd93f9; } /* BaseN */
+    code span.bu { color: #8be9fd; } /* BuiltIn */
+    code span.cf { color: #ff79c6; } /* ControlFlow */
+    code span.ch { color: #f1fa8c; } /* Char */
+    code span.cn { color: #bd93f9; font-weight: bold; } /* Constant */
+    code span.co { color: #6272a4; } /* Comment */
+    code span.cv { color: #8be9fd; } /* CommentVar */
+    code span.do { color: #ffb86c; } /* Documentation */
+    code span.dt { color: #8be9fd; font-style: italic; } /* DataType */
+    code span.dv { color: #bd93f9; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #8be9fd; } /* Extension */
+    code span.fl { color: #bd93f9; } /* Float */
+    code span.fu { color: #50fa7b; } /* Function */
+    code span.im { color: #ff79c6; } /* Import */
+    code span.in { color: #f1fa8c; } /* Information */
+    code span.kw { color: #ff79c6; } /* Keyword */
+    code span.op { color: #f8f8f2; } /* Operator */
+    code span.ot { color: #50fa7b; } /* Other */
+    code span.pp { color: #ff79c6; } /* Preprocessor */
+    code span.re { color: #8be9fd; } /* RegionMarker */
+    code span.sc { color: #ff79c6; } /* SpecialChar */
+    code span.ss { color: #f1fa8c; } /* SpecialString */
+    code span.st { color: #f1fa8c; } /* String */
+    code span.va { color: #8be9fd; } /* Variable */
+    code span.vs { color: #f1fa8c; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="lecture_07_files/libs/revealjs/dist/theme/quarto-329acd3abe71bdd3a4ec42a5a574c26f.css">
+  <link href="lecture_07_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="lecture_07_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="lecture_07_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="lecture_07_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="lecture_07_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="lecture_07_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-dark">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Quarto 공정 분석 보고서 &amp; GitHub Pages</h1>
+  <p class="subtitle">PPT 수정 지옥에서 탈출 — 코드·글·차트가 하나의 파일로</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+렛유인 KDC 
+</div>
+</div>
+</div>
+
+  <p class="date">2026-04-06</p>
+</section>
+<section id="데이터가-바뀌었습니다.-보고서도-다시-만드세요." class="slide level2" data-background="#1F4E79">
+<h2>데이터가 바뀌었습니다. 보고서도 다시 만드세요.</h2>
+<p><br></p>
+<p>매주 반복되는 악몽:</p>
+<div class="fragment">
+<p>엑셀 업데이트 → 차트 복붙 → 숫자 수동 입력 → 검토 요청</p>
+</div>
+<div class="fragment">
+<p>→ <strong>“이 숫자 맞아요?”</strong> → 다시 처음부터</p>
+</div>
+<p><br></p>
+<div class="fragment">
+<p><strong>Quarto가 이 지옥을 끝냅니다.</strong></p>
+<p>데이터가 바뀌면 <code>quarto render</code> 한 번.</p>
+<p>차트, 표, 숫자 — <strong>전부 자동으로 업데이트.</strong></p>
+</div>
+<p><br></p>
+<div class="fragment">
+<blockquote>
+<p>지금 보고 있는 <strong>이 슬라이드 자체</strong>가 Quarto RevealJS로 만들어진 것입니다.</p>
+</blockquote>
+</div>
+</section>
+<section id="quarto란" class="slide level2">
+<h2>Quarto란?</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<h3 id="rmarkdown의-진화형">RMarkdown의 진화형</h3>
+<p>RMarkdown을 알고 있다면? Quarto는 그 다음 세대입니다. 모르더라도 괜찮습니다 — 오늘부터 시작하면 됩니다.</p>
+<p><strong>하나의 <code>.qmd</code> 파일 → 여러 출력 형식:</strong></p>
+<ul>
+<li>HTML 보고서</li>
+<li>PDF 문서</li>
+<li><strong>RevealJS 슬라이드</strong> (지금 이것!)</li>
+<li>웹사이트 / 블로그</li>
+<li>Word 문서</li>
+<li>학술 논문 (LaTeX)</li>
+</ul>
+</div><div class="column" style="width:45%;">
+<h3 id="작동-방식">작동 방식</h3>
+<pre><code>.qmd 파일
+    │
+    ▼
+knitr / jupyter
+(코드 실행)
+    │
+    ▼
+Pandoc
+(문서 변환)
+    │
+    ▼
+HTML / PDF / RevealJS</code></pre>
+<p><code>quarto render report.qmd</code> 명령 하나로 전체 파이프라인 실행.</p>
+</div></div>
+</section>
+<section id="qmd-파일-구조-해부" class="slide level2">
+<h2>.qmd 파일 구조 해부</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href=""></a>---                          ← YAML 헤더 (출력 형식, 제목, 저자 설정)</span>
+<span id="cb2-2"><a href=""></a>title: "월간 수율 분석 보고서"</span>
+<span id="cb2-3"><a href=""></a>author: "공정팀 김엔지니어"</span>
+<span id="cb2-4"><a href=""></a>date: today</span>
+<span id="cb2-5"><a href=""></a>format: html</span>
+<span id="cb2-6"><a href=""></a>---</span>
+<span id="cb2-7"><a href=""></a></span>
+<span id="cb2-8"><a href=""></a><span class="fu"># 1. 개요                    ← 마크다운 텍스트</span></span>
+<span id="cb2-9"><a href=""></a></span>
+<span id="cb2-10"><a href=""></a>이번 달 전체 라인 평균 수율은 **96.2%**로 전월 대비 0.3%p 향상되었습니다.</span>
+<span id="cb2-11"><a href=""></a></span>
+<span id="cb2-12"><a href=""></a><span class="fu">## 1.1 라인별 현황</span></span>
+<span id="cb2-13"><a href=""></a></span>
+<span id="cb2-14"><a href=""></a><span class="in">```{r}                        ← R 코드 청크 (자동 실행)</span></span>
+<span id="cb2-15"><a href=""></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb2-16"><a href=""></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb2-17"><a href=""></a>df <span class="sc">%&gt;%</span></span>
+<span id="cb2-18"><a href=""></a>  <span class="fu">group_by</span>(Line) <span class="sc">%&gt;%</span></span>
+<span id="cb2-19"><a href=""></a>  <span class="fu">summarise</span>(<span class="at">avg =</span> <span class="fu">mean</span>(Yield)) <span class="sc">%&gt;%</span></span>
+<span id="cb2-20"><a href=""></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>Line, <span class="at">y=</span>avg)) <span class="sc">+</span></span>
+<span id="cb2-21"><a href=""></a>  <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">"identity"</span>)</span>
+<span id="cb2-22"><a href=""></a><span class="st">```</span><span class="at">                           ← 차트가 여기에 자동 삽입</span></span>
+<span id="cb2-23"><a href=""></a></span>
+<span id="cb2-24"><a href=""></a><span class="at">분석 결과, Line C가 가장 높은 수율을 기록했습니다.  ← 텍스트 계속</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>코드 청크 옵션: <code>#| echo: false</code>로 코드 숨기기, <code>#| eval: false</code>로 실행 안 하기</p>
+</div>
+</div>
+</div>
+</section>
+<section id="quarto-vs-기존-방식-비교" class="slide level2">
+<h2>Quarto vs 기존 방식 비교</h2>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top">
+<caption>Quarto vs 기존 보고서 작성 방식</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">항목</th>
+<th style="text-align: center;">기존방식</th>
+<th style="text-align: center;">Quarto</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">데이터 변경 시</td>
+<td style="text-align: center;">수동 재작업</td>
+<td style="text-align: center;">자동 재렌더링</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">차트 업데이트</td>
+<td style="text-align: center;">복붙 반복</td>
+<td style="text-align: center;">자동 생성</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">숫자 오타</td>
+<td style="text-align: center;">발생 가능</td>
+<td style="text-align: center;">코드로 방지</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">협업</td>
+<td style="text-align: center;">파일 이메일</td>
+<td style="text-align: center;">Git으로 협업</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">버전 관리</td>
+<td style="text-align: center;">파일명_최종2_진짜최종</td>
+<td style="text-align: center;">Git 커밋 이력</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><br></p>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>핵심 차이점</strong></p>
+</div>
+<div class="callout-content">
+<p>기존 방식에서 “데이터가 바뀌었습니다”는 <strong>반나절~하루</strong>의 재작업을 의미합니다. Quarto에서는 터미널에서 <code>quarto render</code> 입력 후 <strong>커피 한 잔</strong> 마시면 됩니다.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="실습-디스플레이-공정-단계별-불량률-분포" class="slide level2">
+<h2>실습 — 디스플레이 공정 단계별 불량률 분포</h2>
+<p>공정 분석 보고서에 바로 넣을 수 있는 차트:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb3-2"><a href=""></a></span>
+<span id="cb3-3"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">99</span>)</span>
+<span id="cb3-4"><a href=""></a>process_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb3-5"><a href=""></a>  <span class="at">Step =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"포토"</span>, <span class="st">"식각"</span>, <span class="st">"증착"</span>, <span class="st">"세정"</span>, <span class="st">"검사"</span>), <span class="at">each =</span> <span class="dv">30</span>),</span>
+<span id="cb3-6"><a href=""></a>  <span class="at">DefectRate =</span> <span class="fu">c</span>(</span>
+<span id="cb3-7"><a href=""></a>    <span class="fu">rnorm</span>(<span class="dv">30</span>, <span class="fl">2.1</span>, <span class="fl">0.3</span>), <span class="fu">rnorm</span>(<span class="dv">30</span>, <span class="fl">1.8</span>, <span class="fl">0.4</span>),</span>
+<span id="cb3-8"><a href=""></a>    <span class="fu">rnorm</span>(<span class="dv">30</span>, <span class="fl">3.2</span>, <span class="fl">0.6</span>), <span class="fu">rnorm</span>(<span class="dv">30</span>, <span class="fl">0.8</span>, <span class="fl">0.2</span>),</span>
+<span id="cb3-9"><a href=""></a>    <span class="fu">rnorm</span>(<span class="dv">30</span>, <span class="fl">0.5</span>, <span class="fl">0.1</span>)</span>
+<span id="cb3-10"><a href=""></a>  )</span>
+<span id="cb3-11"><a href=""></a>)</span>
+<span id="cb3-12"><a href=""></a></span>
+<span id="cb3-13"><a href=""></a><span class="fu">ggplot</span>(process_data, <span class="fu">aes</span>(<span class="at">x =</span> Step, <span class="at">y =</span> DefectRate, <span class="at">fill =</span> Step)) <span class="sc">+</span></span>
+<span id="cb3-14"><a href=""></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">outlier.color =</span> <span class="st">"#E74C3C"</span>) <span class="sc">+</span></span>
+<span id="cb3-15"><a href=""></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">13</span>) <span class="sc">+</span></span>
+<span id="cb3-16"><a href=""></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">"Set2"</span>) <span class="sc">+</span></span>
+<span id="cb3-17"><a href=""></a>  <span class="fu">labs</span>(</span>
+<span id="cb3-18"><a href=""></a>    <span class="at">title =</span> <span class="st">"공정 단계별 불량률 분포"</span>,</span>
+<span id="cb3-19"><a href=""></a>    <span class="at">subtitle =</span> <span class="st">"증착 공정에서 불량률 가장 높고 변동성도 큼 — 집중 개선 필요"</span>,</span>
+<span id="cb3-20"><a href=""></a>    <span class="at">y =</span> <span class="st">"불량률 (%)"</span>, <span class="at">x =</span> <span class="st">"공정 단계"</span></span>
+<span id="cb3-21"><a href=""></a>  ) <span class="sc">+</span></span>
+<span id="cb3-22"><a href=""></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+</div>
+<img data-src="lecture_07_files/figure-revealjs/unnamed-chunk-2-1.png" width="864" class="r-stretch"></section>
+<section id="디스플레이-불량-원인-파레토-차트" class="slide level2">
+<h2>디스플레이 불량 원인 파레토 차트</h2>
+<p>어느 원인부터 잡아야 할까? 파레토 법칙: 상위 20% 원인이 80% 문제를 만든다.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb4-2"><a href=""></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb4-3"><a href=""></a></span>
+<span id="cb4-4"><a href=""></a>defects <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb4-5"><a href=""></a>  <span class="at">Cause =</span> <span class="fu">c</span>(<span class="st">"이물질"</span>, <span class="st">"스크래치"</span>, <span class="st">"얼라인불량"</span>, <span class="st">"색얼룩"</span>, <span class="st">"단선"</span>, <span class="st">"기타"</span>),</span>
+<span id="cb4-6"><a href=""></a>  <span class="at">Count =</span> <span class="fu">c</span>(<span class="dv">45</span>, <span class="dv">32</span>, <span class="dv">28</span>, <span class="dv">19</span>, <span class="dv">12</span>, <span class="dv">8</span>)</span>
+<span id="cb4-7"><a href=""></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-8"><a href=""></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Count)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-9"><a href=""></a>  <span class="fu">mutate</span>(</span>
+<span id="cb4-10"><a href=""></a>    <span class="at">Cause =</span> <span class="fu">factor</span>(Cause, <span class="at">levels =</span> Cause),</span>
+<span id="cb4-11"><a href=""></a>    <span class="at">CumPct =</span> <span class="fu">cumsum</span>(Count) <span class="sc">/</span> <span class="fu">sum</span>(Count) <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb4-12"><a href=""></a>  )</span>
+<span id="cb4-13"><a href=""></a></span>
+<span id="cb4-14"><a href=""></a><span class="fu">ggplot</span>(defects, <span class="fu">aes</span>(<span class="at">x =</span> Cause)) <span class="sc">+</span></span>
+<span id="cb4-15"><a href=""></a>  <span class="fu">geom_bar</span>(<span class="fu">aes</span>(<span class="at">y =</span> Count), <span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">fill =</span> <span class="st">"#2E75B6"</span>, <span class="at">width =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb4-16"><a href=""></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> CumPct <span class="sc">*</span> <span class="fu">max</span>(Count) <span class="sc">/</span> <span class="dv">100</span>, <span class="at">group =</span> <span class="dv">1</span>),</span>
+<span id="cb4-17"><a href=""></a>            <span class="at">color =</span> <span class="st">"#E74C3C"</span>, <span class="at">linewidth =</span> <span class="fl">1.2</span>) <span class="sc">+</span></span>
+<span id="cb4-18"><a href=""></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y =</span> CumPct <span class="sc">*</span> <span class="fu">max</span>(Count) <span class="sc">/</span> <span class="dv">100</span>),</span>
+<span id="cb4-19"><a href=""></a>             <span class="at">color =</span> <span class="st">"#E74C3C"</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb4-20"><a href=""></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fl">0.8</span> <span class="sc">*</span> <span class="fu">max</span>(defects<span class="sc">$</span>Count),</span>
+<span id="cb4-21"><a href=""></a>             <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"gray50"</span>) <span class="sc">+</span></span>
+<span id="cb4-22"><a href=""></a>  <span class="fu">scale_y_continuous</span>(</span>
+<span id="cb4-23"><a href=""></a>    <span class="at">name =</span> <span class="st">"불량 건수"</span>,</span>
+<span id="cb4-24"><a href=""></a>    <span class="at">sec.axis =</span> <span class="fu">sec_axis</span>(<span class="sc">~</span> . <span class="sc">/</span> <span class="fu">max</span>(defects<span class="sc">$</span>Count) <span class="sc">*</span> <span class="dv">100</span>, <span class="at">name =</span> <span class="st">"누적 비율 (%)"</span>)</span>
+<span id="cb4-25"><a href=""></a>  ) <span class="sc">+</span></span>
+<span id="cb4-26"><a href=""></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">13</span>) <span class="sc">+</span></span>
+<span id="cb4-27"><a href=""></a>  <span class="fu">labs</span>(</span>
+<span id="cb4-28"><a href=""></a>    <span class="at">title =</span> <span class="st">"디스플레이 불량 원인 파레토 차트"</span>,</span>
+<span id="cb4-29"><a href=""></a>    <span class="at">subtitle =</span> <span class="st">"이물질 + 스크래치 + 얼라인불량 = 전체 불량의 73% — 이 3가지가 핵심"</span>,</span>
+<span id="cb4-30"><a href=""></a>    <span class="at">x =</span> <span class="st">"불량 원인"</span></span>
+<span id="cb4-31"><a href=""></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+</div>
+<img data-src="lecture_07_files/figure-revealjs/unnamed-chunk-3-1.png" width="864" class="r-stretch"></section>
+<section id="quarto-출력-형식-전환" class="slide level2" data-auto-animate="true">
+<h2 data-id="quarto-animate-title">Quarto 출력 형식 전환</h2>
+<p>하나의 <code>.qmd</code> 파일, 최소한의 수정으로 여러 형식 출력:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource yaml number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode yaml hljs"><span id="cb5-1" class="hljs-ln-code"><a href=""></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb5-2" class="hljs-ln-code"><a href=""></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span><span class="at"> default</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="quarto-출력-형식-전환-1" class="slide level2" data-auto-animate="true">
+<h2 data-id="quarto-animate-title">Quarto 출력 형식 전환</h2>
+<p>하나의 <code>.qmd</code> 파일, 최소한의 수정으로 여러 형식 출력:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource yaml number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode yaml hljs"><span id="cb6-1" class="hljs-ln-code"><a href=""></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb6-2" class="hljs-ln-code"><a href=""></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span><span class="at"> default</span></span>
+<span id="cb6-3" class="hljs-ln-code"><a href=""></a><span class="at">  </span><span class="fu">pdf</span><span class="kw">:</span><span class="at"> default</span></span>
+<span id="cb6-4" class="hljs-ln-code"><a href=""></a><span class="at">  </span><span class="fu">revealjs</span><span class="kw">:</span><span class="at"> default</span></span>
+<span id="cb6-5" class="hljs-ln-code"><a href=""></a><span class="at">  </span><span class="fu">docx</span><span class="kw">:</span><span class="at"> default</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<p><strong>단 4줄 추가</strong>로 같은 내용이 HTML 보고서, PDF, 슬라이드, Word로 동시 출력됩니다.</p>
+</div>
+</section>
+<section id="github-pages-배포-보고서를-웹에-공개" class="slide level2">
+<h2>GitHub Pages 배포 — 보고서를 웹에 공개</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<h3 id="quarto.yml-설정"><code>_quarto.yml</code> 설정</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb7-1"><a href=""></a><span class="fu">project</span><span class="kw">:</span></span>
+<span id="cb7-2"><a href=""></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> website</span></span>
+<span id="cb7-3"><a href=""></a><span class="at">  </span><span class="fu">output-dir</span><span class="kw">:</span><span class="at"> docs</span></span>
+<span id="cb7-4"><a href=""></a></span>
+<span id="cb7-5"><a href=""></a><span class="fu">website</span><span class="kw">:</span></span>
+<span id="cb7-6"><a href=""></a><span class="at">  </span><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"디스플레이 공정 분석 허브"</span></span>
+<span id="cb7-7"><a href=""></a><span class="at">  </span><span class="fu">navbar</span><span class="kw">:</span></span>
+<span id="cb7-8"><a href=""></a><span class="at">    </span><span class="fu">left</span><span class="kw">:</span></span>
+<span id="cb7-9"><a href=""></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">href</span><span class="kw">:</span><span class="at"> index.qmd</span></span>
+<span id="cb7-10"><a href=""></a><span class="at">        </span><span class="fu">text</span><span class="kw">:</span><span class="at"> 홈</span></span>
+<span id="cb7-11"><a href=""></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">href</span><span class="kw">:</span><span class="at"> monthly_report.qmd</span></span>
+<span id="cb7-12"><a href=""></a><span class="at">        </span><span class="fu">text</span><span class="kw">:</span><span class="at"> 월간 보고서</span></span>
+<span id="cb7-13"><a href=""></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">href</span><span class="kw">:</span><span class="at"> yield_analysis.qmd</span></span>
+<span id="cb7-14"><a href=""></a><span class="at">        </span><span class="fu">text</span><span class="kw">:</span><span class="at"> 수율 분석</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<h3 id="렌더링-배포">렌더링 &amp; 배포</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href=""></a><span class="ex">quarto</span> render</span>
+<span id="cb8-2"><a href=""></a><span class="fu">git</span> add docs/</span>
+<span id="cb8-3"><a href=""></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"보고서 업데이트: 2024-12월"</span></span>
+<span id="cb8-4"><a href=""></a><span class="fu">git</span> push</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:45%;">
+<h3 id="github-pages-설정">GitHub Pages 설정</h3>
+<ol type="1">
+<li>GitHub 리포 → <strong>Settings</strong></li>
+<li><strong>Pages</strong> 섹션으로 이동</li>
+<li>Source: <strong>Deploy from branch</strong></li>
+<li>Branch: <code>main</code> / Folder: <code>/docs</code></li>
+<li><strong>Save</strong></li>
+</ol>
+<div class="fragment">
+<pre><code>https://YOUR_ID.github.io/display-report/</code></pre>
+<p><strong>완료. 팀 전체가 URL 하나로 최신 보고서 열람 가능.</strong></p>
+</div>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>GitHub Pages는 <strong>완전 무료</strong>. 공개 레포 기준 무제한 호스팅.</p>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="코드-청크-옵션-마스터하기" class="slide level2">
+<h2>코드 청크 옵션 마스터하기</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb10-1"><a href=""></a><span class="in">```{r}</span></span>
+<span id="cb10-2"><a href=""></a><span class="co">#| label: yield-trend-chart      # 차트 ID (교차 참조에 사용)</span></span>
+<span id="cb10-3"><a href=""></a><span class="co">#| echo: false                   # 코드 숨김, 차트만 출력</span></span>
+<span id="cb10-4"><a href=""></a><span class="co">#| fig-width: 10                 # 너비 설정</span></span>
+<span id="cb10-5"><a href=""></a><span class="co">#| fig-height: 5                 # 높이 설정</span></span>
+<span id="cb10-6"><a href=""></a><span class="co">#| fig-cap: "라인별 월간 수율 트렌드"  # 캡션</span></span>
+<span id="cb10-7"><a href=""></a><span class="co">#| cache: true                   # 결과 캐싱 (느린 계산에 유용)</span></span>
+<span id="cb10-8"><a href=""></a></span>
+<span id="cb10-9"><a href=""></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb10-10"><a href=""></a><span class="co"># 차트 코드...</span></span>
+<span id="cb10-11"><a href=""></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><br></p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>자주 쓰는 옵션:</strong></p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>옵션</th>
+<th>값</th>
+<th>의미</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>echo</code></td>
+<td>true/false</td>
+<td>코드 표시 여부</td>
+</tr>
+<tr class="even">
+<td><code>eval</code></td>
+<td>true/false</td>
+<td>코드 실행 여부</td>
+</tr>
+<tr class="odd">
+<td><code>warning</code></td>
+<td>true/false</td>
+<td>경고 표시</td>
+</tr>
+<tr class="even">
+<td><code>cache</code></td>
+<td>true/false</td>
+<td>결과 캐싱</td>
+</tr>
+</tbody>
+</table>
+</div><div class="column" style="width:50%;">
+<p><strong>보고서용 권장 전역 설정:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb11-1"><a href=""></a><span class="fu">execute</span><span class="kw">:</span></span>
+<span id="cb11-2"><a href=""></a><span class="at">  </span><span class="fu">echo</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span>
+<span id="cb11-3"><a href=""></a><span class="at">  </span><span class="fu">warning</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span>
+<span id="cb11-4"><a href=""></a><span class="at">  </span><span class="fu">message</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span>
+<span id="cb11-5"><a href=""></a><span class="at">  </span><span class="fu">cache</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>모든 청크에 개별로 쓰는 대신 YAML 헤더에 한 번에 설정.</p>
+</div></div>
+</section>
+<section id="인라인-코드-숫자-오타-방지" class="slide level2">
+<h2>인라인 코드 — 숫자 오타 방지</h2>
+<p>보고서에서 숫자가 틀리는 가장 큰 이유: 수동 입력.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>기존 방식 (위험):</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb12-1"><a href=""></a>이번 달 평균 수율은 96.2%이며</span>
+<span id="cb12-2"><a href=""></a>전월 대비 0.3%p 향상되었습니다.</span>
+<span id="cb12-3"><a href=""></a>총 불량 건수는 144건입니다.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>데이터가 바뀌면? 숫자를 찾아서 수동 수정. 실수 필연적.</p>
+</div><div class="column" style="width:50%;">
+<p><strong>Quarto 인라인 코드 (안전):</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb13-1"><a href=""></a>이번 달 평균 수율은</span>
+<span id="cb13-2"><a href=""></a>96.3%이며</span>
+<span id="cb13-3"><a href=""></a>전월 대비</span>
+<span id="cb13-4"><a href=""></a>0.3%p</span>
+<span id="cb13-5"><a href=""></a>향상되었습니다.</span>
+<span id="cb13-6"><a href=""></a>총 불량 건수는</span>
+<span id="cb13-7"><a href=""></a>5건입니다.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>데이터가 바뀌면? <strong>자동으로 숫자도 업데이트.</strong></p>
+</div></div>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Important</strong></p>
+</div>
+<div class="callout-content">
+<p>인라인 코드(backtick r expression backtick)는 Quarto 보고서에서 <strong>가장 강력한 기능</strong> 중 하나입니다. 숫자 한 개도 수동으로 입력하지 마세요.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="마무리-이-슬라이드가-바로-quarto다" class="slide level2">
+<h2>마무리 — 이 슬라이드가 바로 Quarto다</h2>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>지금 보고 있는 것</strong></p>
+</div>
+<div class="callout-content">
+<p>이 강의 자료 자체가 <strong>Quarto RevealJS</strong>로 만들어진 것입니다.</p>
+<p>R 코드 청크 → 차트 자동 생성 마크다운 텍스트 → 슬라이드 레이아웃 YAML 헤더 → RevealJS 테마 설정</p>
+<p><code>quarto render lecture_07.qmd</code> 한 번으로 이 모든 슬라이드가 생성됩니다.</p>
+</div>
+</div>
+</div>
+<p><br></p>
+<div class="columns">
+<div class="column" style="width:60%;">
+<h3 id="오늘-배운-것">오늘 배운 것</h3>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>기능</th>
+<th>활용</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>.qmd 구조</td>
+<td>YAML + 마크다운 + 코드 청크</td>
+</tr>
+<tr class="even">
+<td>코드 청크 옵션</td>
+<td>echo/eval/cache/fig-cap</td>
+</tr>
+<tr class="odd">
+<td>인라인 코드</td>
+<td>자동 숫자 업데이트</td>
+</tr>
+<tr class="even">
+<td>파레토 차트</td>
+<td>불량 원인 우선순위</td>
+</tr>
+<tr class="odd">
+<td>GitHub Pages</td>
+<td>무료 보고서 웹 배포</td>
+</tr>
+</tbody>
+</table>
+</div><div class="column" style="width:40%;">
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>과제</strong></p>
+</div>
+<div class="callout-content">
+<ol type="1">
+<li>월간 수율 보고서 <code>.qmd</code> 작성</li>
+<li><code>quarto render</code>로 HTML 출력</li>
+<li>GitHub Pages 배포 URL 제출</li>
+<li><strong>보너스</strong>: PDF 형식으로도 동시 출력</li>
+</ol>
+</div>
+</div>
+</div>
+<p><strong>다음 강의 예고</strong> — 8강</p>
+<p>Google AI Studio + Gemini API 챗봇</p>
+<p>“하루 1,500회 무료 — AI를 내 앱에 심는 방법”</p>
+</div></div>
+
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+<p>렛유인 KDC | AI 바이브 코딩 실전 | 7강</p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="lecture_07_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="lecture_07_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="lecture_07_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="lecture_07_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="lecture_07_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="lecture_07_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="lecture_07_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="lecture_07_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="lecture_07_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="lecture_07_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="lecture_07_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': true,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'slide',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'fade',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1280,
+
+        height: 720,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+
+    <script>
+
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+
+      // slide changes (different for each slide format).
+
+      (function () {
+
+        // dispatch for htmlwidgets
+
+        function fireSlideEnter() {
+
+          const event = window.document.createEvent("Event");
+
+          event.initEvent("slideenter", true, true);
+
+          window.document.dispatchEvent(event);
+
+        }
+
+    
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+
+          fireSlideEnter();
+
+    
+
+          // dispatch for shiny
+
+          if (window.jQuery) {
+
+            if (previousSlide) {
+
+              window.jQuery(previousSlide).trigger("hidden");
+
+            }
+
+            if (currentSlide) {
+
+              window.jQuery(currentSlide).trigger("shown");
+
+            }
+
+          }
+
+        }
+
+    
+
+        // hookup for slidy
+
+        if (window.w3c_slidy) {
+
+          window.w3c_slidy.add_observer(function (slide_num) {
+
+            // slide_num starts at position 1
+
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+
+          });
+
+        }
+
+    
+
+      })();
+
+    </script>
+
+    
+
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

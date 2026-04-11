@@ -649,7 +649,7 @@ else:
 → 코드는 같고, 키만 본인 것 사용
 ```
 
-::: {.callout-important title="팀 보안 규칙">
+::: {.callout-important title="팀 보안 규칙"}
 API Key는 절대 Slack/카카오톡으로 공유하지 않습니다. 암호화된 비밀 관리 도구(예: 1Password Team, Vault)를 사용하거나 직접 전달합니다.
 :::
 :::

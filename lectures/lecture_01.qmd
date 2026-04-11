@@ -62,8 +62,8 @@ format:
 
 ::: {.columns}
 
-::: {.column width="33%"}
-::: {style="background: #2D3748; padding: 20px; border-radius: 10px; text-align: center; border-top: 4px solid #3B82F6;"}
+::: {.column width="32%"}
+::: {style="background: #2D3748; padding: 20px; border-radius: 10px; text-align: center; border-top: 4px solid #3B82F6; min-height: 350px;"}
 ### 1. 지시
 *"삼성 디스플레이 수율 분석 대시보드 만들어줘"*
 
@@ -71,8 +71,8 @@ format:
 :::
 :::
 
-::: {.column width="33%"}
-::: {style="background: #2D3748; padding: 20px; border-radius: 10px; text-align: center; border-top: 4px solid #F59E0B;"}
+::: {.column width="32%"}
+::: {style="background: #2D3748; padding: 20px; border-radius: 10px; text-align: center; border-top: 4px solid #F59E0B; min-height: 350px;"}
 ### 2. 생성
 AI가 코드를 작성한다.
 
@@ -80,8 +80,8 @@ Python, R, HTML 전부. 에러도 스스로 고친다.
 :::
 :::
 
-::: {.column width="33%"}
-::: {style="background: #2D3748; padding: 20px; border-radius: 10px; text-align: center; border-top: 4px solid #10B981;"}
+::: {.column width="32%"}
+::: {style="background: #2D3748; padding: 20px; border-radius: 10px; text-align: center; border-top: 4px solid #10B981; min-height: 350px;"}
 ### 3. 검토 & 배포
 결과물을 확인하고 수정 지시만 한다.
 
@@ -89,8 +89,7 @@ GitHub에 배포까지 AI가 한다.
 :::
 :::
 
-:::
-
+::: 
 ::: {style="margin-top: 30px; text-align: center; font-size: 1.1em; color: #F6E05E;"}
 **당신의 역할**: 방향을 정하고, 결과를 판단하고, 다음 질문을 던진다.
 :::
@@ -105,30 +104,24 @@ GitHub에 배포까지 AI가 한다.
 
 ::: {.columns}
 
-::: {.column width="33%"}
-::: {style="background: #2D3748; padding: 20px; border-radius: 10px; text-align: center; border-top: 4px solid #3B82F6;"}
+::: {.column width="32%"}
+::: {style="background: #2D3748; padding: 20px; border-radius: 10px; text-align: center; border-top: 4px solid #3B82F6; min-height: 250px;"}
 ### 1. 지시
 *"삼성 디스플레이 수율 분석 대시보드 만들어줘"*
-
-자연어로 말한다. 코드 몰라도 된다.
 :::
 :::
 
-::: {.column width="33%"}
-::: {style="background: #2D3748; padding: 20px; border-radius: 10px; text-align: center; border-top: 4px solid #F59E0B;"}
+::: {.column width="32%"}
+::: {style="background: #2D3748; padding: 20px; border-radius: 10px; text-align: center; border-top: 4px solid #F59E0B; min-height: 250px;"}
 ### 2. 생성
 AI가 코드를 작성한다.
-
-Python, R, HTML 전부. 에러도 스스로 고친다.
 :::
 :::
 
-::: {.column width="33%"}
-::: {style="background: #2D3748; padding: 20px; border-radius: 10px; text-align: center; border-top: 4px solid #10B981;"}
+::: {.column width="32%"}
+::: {style="background: #2D3748; padding: 20px; border-radius: 10px; text-align: center; border-top: 4px solid #10B981; min-height: 250px;"}
 ### 3. 검토 & 배포
 결과물을 확인하고 수정 지시만 한다.
-
-GitHub에 배포까지 AI가 한다.
 :::
 :::
 
