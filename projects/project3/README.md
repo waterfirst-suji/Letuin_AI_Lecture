@@ -1,129 +1,153 @@
-# 🎯 프로젝트 3 — 나만의 AI 디스플레이 도구 (최종 프로젝트)
+# 프로젝트 3 — AI 엔지니어링 솔루션 (최종 프로젝트)
 
-> **제출 시기**: 16강 후 2주일 이내
-> **주요 도구**: 이 강의에서 배운 기술 중 3가지 이상 조합
+> **수행 기간**: 주말 2일간 (최종 프로젝트)
+> **주요 도구**: Gemini API + Streamlit + Telegram Bot + 자유 조합 (3가지 이상)
 
-## 공통 주제
+## 프로젝트 개요
 
-이 강의에서 배운 기술 중 최소 3가지를 조합하여 디스플레이 산업의 실제 문제를 해결하는 AI 도구를 만드시오.
+이 강의에서 배운 기술을 **3가지 이상** 조합하여 실제 산업 문제를 해결하는 AI 솔루션을 만드세요.
+단순한 실습이 아니라 **실제로 쓸 수 있는 완성품**을 목표로 합니다.
 
-### 주제 아이디어 (자유 선택)
-- 디스플레이 설비 이상 감지 + 텔레그램 알람 시스템
-- 공정 파라미터 최적화 AI 어드바이저
-- 디스플레이 특허/논문 키워드 분석 봇
-- OLED 소재 배합 시뮬레이터 + 색역 예측
-- 디스플레이 기술 면접 Q&A 챗봇
+---
 
-### 선택 가능한 기술 스택
+## 주제 아이디어
+
+| 산업 | 주제 예시 |
+|------|----------|
+| 반도체 | 웨이퍼 맵 불량 패턴 분류기 + 알림 |
+| 디스플레이 | 설비 이상 감지 + 텔레그램 리포트 |
+| 2차전지 | 배터리 수명 예측 + 최적 충전 가이드 |
+| 바이오 | 임상시험 데이터 자동 요약 챗봇 |
+| 에너지 | 태양광 발전량 예측 대시보드 |
+| 범용 | 특허/논문 키워드 트렌드 분석기 |
+
+---
+
+## 기술 스택 (자유 조합, 3가지 이상 필수)
 
 ```
-✅ Claude Code (개발 도구)
-✅ GitHub + GitHub Actions (코드 관리 & CI/CD)
-✅ Python Streamlit (웹 UI)
-✅ R Shiny (웹 UI)
-✅ Quarto (보고서/문서)
-✅ Google AI Studio / Gemini API (AI 기능)
-✅ Claude API (AI 기능)
-✅ Firebase Studio / Streamlit Cloud (웹앱 플랫폼)
-✅ Telegram Bot (알림/자동화)
+✅ Gemini API          — AI 분석 / 텍스트 생성
+✅ Streamlit           — 웹 UI 대시보드
+✅ Telegram Bot        — 알림 / 자동화
+✅ Python pandas       — 데이터 처리
+✅ Plotly              — 인터랙티브 시각화
+✅ GitHub              — 코드 관리 & 배포
+✅ Streamlit Cloud     — 웹앱 배포 플랫폼
+✅ GitHub Actions      — CI/CD 자동화 (상급)
 ```
 
 ---
 
-## 📊 추천 공개 데이터셋
+## 모범 답안 예시
 
-| 데이터셋 | URL | 활용 예시 |
-|---------|-----|----------|
-| SECOM (UCI) | https://archive.ics.uci.edu/dataset/179/secom | 공정 센서 → 수율 이상 감지 |
-| 공공데이터포털 | https://www.data.go.kr | 제조업 생산/불량 통계 |
-| IEEE DataPort | https://ieee-dataport.org | 실험 기반 센서 데이터 |
-| Kaggle 제조 | https://www.kaggle.com/search?q=manufacturing+yield | 수율 예측 데이터셋 다수 |
+```
+examples/
+├── 하/     ← 공정 모니터링 알림 시스템 (템플릿 기반, 단계별 가이드 포함)
+├── 중/     ← AI 공정 어드바이저 (자유 주제, 방향 제시)
+└── 상/     ← 스마트 팩토리 통합 대시보드 (포트폴리오 수준)
+```
+
+> 모범 답안은 **실행 가능한 완성 코드**입니다.  
+> 직접 `streamlit run app.py`로 실행해 보고 참고하세요.
 
 ---
 
-## [하] 난이도 — 단계별 가이드 제공
+## [하] 난이도 — 공정 모니터링 알림 시스템
 
-**추천 구성**: Streamlit + Gemini API + 텔레그램 봇
+**핵심 기술**: Streamlit + 시뮬레이션 센서 데이터 + Telegram Bot
 
-### Step 1: 아이디어 구체화
-
-Claude에게 다음을 질문하세요:
+### 구성 파일
 ```
-나는 디스플레이 [주제] 관련 AI 도구를 만들고 싶어.
-필요한 기능 5가지, 기술 스택, 전체 폴더 구조를 제안해줘.
-Streamlit + Gemini API + Telegram Bot 조합으로 만들어줘.
-```
-
-### Step 2: Claude Code로 각 파트 순서대로 생성
-
-```
-프로젝트 폴더/
-├── app.py              ← Streamlit UI
-├── ai_utils.py         ← Gemini API 함수
-├── telegram_bot.py     ← 텔레그램 봇
-├── .env                ← API Key (GitHub에 올리지 말 것!)
-├── .gitignore
-└── requirements.txt
+examples/하/
+├── app.py              ← Streamlit 대시보드 (게이지, 라인 차트, 상태 표시)
+├── telegram_bot.py     ← 임계값 초과 시 텔레그램 알림 전송
+├── requirements.txt
+└── .env.example
 ```
 
-Claude Code에 순서대로 요청:
-1. `"app.py 파일 만들어줘 — Streamlit으로 [주제] UI"`
-2. `"ai_utils.py 만들어줘 — Gemini API 연동"`
-3. `"telegram_bot.py 만들어줘 — 수율 임계값 초과 시 알람"`
-4. `"requirements.txt와 .gitignore 만들어줘"`
-
-### Step 3: 배포
-
+### 실행 방법
 ```bash
-# GitHub push
-git add app.py ai_utils.py telegram_bot.py requirements.txt .gitignore
-git commit -m "Add AI display monitoring system"
-git push
-
-# Streamlit Cloud 배포
-# share.streamlit.io에서 Repository 연결 → Deploy
+cd examples/하
+pip install -r requirements.txt
+cp .env.example .env
+# .env 파일에 BOT_TOKEN, CHAT_ID 입력
+streamlit run app.py
 ```
 
-**제출**: 배포 URL + GitHub Repository URL + 30초 데모 영상 (선택)
+### 단계별 학습 목표
+1. Streamlit으로 실시간처럼 업데이트되는 대시보드 만들기
+2. 임계값 기반 상태 판단 로직 구현 (정상 / 주의 / 위험)
+3. python-telegram-bot으로 알림 메시지 전송
 
 ---
 
-## [중] 난이도 — 방향 제시
+## [중] 난이도 — AI 공정 어드바이저
 
-### 요구사항
-- 3가지 이상 기술 스택 조합
-- AI API 연동 (Claude 또는 Gemini)
-- 실제 데이터 또는 현실적인 시뮬레이션 데이터 사용
-- 다른 사람이 실제로 사용할 수 있는 완성도
-- README에 사용법 + 기술 스택 + 스크린샷 포함
+**핵심 기술**: Streamlit 멀티페이지 + 데이터 업로드 + AI 분석 + 보고서 생성
 
-### 힌트
-완성도보다 **아이디어의 참신함과 현실성**이 더 중요합니다.
-"이 도구가 실제로 디스플레이 공장에서 유용할까?"를 기준으로 평가합니다.
+### 구성 파일
+```
+examples/중/
+├── app.py              ← 멀티페이지 Streamlit 앱
+├── ai_advisor.py       ← AI 분석 모듈 (Gemini API 연동 구조)
+├── report_generator.py ← 마크다운 보고서 자동 생성
+├── requirements.txt
+└── .env.example
+```
 
-**제출**: 배포 URL + GitHub Repository URL + README 링크
+### 실행 방법
+```bash
+cd examples/중
+pip install -r requirements.txt
+cp .env.example .env
+# .env 파일에 GEMINI_API_KEY 입력
+streamlit run app.py
+```
+
+### 구현 포인트
+- CSV/Excel 파일 업로드 → 자동 시각화
+- AI가 데이터 패턴을 분석하고 한국어로 설명
+- 분석 결과를 마크다운 보고서로 다운로드
 
 ---
 
-## [상] 난이도 — 요구사항만 (힌트 없음)
+## [상] 난이도 — 스마트 팩토리 통합 대시보드
 
-1. 디스플레이 실제 공정/데이터 기반 (논문, 특허, 공개 데이터셋)
-2. 4가지 이상 기술 스택 통합
-3. 자동화 파이프라인 포함 (GitHub Actions 또는 스케줄러)
-4. 다국어 지원 (한국어 + 영어)
-5. 사용자 인증 기능 (선택: Firebase Auth 또는 간단한 비밀번호)
-6. 성능 측정 지표 포함 (응답 시간, API 호출 횟수 등)
-7. 실제 사용자 테스트 후 피드백 반영 (README에 테스트 결과 기록)
+**핵심 기술**: Streamlit 멀티페이지 + 이상 감지 + AI 분석 + 텔레그램 + 커스텀 테마
 
-**제출**: 배포 URL + GitHub URL + 발표 자료 + 2분 데모 영상
+### 구성 파일
+```
+examples/상/
+├── app.py
+├── pages/
+│   ├── 01_실시간_모니터링.py
+│   ├── 02_이상_감지.py
+│   ├── 03_AI_분석.py
+│   └── 04_보고서.py
+├── utils/
+│   ├── data_generator.py   ← 현실적인 합성 공장 데이터
+│   ├── analyzer.py         ← 통계 분석 함수
+│   └── telegram_alert.py   ← 텔레그램 알림 모듈
+├── .streamlit/
+│   └── config.toml         ← 커스텀 테마
+├── requirements.txt
+├── .env.example
+└── README.md
+```
 
----
+### 실행 방법
+```bash
+cd examples/상
+pip install -r requirements.txt
+cp .env.example .env
+streamlit run app.py
+```
 
-## 발표 (16강)
-
-- 발표 시간: **팀/개인당 3분**
-- 발표 순서: 시연 → 기술 설명 → 어려웠던 점
-- 서로 간단한 피드백 교환
+### 구현 포인트
+- Z-score 기반 이상 감지 알고리즘
+- 커스텀 CSS 테마 적용 (프로페셔널 UI)
+- HTML 보고서 자동 생성 및 다운로드
+- 텔레그램 이상 알림 모듈 분리
 
 ---
 
@@ -131,7 +155,21 @@ git push
 
 | 항목 | 배점 | 하 | 중 | 상 |
 |------|------|----|----|-----|
-| 문제 정의의 현실성 | 30% | 기본 | 현실적 | 실제 공정 기반 |
-| 기술 구현 완성도 | 30% | 동작만 | 완성도 있음 | CI/CD 포함 |
-| 배포 및 사용성 | 20% | 배포만 | 사용 가능 | 다국어 + 인증 |
-| GitHub 품질 | 20% | 코드 있음 | README 완성 | 영문 + 테스트 |
+| 문제 정의의 현실성 | 30% | 기본 템플릿 활용 | 현실적 아이디어 | 실제 공정 기반 |
+| 기술 구현 완성도 | 30% | 동작하면 OK | 완성도 있음 | CI/CD 포함 |
+| 배포 및 사용성 | 20% | 로컬 실행 | Streamlit Cloud | 다국어 + 인증 |
+| GitHub 품질 | 20% | 코드 있음 | README 완성 | 영문 README + 테스트 |
+
+---
+
+## 제출 형식
+
+- **하**: GitHub Repository URL + 스크린샷 1장
+- **중**: GitHub Repository URL + README + 스크린샷 2장
+- **상**: GitHub Repository URL + 배포 URL + README + 2분 데모 영상 + 발표 자료
+
+## 발표 (최종강)
+
+- 발표 시간: 팀/개인당 **3분**
+- 순서: 시연 → 기술 설명 → 배운 점
+- 상호 피드백 교환

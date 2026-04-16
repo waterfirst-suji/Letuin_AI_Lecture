@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>박에너 | 2차전지 품질 엔지니어 지망생</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0f1e;
+      --surface: #111827;
+      --surface2: #1f2937;
+      --border: #374151;
+      --accent: #10b981;
+      --accent2: #3b82f6;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', 'Apple SD Gothic Neo', sans-serif;
+      line-height: 1.7;
+    }
+
+    /* Hero */
+    .hero {
+      background: linear-gradient(135deg, #0a0f1e 0%, #0d2137 50%, #0a1a0f 100%);
+      padding: 72px 24px 56px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(16,185,129,0.12) 0%, transparent 70%);
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: rgba(16,185,129,0.15);
+      border: 1px solid rgba(16,185,129,0.4);
+      color: var(--accent);
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-size: 2.4rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+      background: linear-gradient(90deg, #10b981, #3b82f6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero .role {
+      color: var(--muted);
+      font-size: 1rem;
+      margin-bottom: 20px;
+    }
+
+    .hero .slogan {
+      font-size: 1.05rem;
+      color: var(--text);
+      font-style: italic;
+      opacity: 0.85;
+    }
+
+    /* Tab nav */
+    .tabs {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: center;
+      gap: 4px;
+      padding: 8px 16px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      background: none;
+      border: 1px solid transparent;
+      color: var(--muted);
+      padding: 8px 20px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .tab-btn:hover {
+      color: var(--text);
+      background: var(--surface2);
+    }
+
+    .tab-btn.active {
+      color: var(--accent);
+      background: rgba(16,185,129,0.1);
+      border-color: rgba(16,185,129,0.3);
+    }
+
+    /* Panels */
+    .panel {
+      display: none;
+    }
+    .panel.active {
+      display: block;
+    }
+
+    /* Container */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 48px 24px;
+    }
+
+    /* Section title */
+    .section-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .section-sub {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 32px;
+    }
+
+    /* About cards */
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+      margin-bottom: 32px;
+    }
+
+    .info-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px;
+      transition: border-color 0.2s;
+    }
+
+    .info-card:hover { border-color: var(--accent); }
+
+    .info-card .lbl {
+      color: var(--muted);
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-bottom: 5px;
+    }
+
+    .info-card .val {
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    /* Tech list */
+    .tech-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .tech-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .tech-item:hover {
+      border-color: var(--accent2);
+      transform: translateX(4px);
+    }
+
+    .tech-item .num {
+      font-size: 1.6rem;
+      font-weight: 900;
+      background: linear-gradient(90deg, #10b981, #3b82f6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      min-width: 36px;
+    }
+
+    .tech-item h3 {
+      font-size: 0.98rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .tech-item p {
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
+
+    /* Chart area */
+    .chart-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 28px;
+      margin-bottom: 32px;
+    }
+
+    .chart-box h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .chart-box .chart-meta {
+      color: var(--muted);
+      font-size: 0.8rem;
+      margin-bottom: 20px;
+    }
+
+    canvas {
+      max-height: 340px;
+    }
+
+    /* Data table */
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+
+    thead th {
+      background: var(--surface2);
+      padding: 13px 16px;
+      text-align: left;
+      color: var(--muted);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      border-bottom: 1px solid var(--border);
+    }
+
+    tbody td {
+      padding: 13px 16px;
+      border-bottom: 1px solid #1f2937;
+    }
+
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:hover { background: var(--surface); }
+    tbody td:first-child { color: var(--accent); font-weight: 600; }
+
+    .tag {
+      display: inline-block;
+      padding: 2px 9px;
+      border-radius: 10px;
+      font-size: 0.76rem;
+      font-weight: 500;
+    }
+    .tag-green  { background: rgba(16,185,129,0.12); color: #10b981; }
+    .tag-blue   { background: rgba(59,130,246,0.12); color: #3b82f6; }
+    .tag-orange { background: rgba(245,158,11,0.12); color: #f59e0b; }
+    .tag-red    { background: rgba(239,68,68,0.12);  color: #ef4444; }
+
+    /* Source note */
+    .source-note {
+      color: var(--muted);
+      font-size: 0.76rem;
+      margin-top: 10px;
+      text-align: right;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 28px;
+      color: #4b5563;
+      font-size: 0.8rem;
+      border-top: 1px solid var(--border);
+    }
+
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 1.8rem; }
+      .tab-btn { padding: 7px 13px; font-size: 0.82rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hero -->
+  <header class="hero">
+    <div class="hero-badge">2차전지 · 에너지 산업</div>
+    <h1>박에너</h1>
+    <div class="role">재료공학과 4학년 · 2차전지 품질 엔지니어 지망</div>
+    <div class="slogan">"데이터로 배터리의 미래를 설계한다"</div>
+  </header>
+
+  <!-- Tab nav -->
+  <nav class="tabs">
+    <button class="tab-btn active" onclick="showTab('about')">자기소개</button>
+    <button class="tab-btn" onclick="showTab('tech')">관심 기술</button>
+    <button class="tab-btn" onclick="showTab('chart')">산업 분석 차트</button>
+    <button class="tab-btn" onclick="showTab('data')">데이터 테이블</button>
+  </nav>
+
+  <main>
+
+    <!-- Panel: 자기소개 -->
+    <div class="panel active" id="panel-about">
+      <div class="container">
+        <div class="section-title">자기소개</div>
+        <div class="section-sub">2차전지 품질 관리와 데이터 분석에 관심 있는 재료공학도입니다.</div>
+        <div class="info-grid">
+          <div class="info-card"><div class="lbl">이름</div><div class="val">박에너</div></div>
+          <div class="info-card"><div class="lbl">전공</div><div class="val">재료공학과 4학년</div></div>
+          <div class="info-card"><div class="lbl">관심 직무</div><div class="val">2차전지 품질 엔지니어</div></div>
+          <div class="info-card"><div class="lbl">목표 회사</div><div class="val">LG에너지솔루션</div></div>
+          <div class="info-card"><div class="lbl">관심 소재</div><div class="val">NMC 양극재 / 실리콘 음극</div></div>
+          <div class="info-card"><div class="lbl">보유 스킬</div><div class="val">Python, SEM 분석</div></div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;">
+          <p style="color:var(--muted);font-size:0.9rem;">
+            재료공학을 공부하며 배터리 소재의 물성과 공정 간 상관관계에 관심을 갖게 되었습니다.
+            특히 양극재 조성 변화가 에너지 밀도와 사이클 수명에 미치는 영향을 연구하고 있으며,
+            졸업 후 품질 엔지니어로서 불량 분석과 공정 개선에 기여하고 싶습니다.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel: 관심 기술 -->
+    <div class="panel" id="panel-tech">
+      <div class="container">
+        <div class="section-title">관심 기술 TOP 3</div>
+        <div class="section-sub">2차전지 분야에서 반드시 익혀야 할 핵심 기술들입니다.</div>
+        <div class="tech-list">
+          <div class="tech-item">
+            <div class="num">01</div>
+            <div>
+              <h3>EIS (전기화학 임피던스 분광법)</h3>
+              <p>배터리 내부 저항과 전하 이동 저항을 측정해 열화 상태를 정량화하는 비파괴 분석법. 품질 관리의 핵심 도구로 현장에서 가장 많이 쓰입니다.</p>
+            </div>
+          </div>
+          <div class="tech-item">
+            <div class="num">02</div>
+            <div>
+              <h3>인라인 품질 모니터링 (SPC)</h3>
+              <p>통계적 공정 관리(Statistical Process Control)를 적용해 전극 코팅 두께·밀도 편차를 실시간 감지. 수율 향상의 직접적 수단입니다.</p>
+            </div>
+          </div>
+          <div class="tech-item">
+            <div class="num">03</div>
+            <div>
+              <h3>고에너지 밀도 양극재 (NMC/NCMA)</h3>
+              <p>니켈 고함량 NMC(Ni ≥ 80%) 및 알루미늄 도핑 NCMA 소재. 에너지 밀도를 높이면서 열 안정성을 확보하는 차세대 양극재 설계 기술입니다.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel: 산업 분석 차트 -->
+    <div class="panel" id="panel-chart">
+      <div class="container">
+        <div class="section-title">2차전지 양극재별 에너지 밀도 비교</div>
+        <div class="section-sub">주요 양극재의 이론 용량 및 에너지 밀도 비교 (2024년 기준 대표 수치)</div>
+
+        <div class="chart-box">
+          <h3>양극재별 이론 용량 비교 (mAh/g)</h3>
+          <div class="chart-meta">출처: 국내외 배터리 소재 기술 보고서 및 학술 자료 기반 정리 (2023–2024)</div>
+          <canvas id="barChart"></canvas>
+          <div class="source-note">* 이론 용량은 소재 종류 및 합성 조건에 따라 달라질 수 있음</div>
+        </div>
+
+        <div class="chart-box">
+          <h3>EV 배터리 팩 에너지 밀도 연도별 트렌드 (Wh/kg)</h3>
+          <div class="chart-meta">주요 완성차 및 배터리 제조사 공개 데이터 기반 추정치</div>
+          <canvas id="lineChart"></canvas>
+          <div class="source-note">* 실제 수치는 제조사/모델별 상이할 수 있음</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel: 데이터 테이블 -->
+    <div class="panel" id="panel-data">
+      <div class="container">
+        <div class="section-title">주요 양극재 소재 비교표</div>
+        <div class="section-sub">2차전지 양극재별 특성 및 주요 적용 분야 정리</div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>양극재</th>
+                <th>이론 용량 (mAh/g)</th>
+                <th>평균 전압 (V)</th>
+                <th>열 안정성</th>
+                <th>주요 용도</th>
+                <th>상용화</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>LCO (리튬 코발트)</td>
+                <td>274</td>
+                <td>3.9</td>
+                <td><span class="tag tag-orange">보통</span></td>
+                <td>스마트폰, 노트북</td>
+                <td><span class="tag tag-green">성숙</span></td>
+              </tr>
+              <tr>
+                <td>NMC 622</td>
+                <td>280</td>
+                <td>3.8</td>
+                <td><span class="tag tag-blue">양호</span></td>
+                <td>EV, ESS</td>
+                <td><span class="tag tag-green">성숙</span></td>
+              </tr>
+              <tr>
+                <td>NMC 811</td>
+                <td>300</td>
+                <td>3.8</td>
+                <td><span class="tag tag-orange">주의</span></td>
+                <td>고에너지 EV</td>
+                <td><span class="tag tag-blue">확산</span></td>
+              </tr>
+              <tr>
+                <td>NCMA</td>
+                <td>295</td>
+                <td>3.85</td>
+                <td><span class="tag tag-blue">양호</span></td>
+                <td>차세대 EV</td>
+                <td><span class="tag tag-blue">확산</span></td>
+              </tr>
+              <tr>
+                <td>LFP (리튬인산철)</td>
+                <td>170</td>
+                <td>3.2</td>
+                <td><span class="tag tag-green">우수</span></td>
+                <td>ESS, 보급형 EV</td>
+                <td><span class="tag tag-green">성숙</span></td>
+              </tr>
+              <tr>
+                <td>LNMO (고전압 망간)</td>
+                <td>147</td>
+                <td>4.7</td>
+                <td><span class="tag tag-blue">양호</span></td>
+                <td>차세대 고전압</td>
+                <td><span class="tag tag-orange">개발 중</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="source-note" style="margin-top:12px;">출처: SNE Research, KEIT 기술보고서, 각사 IR 자료 (2024)</div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>박에너의 2차전지 엔지니어링 포트폴리오 · 렛유인 AI + 바이브코딩 강의 프로젝트 1</p>
+    <p style="margin-top:4px;">Gemini AI로 생성 · GitHub Pages로 배포 · Chart.js 시각화</p>
+  </footer>
+
+  <script>
+    // Tab switching
+    function showTab(name) {
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('panel-' + name).classList.add('active');
+      event.target.classList.add('active');
+
+      // Lazy-render charts when tab becomes visible
+      if (name === 'chart') {
+        renderCharts();
+      }
+    }
+
+    let chartsRendered = false;
+
+    function renderCharts() {
+      if (chartsRendered) return;
+      chartsRendered = true;
+
+      // Bar chart: 이론 용량
+      const barCtx = document.getElementById('barChart').getContext('2d');
+      new Chart(barCtx, {
+        type: 'bar',
+        data: {
+          labels: ['LCO', 'NMC 622', 'NMC 811', 'NCMA', 'LFP', 'LNMO'],
+          datasets: [{
+            label: '이론 용량 (mAh/g)',
+            data: [274, 280, 300, 295, 170, 147],
+            backgroundColor: [
+              'rgba(59,130,246,0.7)',
+              'rgba(16,185,129,0.7)',
+              'rgba(16,185,129,0.9)',
+              'rgba(139,92,246,0.7)',
+              'rgba(245,158,11,0.7)',
+              'rgba(239,68,68,0.7)',
+            ],
+            borderColor: [
+              '#3b82f6','#10b981','#10b981','#8b5cf6','#f59e0b','#ef4444'
+            ],
+            borderWidth: 1.5,
+            borderRadius: 6,
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { labels: { color: '#94a3b8' } },
+            tooltip: {
+              callbacks: {
+                label: ctx => ` ${ctx.parsed.y} mAh/g`
+              }
+            }
+          },
+          scales: {
+            x: { ticks: { color: '#94a3b8' }, grid: { color: '#1f2937' } },
+            y: {
+              ticks: { color: '#94a3b8' },
+              grid: { color: '#1f2937' },
+              min: 0, max: 350,
+              title: { display: true, text: 'mAh/g', color: '#64748b' }
+            }
+          }
+        }
+      });
+
+      // Line chart: EV 배터리 팩 에너지 밀도 트렌드
+      const lineCtx = document.getElementById('lineChart').getContext('2d');
+      new Chart(lineCtx, {
+        type: 'line',
+        data: {
+          labels: ['2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024'],
+          datasets: [
+            {
+              label: '한국 (LG/삼성/SK)',
+              data: [150, 165, 180, 200, 220, 240, 260, 275, 290, 305],
+              borderColor: '#10b981',
+              backgroundColor: 'rgba(16,185,129,0.08)',
+              tension: 0.4,
+              fill: true,
+              pointBackgroundColor: '#10b981',
+            },
+            {
+              label: '중국 (CATL/BYD)',
+              data: [120, 138, 155, 172, 190, 210, 232, 252, 270, 288],
+              borderColor: '#ef4444',
+              backgroundColor: 'rgba(239,68,68,0.06)',
+              tension: 0.4,
+              fill: true,
+              pointBackgroundColor: '#ef4444',
+            },
+            {
+              label: '일본 (파나소닉)',
+              data: [160, 172, 185, 198, 212, 228, 245, 258, 272, 285],
+              borderColor: '#3b82f6',
+              backgroundColor: 'rgba(59,130,246,0.06)',
+              tension: 0.4,
+              fill: true,
+              pointBackgroundColor: '#3b82f6',
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { labels: { color: '#94a3b8' } },
+            tooltip: {
+              callbacks: {
+                label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y} Wh/kg`
+              }
+            }
+          },
+          scales: {
+            x: { ticks: { color: '#94a3b8' }, grid: { color: '#1f2937' } },
+            y: {
+              ticks: { color: '#94a3b8' },
+              grid: { color: '#1f2937' },
+              min: 100,
+              title: { display: true, text: 'Wh/kg', color: '#64748b' }
+            }
+          }
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>

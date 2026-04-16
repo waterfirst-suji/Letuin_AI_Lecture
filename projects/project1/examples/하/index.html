@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>김반도 | 반도체 공정 엔지니어 지망생</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #0d1117;
+      color: #e6edf3;
+      font-family: 'Segoe UI', 'Apple SD Gothic Neo', sans-serif;
+      line-height: 1.7;
+    }
+
+    /* Header */
+    header {
+      background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
+      border-bottom: 1px solid #30363d;
+      padding: 60px 24px 48px;
+      text-align: center;
+    }
+
+    .avatar {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #58a6ff, #bc8cff);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+      margin: 0 auto 20px;
+      box-shadow: 0 0 32px rgba(88, 166, 255, 0.3);
+    }
+
+    header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      background: linear-gradient(90deg, #58a6ff, #bc8cff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 8px;
+    }
+
+    header .subtitle {
+      color: #8b949e;
+      font-size: 1rem;
+      margin-bottom: 12px;
+    }
+
+    header .slogan {
+      display: inline-block;
+      background: rgba(88, 166, 255, 0.1);
+      border: 1px solid rgba(88, 166, 255, 0.3);
+      color: #58a6ff;
+      padding: 6px 18px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+    }
+
+    /* Navigation */
+    nav {
+      background: #161b22;
+      border-bottom: 1px solid #30363d;
+      padding: 0 24px;
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    nav a {
+      color: #8b949e;
+      text-decoration: none;
+      padding: 14px 20px;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+      border-bottom: 2px solid transparent;
+    }
+
+    nav a:hover {
+      color: #e6edf3;
+      border-bottom-color: #58a6ff;
+    }
+
+    /* Main container */
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 48px 24px;
+    }
+
+    /* Section */
+    section {
+      margin-bottom: 56px;
+    }
+
+    section h2 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #e6edf3;
+      margin-bottom: 24px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #30363d;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    section h2::before {
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 20px;
+      background: linear-gradient(180deg, #58a6ff, #bc8cff);
+      border-radius: 2px;
+    }
+
+    /* About section */
+    .about-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+    }
+
+    .about-item {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 10px;
+      padding: 20px;
+    }
+
+    .about-item .label {
+      color: #8b949e;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 6px;
+    }
+
+    .about-item .value {
+      color: #e6edf3;
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    /* Tech cards */
+    .tech-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+
+    .tech-card {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 12px;
+      padding: 24px;
+      transition: border-color 0.2s, transform 0.2s;
+      cursor: default;
+    }
+
+    .tech-card:hover {
+      border-color: #58a6ff;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(88, 166, 255, 0.1);
+    }
+
+    .tech-card .icon {
+      font-size: 2rem;
+      margin-bottom: 12px;
+    }
+
+    .tech-card h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #e6edf3;
+      margin-bottom: 8px;
+    }
+
+    .tech-card p {
+      color: #8b949e;
+      font-size: 0.88rem;
+    }
+
+    .tech-card .rank {
+      display: inline-block;
+      background: linear-gradient(90deg, #58a6ff, #bc8cff);
+      color: #0d1117;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+
+    /* Table */
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: 10px;
+      border: 1px solid #30363d;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    thead tr {
+      background: #161b22;
+    }
+
+    thead th {
+      padding: 14px 18px;
+      text-align: left;
+      color: #8b949e;
+      font-weight: 600;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      border-bottom: 1px solid #30363d;
+    }
+
+    tbody tr {
+      border-bottom: 1px solid #21262d;
+      transition: background 0.15s;
+    }
+
+    tbody tr:last-child {
+      border-bottom: none;
+    }
+
+    tbody tr:hover {
+      background: #161b22;
+    }
+
+    tbody td {
+      padding: 14px 18px;
+      color: #e6edf3;
+    }
+
+    tbody td:first-child {
+      color: #58a6ff;
+      font-weight: 500;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 12px;
+      font-size: 0.78rem;
+      font-weight: 500;
+    }
+
+    .badge-blue  { background: rgba(88,166,255,0.12); color: #58a6ff; }
+    .badge-green { background: rgba(63,185,80,0.12);  color: #3fb950; }
+    .badge-purple{ background: rgba(188,140,255,0.12);color: #bc8cff; }
+    .badge-yellow{ background: rgba(210,153,34,0.12); color: #d2991f; }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 32px 24px;
+      color: #484f58;
+      font-size: 0.82rem;
+      border-top: 1px solid #21262d;
+    }
+
+    @media (max-width: 600px) {
+      header h1 { font-size: 1.6rem; }
+      nav a { padding: 12px 12px; font-size: 0.82rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="avatar">💡</div>
+    <h1>김반도</h1>
+    <div class="subtitle">전자공학과 3학년 · 반도체 공정 엔지니어 지망</div>
+    <span class="slogan">"나노미터 단위로 세상을 바꾼다"</span>
+  </header>
+
+  <nav>
+    <a href="#about">자기소개</a>
+    <a href="#tech">관심 기술</a>
+    <a href="#industry">산업 분석</a>
+  </nav>
+
+  <main class="container">
+
+    <!-- 자기소개 -->
+    <section id="about">
+      <h2>자기소개</h2>
+      <div class="about-grid">
+        <div class="about-item">
+          <div class="label">이름</div>
+          <div class="value">김반도</div>
+        </div>
+        <div class="about-item">
+          <div class="label">전공</div>
+          <div class="value">전자공학과 3학년</div>
+        </div>
+        <div class="about-item">
+          <div class="label">관심 직무</div>
+          <div class="value">반도체 공정 엔지니어</div>
+        </div>
+        <div class="about-item">
+          <div class="label">목표 회사</div>
+          <div class="value">삼성전자 DS부문</div>
+        </div>
+        <div class="about-item">
+          <div class="label">관심 공정</div>
+          <div class="value">포토리소그래피 / 식각</div>
+        </div>
+        <div class="about-item">
+          <div class="label">상태</div>
+          <div class="value">취업 준비 중</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 관심 기술 TOP 3 -->
+    <section id="tech">
+      <h2>관심 기술 TOP 3</h2>
+      <div class="tech-cards">
+        <div class="tech-card">
+          <div class="rank">TOP 1</div>
+          <div class="icon">🔬</div>
+          <h3>EUV 포토리소그래피</h3>
+          <p>극자외선(13.5 nm)을 이용한 최신 미세공정. 3nm 이하 노드 구현의 핵심 기술로, 현재 ASML이 독점 공급하고 있습니다.</p>
+        </div>
+        <div class="tech-card">
+          <div class="rank">TOP 2</div>
+          <div class="icon">⚗️</div>
+          <h3>건식 식각 (Dry Etching)</h3>
+          <p>플라즈마를 활용해 원하는 패턴을 정밀하게 제거하는 공정. 수율과 CD 균일도에 직접 영향을 미치는 핵심 단계.</p>
+        </div>
+        <div class="tech-card">
+          <div class="rank">TOP 3</div>
+          <div class="icon">📊</div>
+          <h3>수율 분석 (Yield Analysis)</h3>
+          <p>공정 데이터를 분석해 불량 원인을 파악하고 개선하는 작업. 엔지니어 역량 중 가장 실무적 가치가 높은 영역입니다.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 산업 분석: 반도체 주요 공정 단계 -->
+    <section id="industry">
+      <h2>반도체 주요 공정 단계 비교</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>공정 단계</th>
+              <th>핵심 장비</th>
+              <th>목적</th>
+              <th>기술 난이도</th>
+              <th>시장 점유 (장비)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>포토리소그래피</td>
+              <td>EUV 스캐너 (ASML)</td>
+              <td>회로 패턴 전사</td>
+              <td><span class="badge badge-purple">최상</span></td>
+              <td>ASML 100%</td>
+            </tr>
+            <tr>
+              <td>증착 (CVD/ALD)</td>
+              <td>CVD·ALD 챔버</td>
+              <td>박막 형성</td>
+              <td><span class="badge badge-blue">상</span></td>
+              <td>Applied Materials, Lam</td>
+            </tr>
+            <tr>
+              <td>식각 (Etching)</td>
+              <td>플라즈마 식각기</td>
+              <td>불필요 물질 제거</td>
+              <td><span class="badge badge-blue">상</span></td>
+              <td>Lam Research, TEL</td>
+            </tr>
+            <tr>
+              <td>이온 주입</td>
+              <td>이온 임플란터</td>
+              <td>도펀트 삽입</td>
+              <td><span class="badge badge-green">중</span></td>
+              <td>Applied Materials</td>
+            </tr>
+            <tr>
+              <td>CMP (평탄화)</td>
+              <td>CMP 장비</td>
+              <td>표면 평탄화</td>
+              <td><span class="badge badge-green">중</span></td>
+              <td>Applied Materials, EBARA</td>
+            </tr>
+            <tr>
+              <td>세정 (Cleaning)</td>
+              <td>배치·매엽 세정기</td>
+              <td>오염물 제거</td>
+              <td><span class="badge badge-yellow">기본</span></td>
+              <td>SCREEN, TEL</td>
+            </tr>
+            <tr>
+              <td>계측/검사</td>
+              <td>SEM, OCD 계측기</td>
+              <td>품질 모니터링</td>
+              <td><span class="badge badge-blue">상</span></td>
+              <td>KLA, AMAT</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>김반도의 엔지니어링 포트폴리오 · 렛유인 AI + 바이브코딩 강의 프로젝트 1</p>
+    <p style="margin-top:6px;">Gemini AI로 생성 · GitHub Pages로 배포</p>
+  </footer>
+
+</body>
+</html>

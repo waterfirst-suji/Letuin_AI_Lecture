@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>이디스 | 디스플레이 공정 엔지니어</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+  <style>
+    /* ===== CSS Variables (theme) ===== */
+    :root {
+      --bg: #09090b;
+      --bg2: #111115;
+      --surface: #18181b;
+      --surface2: #27272a;
+      --border: #3f3f46;
+      --border-light: #52525b;
+      --text: #fafafa;
+      --text2: #a1a1aa;
+      --text3: #71717a;
+      --accent: #a78bfa;
+      --accent2: #38bdf8;
+      --accent3: #34d399;
+      --danger: #f87171;
+      --warning: #fbbf24;
+      --radius: 12px;
+      --shadow: 0 4px 24px rgba(0,0,0,0.4);
+    }
+
+    [data-theme="light"] {
+      --bg: #f8fafc;
+      --bg2: #f1f5f9;
+      --surface: #ffffff;
+      --surface2: #f4f4f5;
+      --border: #e4e4e7;
+      --border-light: #d4d4d8;
+      --text: #09090b;
+      --text2: #52525b;
+      --text3: #a1a1aa;
+      --accent: #7c3aed;
+      --accent2: #0284c7;
+      --accent3: #059669;
+      --danger: #dc2626;
+      --warning: #d97706;
+      --shadow: 0 4px 24px rgba(0,0,0,0.08);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+      line-height: 1.7;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    /* ===== Topbar ===== */
+    .topbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 56px;
+      background: rgba(9,9,11,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      z-index: 200;
+      transition: background 0.3s;
+    }
+
+    [data-theme="light"] .topbar {
+      background: rgba(248,250,252,0.9);
+    }
+
+    .topbar .logo {
+      font-size: 1rem;
+      font-weight: 700;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .topbar-nav {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+
+    .topbar-nav a {
+      color: var(--text2);
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      transition: color 0.2s, background 0.2s;
+    }
+
+    .topbar-nav a:hover {
+      color: var(--text);
+      background: var(--surface2);
+    }
+
+    /* Theme toggle */
+    .theme-toggle {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text2);
+      padding: 6px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.82rem;
+      font-family: inherit;
+      transition: all 0.2s;
+      margin-left: 8px;
+    }
+
+    .theme-toggle:hover {
+      color: var(--text);
+      border-color: var(--accent);
+    }
+
+    /* ===== Hero ===== */
+    .hero {
+      padding: 120px 24px 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%);
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 30% 50%, rgba(167,139,250,0.08) 0%, transparent 60%),
+        radial-gradient(ellipse at 70% 30%, rgba(56,189,248,0.06) 0%, transparent 55%);
+    }
+
+    .hero-inner { position: relative; }
+
+    .hero-tags {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text2);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+    }
+
+    .hero-tag.highlight {
+      background: rgba(167,139,250,0.1);
+      border-color: rgba(167,139,250,0.35);
+      color: var(--accent);
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #e879f9, #a78bfa, #38bdf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero .role {
+      font-size: 1.05rem;
+      color: var(--text2);
+      margin-bottom: 16px;
+    }
+
+    .hero .slogan {
+      font-size: 1.1rem;
+      color: var(--text);
+      font-weight: 500;
+      margin-bottom: 40px;
+    }
+
+    .hero-stats {
+      display: inline-flex;
+      gap: 40px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px 40px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero-stat { text-align: center; }
+    .hero-stat .num {
+      font-size: 1.6rem;
+      font-weight: 800;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-stat .lbl { color: var(--text3); font-size: 0.76rem; }
+
+    /* ===== Section ===== */
+    .section {
+      padding: 72px 24px;
+    }
+
+    .section:nth-child(even) {
+      background: var(--bg2);
+    }
+
+    .container { max-width: 960px; margin: 0 auto; }
+
+    .section-header {
+      margin-bottom: 36px;
+    }
+
+    .section-label {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .section-sub {
+      color: var(--text2);
+      font-size: 0.92rem;
+      margin-top: 6px;
+    }
+
+    /* ===== Skill radar + cards ===== */
+    .skills-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .chart-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+    }
+
+    .chart-card h3 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .chart-card .meta {
+      color: var(--text3);
+      font-size: 0.78rem;
+      margin-bottom: 18px;
+    }
+
+    .skill-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .skill-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: border-color 0.2s;
+    }
+
+    .skill-card:hover { border-color: var(--accent); }
+
+    .skill-card .name { font-size: 0.9rem; font-weight: 600; }
+    .skill-card .cat  { color: var(--text3); font-size: 0.78rem; margin-top: 2px; }
+
+    .progress-bar {
+      height: 6px;
+      background: var(--surface2);
+      border-radius: 3px;
+      margin-top: 8px;
+      width: 100%;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+    }
+
+    /* ===== Industry chart section ===== */
+    .charts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    /* ===== Data table ===== */
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+
+    thead th {
+      background: var(--surface2);
+      padding: 13px 16px;
+      text-align: left;
+      color: var(--text2);
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    tbody td {
+      padding: 13px 16px;
+      border-bottom: 1px solid var(--surface2);
+      color: var(--text);
+    }
+
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:hover { background: var(--surface); }
+    tbody td:first-child { color: var(--accent); font-weight: 600; }
+
+    .pill {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 12px;
+      font-size: 0.76rem;
+      font-weight: 500;
+    }
+    .pill-purple { background: rgba(167,139,250,0.12); color: var(--accent); }
+    .pill-blue   { background: rgba(56,189,248,0.12);  color: var(--accent2); }
+    .pill-green  { background: rgba(52,211,153,0.12);  color: var(--accent3); }
+    .pill-yellow { background: rgba(251,191,36,0.12);  color: var(--warning); }
+    .pill-red    { background: rgba(248,113,113,0.12); color: var(--danger); }
+
+    /* ===== Source note ===== */
+    .source-note {
+      color: var(--text3);
+      font-size: 0.76rem;
+      margin-top: 10px;
+      text-align: right;
+    }
+
+    /* ===== Footer ===== */
+    footer {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 40px 24px;
+      color: var(--text3);
+      font-size: 0.82rem;
+    }
+
+    footer .footer-name {
+      font-size: 1rem;
+      font-weight: 700;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 8px;
+    }
+
+    /* ===== Animations ===== */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .animate {
+      animation: fadeUp 0.6s ease both;
+    }
+    .animate-1 { animation-delay: 0.1s; }
+    .animate-2 { animation-delay: 0.2s; }
+    .animate-3 { animation-delay: 0.3s; }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 2rem; }
+      .hero-stats { gap: 24px; padding: 16px 24px; flex-wrap: wrap; justify-content: center; }
+      .skills-layout { grid-template-columns: 1fr; }
+      .charts-grid { grid-template-columns: 1fr; }
+      .topbar-nav { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Topbar -->
+  <header class="topbar">
+    <div class="logo">이디스 / Display Engineer</div>
+    <div class="topbar-nav">
+      <a href="#about">소개</a>
+      <a href="#skills">기술</a>
+      <a href="#industry">산업</a>
+      <a href="#data">데이터</a>
+    </div>
+    <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">라이트 모드</button>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-tags">
+        <span class="hero-tag highlight">디스플레이 공정</span>
+        <span class="hero-tag">OLED</span>
+        <span class="hero-tag">TFT 공정</span>
+        <span class="hero-tag">반응형 포트폴리오</span>
+      </div>
+      <h1>이디스</h1>
+      <div class="role">신소재공학과 4학년 · 디스플레이 공정 엔지니어 지망</div>
+      <div class="slogan">"픽셀 하나하나가 모여 세상을 밝힌다"</div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="num">4</div>
+          <div class="lbl">학년</div>
+        </div>
+        <div class="hero-stat">
+          <div class="num">OLED</div>
+          <div class="lbl">주요 분야</div>
+        </div>
+        <div class="hero-stat">
+          <div class="num">3+</div>
+          <div class="lbl">인턴 경력(개월)</div>
+        </div>
+        <div class="hero-stat">
+          <div class="num">AI</div>
+          <div class="lbl">도구 활용</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section class="section" id="about">
+    <div class="container">
+      <div class="section-header animate animate-1">
+        <div class="section-label">About</div>
+        <div class="section-title">자기소개</div>
+        <div class="section-sub">디스플레이 소재와 공정의 연결을 이해하고 싶은 신소재공학도입니다.</div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px;" class="animate animate-2">
+          <p style="color:var(--text2);font-size:0.9rem;line-height:1.8;">
+            신소재공학을 전공하며 OLED 유기물 증착 공정과 TFT 백플레인 공정에 관심을 가지게 되었습니다.
+            디스플레이 산업은 소재·공정·회로가 모두 맞물려야 하는 복합 학문의 결정체라고 생각합니다.
+            삼성디스플레이 QD-OLED 및 LG디스플레이 WOLED 라인에 관심이 있으며,
+            공정 엔지니어로서 증착 균일도와 수율 개선에 기여하고 싶습니다.
+          </p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:24px;">
+            <div style="background:var(--surface2);border-radius:8px;padding:14px;">
+              <div style="color:var(--text3);font-size:0.72rem;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:4px;">전공</div>
+              <div style="font-size:0.9rem;font-weight:600;">신소재공학과 4학년</div>
+            </div>
+            <div style="background:var(--surface2);border-radius:8px;padding:14px;">
+              <div style="color:var(--text3);font-size:0.72rem;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:4px;">관심 직무</div>
+              <div style="font-size:0.9rem;font-weight:600;">디스플레이 공정 엔지니어</div>
+            </div>
+            <div style="background:var(--surface2);border-radius:8px;padding:14px;">
+              <div style="color:var(--text3);font-size:0.72rem;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:4px;">목표 회사</div>
+              <div style="font-size:0.9rem;font-weight:600;">삼성디스플레이</div>
+            </div>
+            <div style="background:var(--surface2);border-radius:8px;padding:14px;">
+              <div style="color:var(--text3);font-size:0.72rem;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:4px;">관심 공정</div>
+              <div style="font-size:0.9rem;font-weight:600;">OLED 증착 / TFT</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px;" class="animate animate-3">
+          <div style="font-size:0.88rem;font-weight:600;margin-bottom:16px;color:var(--text2);">학업 및 활동 이력</div>
+          <div style="display:flex;flex-direction:column;gap:16px;">
+            <div style="display:flex;gap:14px;align-items:flex-start;">
+              <div style="min-width:60px;font-size:0.76rem;color:var(--accent);font-weight:600;padding-top:2px;">2025</div>
+              <div>
+                <div style="font-size:0.9rem;font-weight:600;">디스플레이 기업 공정 인턴 (3개월)</div>
+                <div style="color:var(--text3);font-size:0.8rem;">OLED 증착 챔버 데이터 분석 보조</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:14px;align-items:flex-start;">
+              <div style="min-width:60px;font-size:0.76rem;color:var(--accent2);font-weight:600;padding-top:2px;">2024</div>
+              <div>
+                <div style="font-size:0.9rem;font-weight:600;">반도체/디스플레이 학회 발표</div>
+                <div style="color:var(--text3);font-size:0.8rem;">OLED 유기물 열화 특성 분석 포스터</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:14px;align-items:flex-start;">
+              <div style="min-width:60px;font-size:0.76rem;color:var(--accent3);font-weight:600;padding-top:2px;">2023</div>
+              <div>
+                <div style="font-size:0.9rem;font-weight:600;">Python 데이터 분석 스터디 수료</div>
+                <div style="color:var(--text3);font-size:0.8rem;">공정 데이터 시각화 프로젝트 완성</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills -->
+  <section class="section" id="skills">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Skills</div>
+        <div class="section-title">기술 역량</div>
+        <div class="section-sub">공정 이해도와 데이터 분석 역량을 중심으로 성장 중입니다.</div>
+      </div>
+      <div class="skills-layout">
+        <div class="chart-card">
+          <h3>기술 역량 레이더</h3>
+          <div class="meta">자기 평가 기준 (10점 만점)</div>
+          <canvas id="radarChart"></canvas>
+        </div>
+        <div class="skill-cards">
+          <div class="skill-card">
+            <div>
+              <div class="name">OLED 증착 공정 이해</div>
+              <div class="cat">공정 지식</div>
+              <div class="progress-bar"><div class="progress-fill" style="width:85%"></div></div>
+            </div>
+            <div style="font-size:0.9rem;font-weight:700;color:var(--accent);margin-left:16px;">8.5</div>
+          </div>
+          <div class="skill-card">
+            <div>
+              <div class="name">Python 데이터 분석</div>
+              <div class="cat">프로그래밍</div>
+              <div class="progress-bar"><div class="progress-fill" style="width:70%"></div></div>
+            </div>
+            <div style="font-size:0.9rem;font-weight:700;color:var(--accent);margin-left:16px;">7.0</div>
+          </div>
+          <div class="skill-card">
+            <div>
+              <div class="name">SEM / XRD 분석</div>
+              <div class="cat">계측 장비</div>
+              <div class="progress-bar"><div class="progress-fill" style="width:75%"></div></div>
+            </div>
+            <div style="font-size:0.9rem;font-weight:700;color:var(--accent);margin-left:16px;">7.5</div>
+          </div>
+          <div class="skill-card">
+            <div>
+              <div class="name">TFT 소자 이해</div>
+              <div class="cat">소자 물리</div>
+              <div class="progress-bar"><div class="progress-fill" style="width:65%"></div></div>
+            </div>
+            <div style="font-size:0.9rem;font-weight:700;color:var(--accent);margin-left:16px;">6.5</div>
+          </div>
+          <div class="skill-card">
+            <div>
+              <div class="name">AI 활용 (Gemini/Claude)</div>
+              <div class="cat">AI 도구</div>
+              <div class="progress-bar"><div class="progress-fill" style="width:90%"></div></div>
+            </div>
+            <div style="font-size:0.9rem;font-weight:700;color:var(--accent);margin-left:16px;">9.0</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Industry Charts -->
+  <section class="section" id="industry">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Industry Analysis</div>
+        <div class="section-title">디스플레이 산업 분석</div>
+        <div class="section-sub">OLED vs LCD 시장 점유율 및 성능 지표 비교</div>
+      </div>
+      <div class="charts-grid">
+        <div class="chart-card">
+          <h3>글로벌 디스플레이 시장 점유율 (2024)</h3>
+          <div class="meta">출처: DSCC, Omdia 2024년 보고서 기반 추정</div>
+          <canvas id="pieChart"></canvas>
+          <div class="source-note">* 출하 면적(m²) 기준</div>
+        </div>
+        <div class="chart-card">
+          <h3>OLED 패널 출하량 연도별 증가 추이</h3>
+          <div class="meta">스마트폰 + TV + 모니터 합산 추정 (백만 장)</div>
+          <canvas id="areaChart"></canvas>
+          <div class="source-note">* 2024~2025는 업계 전망치</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Data Table -->
+  <section class="section" id="data">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Data</div>
+        <div class="section-title">OLED vs LCD 핵심 스펙 비교</div>
+        <div class="section-sub">주요 디스플레이 기술의 성능 지표 정량 비교</div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>비교 항목</th>
+              <th>AMOLED</th>
+              <th>PMOLED</th>
+              <th>LCD (IPS)</th>
+              <th>LCD (TN)</th>
+              <th>Mini LED</th>
+              <th>우위</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>최대 밝기 (nit)</td>
+              <td>2,000+</td>
+              <td>200</td>
+              <td>600</td>
+              <td>400</td>
+              <td>1,500+</td>
+              <td><span class="pill pill-purple">AMOLED</span></td>
+            </tr>
+            <tr>
+              <td>명암비</td>
+              <td>무한대</td>
+              <td>무한대</td>
+              <td>1,500:1</td>
+              <td>800:1</td>
+              <td>30,000:1</td>
+              <td><span class="pill pill-purple">OLED</span></td>
+            </tr>
+            <tr>
+              <td>응답 속도 (ms)</td>
+              <td>0.1</td>
+              <td>0.1</td>
+              <td>4</td>
+              <td>1</td>
+              <td>2</td>
+              <td><span class="pill pill-purple">OLED</span></td>
+            </tr>
+            <tr>
+              <td>소비 전력 (상대)</td>
+              <td>낮음</td>
+              <td>낮음</td>
+              <td>보통</td>
+              <td>낮음</td>
+              <td>높음</td>
+              <td><span class="pill pill-purple">OLED</span></td>
+            </tr>
+            <tr>
+              <td>제조 단가 (상대)</td>
+              <td>높음</td>
+              <td>보통</td>
+              <td>낮음</td>
+              <td>매우 낮음</td>
+              <td>보통</td>
+              <td><span class="pill pill-green">LCD TN</span></td>
+            </tr>
+            <tr>
+              <td>번인 위험</td>
+              <td>있음</td>
+              <td>있음</td>
+              <td>없음</td>
+              <td>없음</td>
+              <td>없음</td>
+              <td><span class="pill pill-blue">LCD</span></td>
+            </tr>
+            <tr>
+              <td>두께 (상대)</td>
+              <td>매우 얇음</td>
+              <td>얇음</td>
+              <td>보통</td>
+              <td>보통</td>
+              <td>두꺼움</td>
+              <td><span class="pill pill-purple">AMOLED</span></td>
+            </tr>
+            <tr>
+              <td>플렉서블 구현</td>
+              <td>가능</td>
+              <td>가능</td>
+              <td>불가</td>
+              <td>불가</td>
+              <td>불가</td>
+              <td><span class="pill pill-purple">OLED</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="source-note" style="margin-top:12px;">출처: Displaymate Technologies, DSCC, 각사 공식 스펙 기반 (2024)</div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-name">이디스 | 디스플레이 공정 엔지니어</div>
+    <p>신소재공학과 4학년 · 삼성디스플레이 지망 · 렛유인 AI + 바이브코딩 강의 프로젝트 1 (상)</p>
+    <p style="margin-top:6px;">Gemini AI로 생성 · Chart.js 시각화 3종 · GitHub Pages 배포</p>
+  </footer>
+
+  <script>
+    // ===== Theme Toggle =====
+    function toggleTheme() {
+      const html = document.documentElement;
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+      document.getElementById('themeBtn').textContent = isDark ? '다크 모드' : '라이트 모드';
+      updateChartColors();
+    }
+
+    function getCSSVar(name) {
+      return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    }
+
+    // ===== Chart defaults =====
+    Chart.defaults.color = '#94a3b8';
+    Chart.defaults.borderColor = '#27272a';
+
+    // ===== Radar Chart =====
+    const radarCtx = document.getElementById('radarChart').getContext('2d');
+    const radarChart = new Chart(radarCtx, {
+      type: 'radar',
+      data: {
+        labels: ['공정 지식', 'Python', '계측 분석', 'TFT 소자', '영어', 'AI 활용'],
+        datasets: [{
+          label: '역량 점수',
+          data: [8.5, 7.0, 7.5, 6.5, 7.0, 9.0],
+          borderColor: '#a78bfa',
+          backgroundColor: 'rgba(167,139,250,0.12)',
+          pointBackgroundColor: '#a78bfa',
+          pointBorderColor: '#a78bfa',
+          borderWidth: 2,
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          r: {
+            min: 0, max: 10,
+            ticks: { stepSize: 2, color: '#71717a', font: { size: 10 } },
+            grid: { color: '#27272a' },
+            pointLabels: { color: '#a1a1aa', font: { size: 11 } },
+            angleLines: { color: '#27272a' }
+          }
+        },
+        plugins: {
+          legend: { display: false }
+        }
+      }
+    });
+
+    // ===== Pie Chart =====
+    const pieCtx = document.getElementById('pieChart').getContext('2d');
+    const pieChart = new Chart(pieCtx, {
+      type: 'doughnut',
+      data: {
+        labels: ['OLED (스마트폰)', 'LCD (TV)', 'LCD (모니터)', 'OLED (TV)', 'OLED (기타)', 'Mini LED'],
+        datasets: [{
+          data: [28, 26, 20, 10, 8, 8],
+          backgroundColor: [
+            'rgba(167,139,250,0.8)',
+            'rgba(56,189,248,0.8)',
+            'rgba(52,211,153,0.8)',
+            'rgba(167,139,250,0.4)',
+            'rgba(251,191,36,0.8)',
+            'rgba(248,113,113,0.8)',
+          ],
+          borderColor: '#09090b',
+          borderWidth: 2,
+          hoverOffset: 8,
+        }]
+      },
+      options: {
+        responsive: true,
+        cutout: '60%',
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: { color: '#a1a1aa', font: { size: 11 }, padding: 12, boxWidth: 12 }
+          },
+          tooltip: {
+            callbacks: { label: ctx => ` ${ctx.label}: ${ctx.parsed}%` }
+          }
+        }
+      }
+    });
+
+    // ===== Area/Line Chart =====
+    const areaCtx = document.getElementById('areaChart').getContext('2d');
+    const areaChart = new Chart(areaCtx, {
+      type: 'line',
+      data: {
+        labels: ['2018', '2019', '2020', '2021', '2022', '2023', '2024E', '2025E'],
+        datasets: [
+          {
+            label: '스마트폰 OLED',
+            data: [390, 430, 460, 520, 580, 640, 700, 760],
+            borderColor: '#a78bfa',
+            backgroundColor: 'rgba(167,139,250,0.1)',
+            tension: 0.4, fill: true, pointBackgroundColor: '#a78bfa',
+          },
+          {
+            label: 'TV/모니터 OLED',
+            data: [4, 7, 10, 18, 28, 42, 60, 82],
+            borderColor: '#38bdf8',
+            backgroundColor: 'rgba(56,189,248,0.08)',
+            tension: 0.4, fill: true, pointBackgroundColor: '#38bdf8',
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { labels: { color: '#a1a1aa', font: { size: 11 } } },
+          tooltip: {
+            callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y}M 장` }
+          }
+        },
+        scales: {
+          x: { ticks: { color: '#71717a' }, grid: { color: '#27272a' } },
+          y: {
+            ticks: { color: '#71717a' }, grid: { color: '#27272a' },
+            title: { display: true, text: '백만 장', color: '#52525b' }
+          }
+        }
+      }
+    });
+
+    function updateChartColors() {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      const grid = isDark ? '#27272a' : '#e4e4e7';
+      const tick = isDark ? '#71717a' : '#71717a';
+      const label = isDark ? '#a1a1aa' : '#52525b';
+      const borderBg = isDark ? '#09090b' : '#f8fafc';
+
+      [radarChart, pieChart, areaChart].forEach(c => {
+        if (c.config.type === 'radar') {
+          c.options.scales.r.grid.color = grid;
+          c.options.scales.r.angleLines.color = grid;
+          c.options.scales.r.ticks.color = tick;
+          c.options.scales.r.pointLabels.color = label;
+        } else if (c.config.type !== 'doughnut') {
+          c.options.scales.x.ticks.color = tick;
+          c.options.scales.x.grid.color = grid;
+          c.options.scales.y.ticks.color = tick;
+          c.options.scales.y.grid.color = grid;
+        } else {
+          c.data.datasets[0].borderColor = borderBg;
+        }
+        c.options.plugins.legend.labels.color = label;
+        c.update();
+      });
+    }
+  </script>
+
+</body>
+</html>
