@@ -1,130 +1,124 @@
-# Engineering Portfolio — Display Process Engineer
+# Smart Manufacturing Process Data Analyzer
 
-A fully interactive, responsive personal engineering portfolio website built with HTML, CSS, and Chart.js. Created as a model answer for the **LetUIn AI + Vibe Coding Lecture, Project 1 (Advanced Level)**.
-
-**Live Demo**: Deploy to GitHub Pages to view at `https://<username>.github.io/<repo>/`
-
----
-
-## Overview
-
-This portfolio belongs to a fictional engineering student (이디스 / Lee Dis) majoring in materials engineering with a focus on **display process engineering** — specifically OLED deposition and TFT backplane processes.
-
-The page demonstrates how engineering students can use **Gemini AI** to generate professional-quality web portfolios without prior coding knowledge.
-
----
+A professional-grade Streamlit application for advanced manufacturing process data analysis with statistical process control (SPC) features.
 
 ## Features
 
-### Visualizations (3+)
-1. **Radar Chart** — Self-assessed skill competency across 6 engineering domains
-2. **Doughnut Chart** — Global display market share by panel technology (2024 estimate)
-3. **Area/Line Chart** — OLED panel shipment trends by year (2018–2025E)
+### Tab 1: Overview (📊 개요)
+- **Basic Statistics**: Min, max, mean, median, quartiles, standard deviation, variance
+- **Histogram**: Distribution visualization with 30 bins
+- **Box Plot**: Distribution with outlier markers and statistical indicators
+- **Correlation Heatmap**: Multi-column correlation matrix visualization
 
-### UI/UX
-- Dark / Light mode toggle (persists via CSS variables)
-- Sticky responsive top navigation bar
-- Scroll-based section layout
-- Animated section entrance (`fadeUp` keyframes)
-- Hover effects on all interactive elements
-- Fully responsive — works on mobile, tablet, and desktop
+### Tab 2: Anomaly Detection (🔍 이상 감지)
+- **IQR-based Outlier Detection**: Uses Interquartile Range (1.5 × IQR rule)
+- **Z-Score-based Outlier Detection**: Identifies points beyond 3σ threshold
+- **Comparative Scatter Plots**: Side-by-side visualization of both methods
+- **Outlier Summary Table**: Comparison of detection methods with counts and value ranges
+- **Expandable Details**: View full outlier data for each method
 
-### Content Sections
-- Hero with at-a-glance stats
-- About (personal background, timeline)
-- Skills (radar chart + progress bars)
-- Industry analysis (2 charts with data sources)
-- Data table (OLED vs LCD spec comparison)
+### Tab 3: SPC Control Charts (📈 SPC 관리도)
+- **X-bar Control Chart**: 
+  - Configurable subgroup size (2-n)
+  - UCL/CL/LCL calculation using standard A2 constants
+  - Out-of-control point highlighting
+- **R (Range) Control Chart**:
+  - D3/D4 constant-based limits
+  - Range variation monitoring
+- **Control Limit Analysis**: Detailed summary of process control status
 
----
+### Tab 4: Report Generation (📋 리포트)
+- **Auto-generated Markdown Report** with:
+  - Analysis overview and metadata
+  - Complete statistical summary table
+  - Outlier analysis results
+  - SPC control chart interpretation
+  - Key findings and recommendations
+- **Download Options**:
+  - Markdown format (.md)
+  - Text format (.txt)
+  - Timestamped filenames
 
-## Tech Stack
+### Sidebar Configuration
+- **CSV File Upload**: Load manufacturing process data
+- **Column Selector**: Choose numerical column to analyze
+- **Value Range Filter**: Interactive slider for data range filtering
+- **Date Range Filter**: Optional date-based filtering
 
-| Tool | Purpose |
-|------|---------|
-| HTML5 / CSS3 | Structure and styling (no frameworks) |
-| Chart.js 4.4 (CDN) | All data visualizations |
-| CSS Custom Properties | Dark/light theme switching |
-| CSS Grid / Flexbox | Responsive layout |
-| Vanilla JavaScript | Tab logic, chart rendering, theme toggle |
+## Chart Types (5+ Plotly visualizations)
 
-No build tools, no npm, no React. Everything runs from a single `index.html` file.
+1. **Histogram** - Distribution analysis
+2. **Box Plot** - Outlier visualization with mean/std
+3. **Correlation Heatmap** - Multi-variable relationships
+4. **Scatter Plot (IQR)** - Outlier detection with bounds
+5. **Scatter Plot (Z-Score)** - Alternative outlier method
+6. **X-bar Control Chart** - Subgroup means with control limits
+7. **R Control Chart** - Range control monitoring
 
----
-
-## Data Sources
-
-All data is based on publicly available industry reports and estimates:
-
-- DSCC (Display Supply Chain Consultants) — Market share figures
-- Omdia Display Research — Shipment forecasts
-- Displaymate Technologies — Performance benchmarks
-- KEIT (Korea Evaluation Institute of Industrial Technology) — Industry reports
-
-> Note: Some values are approximate or representative estimates for educational purposes.
-
----
-
-## Commit History (example)
-
-```
-git log --oneline
-
-a8f3c21  Add dark/light mode toggle
-b72de04  Add radar and area charts with Chart.js
-c15e309  Add OLED vs LCD data comparison table  
-d04a812  Add skills section with progress bars
-e91f177  Initial hero and about section
-```
-
-> Minimum 5 meaningful commits are required for the advanced level. Each commit should represent a distinct, working improvement to the page.
-
----
-
-## How to Deploy (GitHub Pages)
+## Installation
 
 ```bash
-# 1. Create a new GitHub repository
-# 2. Clone locally or upload index.html + README.md directly
-
-git init
-git add index.html README.md
-git commit -m "Initial portfolio page"
-git branch -M main
-git remote add origin https://github.com/<username>/<repo>.git
-git push -u origin main
-
-# 3. Enable GitHub Pages
-# Settings → Pages → Source: Deploy from branch → main → / (root) → Save
-# Your site will be live at: https://<username>.github.io/<repo>/
+pip install -r requirements.txt
 ```
 
----
+## Usage
 
-## AI Prompting Notes
+```bash
+streamlit run app.py
+```
 
-This portfolio was generated with the assistance of **Gemini AI**. Key prompts used:
+Then:
+1. Upload a CSV file with numerical process data
+2. Select a column to analyze
+3. Apply optional filters (value range, date range)
+4. Explore insights across the four tabs
+5. Download the auto-generated report
 
-1. **Initial scaffold**: "Create a dark-mode engineering portfolio in a single HTML file with CSS variables for theme switching. Include a fixed navbar and hero section."
-2. **Radar chart**: "Add a Chart.js radar chart showing 6 engineering skill scores. Use purple accent color."
-3. **Theme toggle**: "Add a button that toggles between dark and light mode by changing the data-theme attribute on the html element."
-4. **Data table**: "Create a responsive HTML table comparing OLED vs LCD across 8 technical specifications with colored badge pills."
-5. **Responsive fix**: "Make the layout fully responsive. Hide the navbar links on mobile and make the grid single-column below 768px."
+## CSV Format
 
-> Tip: Break large requests into small, testable steps. Verify each change in the browser before moving on.
+Expected format:
+- Comma-separated values
+- First row contains column headers
+- Numerical columns for analysis
+- Optional datetime column for date filtering
 
----
+Example:
+```
+timestamp,temperature,pressure,vibration,quality_score
+2026-01-01 08:00:00,73.2,101.5,0.45,98.5
+2026-01-01 08:15:00,73.5,101.6,0.42,98.7
+```
 
-## Project Context
+## Configuration
 
-This file is part of the **LetUIn AI + Vibe Coding Lecture** (렛유인 AI + 바이브코딩 강의).
+- **Page Layout**: Wide layout for better chart visibility
+- **Color Scheme**: Professional color palette with primary, secondary, success, danger, warning, info colors
+- **UI Language**: All interface text in Korean (한국어)
+- **Theme**: Light background with professional styling
 
-- **Course**: AI-assisted engineering portfolio development
-- **Target Students**: Semiconductor, display, battery, bio, and energy engineering majors
-- **Main AI Tool**: Gemini
-- **Deployment**: GitHub Pages (free, no server required)
-- **Project Level**: Advanced (상)
+## Statistical Methods
 
----
+### Outlier Detection
+- **IQR Method**: Lower bound = Q1 - 1.5×IQR, Upper bound = Q3 + 1.5×IQR
+- **Z-Score Method**: Points with |z| > 3 are considered outliers
 
-*LetUIn AI + Vibe Coding Lecture | Project 1 of 8 — Advanced Model Answer*
+### Control Charts
+- **X-bar Chart**: Monitors process mean with A2 constants (subgroup size 2-6)
+- **R Chart**: Monitors process variation with D3/D4 constants
+- **Control Limits**: Based on subgroup statistics and standard SPC constants
+
+## Dependencies
+
+- streamlit: Web application framework
+- pandas: Data manipulation and analysis
+- plotly: Interactive visualization
+- numpy: Numerical computing
+- scipy: Statistical functions
+
+## License
+
+Educational use for Letuin KDC AI Lecture Project 1
+
+## Author
+
+Created for advanced manufacturing data analysis training
