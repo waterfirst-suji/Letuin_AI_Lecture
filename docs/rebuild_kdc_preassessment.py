@@ -785,7 +785,7 @@ def build_html(payload: dict[str, Any], questions: list[QuestionRow]) -> str:
           </div>
           <div>
             <label for="answerKey">비밀번호</label>
-            <input id="answerKey" type="password" inputmode="numeric" maxlength="4" placeholder="0000">
+            <input id="answerKey" type="password" inputmode="numeric" maxlength="4" placeholder="">
           </div>
           <div>
             <button id="unlockButton" class="action-btn" type="button">정답 열기</button>
