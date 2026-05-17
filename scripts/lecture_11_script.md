@@ -1,0 +1,317 @@
+# 11강: Gemini 생태계 마스터 - 40분 동영상 녹화 스크립트
+
+작성일: 2026-05-16
+총 시간: 40분
+말하기 속도: 약간 빠름 (분당 160-180 단어)
+
+---
+
+## 00:00 - 03:00 | 인트로 및 학습목표
+
+### [화면] 강의 타이틀 슬라이드
+
+**나레이션**:
+> "안녕하세요. Letuin AI 강의 11강, Gemini 생태계 마스터입니다. 이제 여러분은 Gemini 생태계 전체를 활용합니다. API로 AI 호출, NotebookLM으로 지식 베이스, Firebase로 배포까지. 11강은 Google AI 도구를 마스터하는 강의입니다."
+
+### [화면] 학습목표 3개 카드로 전환
+
+**나레이션**:
+> "오늘 배울 내용은 세 가지입니다. 첫째, Gemini API Key를 발급받고 Python으로 첫 번째 AI 호출을 실행합니다. 둘째, NotebookLM에 논문을 업로드하여 개인화된 연구 노트를 만들고 출처 기반 답변을 받습니다. 셋째, Firebase 프로젝트를 생성하고 Hosting 환경을 설정합니다."
+
+### [화면] 40분 타임라인 표시
+
+**나레이션**:
+> "40분 동안 이렇게 진행됩니다. 처음 3분은 Gemini 생태계 소개, 3분부터 10분까지는 Google AI Studio에서 API Key를 발급받습니다. 10분부터 18분까지는 Gemini API로 첫 호출을 해보고, 반도체, 디스플레이, 배터리, 바이오 네 분야 예제를 실습합니다. 18분부터 30분까지는 NotebookLM에 논문을 업로드하고 질문을 해봅니다. 30분부터 35분까지는 Firebase 프로젝트를 생성하고, 마지막 5분은 정리 및 12강 예고입니다."
+
+### [화면] 역할 분담 카드
+
+**나레이션**:
+> "역할 분담입니다. 엔지니어인 여러분은 API Key를 관리하고, NotebookLM에 자료를 업로드하며, Firebase를 설정합니다. AI는 데이터 분석, 논문 요약, 출처 기반 답변을 담당합니다."
+
+---
+
+## 03:00 - 10:00 | Gemini 생태계 소개
+
+### [화면] Gemini 생태계 5개 도구 슬라이드
+
+**나레이션**:
+> "Gemini는 단순한 챗봇이 아닙니다. Google이 제공하는 5개 도구가 유기적으로 연결되어 있습니다. 월 20달러 투자로 반도체, 디스플레이, 배터리, 바이오 분야 엔지니어링 AI 워크플로우를 완성합니다."
+
+> "첫 번째는 Gemini Pro입니다. 월 20달러에 100만 토큰 컨텍스트 창을 제공합니다. Deep Research 기능이 있어서 장문 논문과 보고서 분석에 최적화되어 있습니다."
+
+> "두 번째는 NotebookLM입니다. 무료입니다. 개인 지식 베이스를 구축하고, 출처 기반 답변으로 할루시네이션을 방지합니다. 오디오 팟캐스트도 생성할 수 있습니다."
+
+> "세 번째는 Google AI Studio입니다. 역시 무료입니다. API Key를 발급받고 프롬프트를 테스트할 수 있는 환경을 제공합니다. 무료 할당량도 있습니다."
+
+> "네 번째는 Firebase입니다. Hosting과 Firestore, Auth를 무료 Spark 플랜으로 시작할 수 있습니다. 배포 자동화도 지원합니다."
+
+> "다섯 번째는 Telegram Bot입니다. 무료입니다. Gemini API를 연동해서 실시간 알림을 보낼 수 있고, 모바일 접근성이 뛰어납니다."
+
+### [화면] 월 20달러 가성비 비교 테이블
+
+**나레이션**:
+> "같은 20달러지만 Gemini는 API, NotebookLM, Firebase까지 무료로 제공합니다. 컨텍스트 창을 보면 Gemini Pro는 100만 토큰, Claude Pro는 20만 토큰, GPT-4 Pro는 12만 8천 토큰입니다. Deep Research는 Gemini만 완전히 지원하고, 무료 API도 Gemini가 있습니다. NotebookLM과 Firebase 통합은 Gemini가 완벽합니다. 엔지니어에게는 최고의 가성비입니다."
+
+### [화면] Google AI Studio 화면으로 전환
+
+**나레이션**:
+> "이제 실습입니다. Google AI Studio에서 API Key를 발급받겠습니다. 3단계입니다."
+
+### [화면 조작] 브라우저 열기 → aistudio.google.com 입력
+
+**나레이션**:
+> "먼저 브라우저에서 aistudio dot google dot com에 접속합니다. Google 계정으로 로그인합니다."
+
+### [화면 조작] 왼쪽 메뉴 "Get API Key" 클릭
+
+**나레이션**:
+> "왼쪽 메뉴에서 Get API Key를 클릭합니다. Create API Key in new project를 선택합니다. 생성된 키가 나타납니다. 이 키는 한 번만 보이므로 즉시 복사해야 합니다."
+
+### [화면 조작] API Key 복사 → VSCode 열기
+
+**나레이션**:
+> "키를 복사했습니다. 이제 프로젝트 폴더에 dot env 파일을 만듭니다. GEMINI_API_KEY equals 복사한 키를 붙여넣습니다. 중요합니다. API Key는 재생성하지 않는 한 다시 볼 수 없습니다. 즉시 dot env 파일에 저장하고, dot gitignore에 dot env를 추가해야 합니다."
+
+---
+
+## 10:00 - 18:00 | Gemini API 첫 호출
+
+### [화면] VSCode 터미널
+
+**나레이션**:
+> "필요한 패키지를 설치합니다. pip install google-generativeai python-dotenv를 실행합니다."
+
+### [화면 조작] 터미널에 명령어 입력 및 실행
+
+**나레이션**:
+> "설치가 완료되었습니다. 이제 Hello Gemini 코드를 작성합니다."
+
+### [화면] 코드 편집기 - api_test.py 파일 생성
+
+**나레이션**:
+> "import google dot generativeai as genai, import os, from dotenv import load_dotenv를 입력합니다. load_dotenv를 호출해서 dot env 파일을 로드합니다. genai dot configure에 api_key equals os dot getenv GEMINI_API_KEY를 전달합니다."
+
+> "model equals genai dot GenerativeModel gemini-1.5-pro로 모델을 초기화합니다. response equals model dot generate_content Hello comma Gemini exclamation mark로 첫 API 호출을 합니다. print response dot text로 결과를 출력합니다."
+
+### [화면 조작] python api_test.py 실행
+
+**나레이션**:
+> "실행합니다. python api_test dot py. 출력이 나타납니다. Hello exclamation mark How can I help you today question mark. 첫 Gemini API 호출 성공입니다."
+
+### [화면] 분야별 프롬프트 예제 슬라이드
+
+**나레이션**:
+> "이제 네 분야 예제를 실습합니다. 첫 번째는 반도체 분야입니다."
+
+### [화면] 코드 편집기 - 반도체 프롬프트
+
+**나레이션**:
+> "반도체 공정에서 수율이 하락하는 주요 원인 3가지를 설명해주세요. 각 원인마다 대응 방법도 함께 알려주세요라는 프롬프트를 작성합니다."
+
+### [화면 조작] 코드 실행
+
+**나레이션**:
+> "실행합니다. Gemini가 답변합니다. 첫 번째는 파티클 오염입니다. 원인은 클린룸 환경 관리 부족과 장비 내부 파티클 발생입니다. 대응은 정기적 클린룸 모니터링과 장비 PM 주기 단축입니다."
+
+> "두 번째는 Recipe 변경 실패입니다. 공정 조건 변경 시 충분한 검증이 부족한 것이 원인입니다. 대응은 DOE를 실시하고 단계별 롤백 계획을 세우는 것입니다."
+
+> "세 번째는 장비 드리프트입니다. 시간 경과에 따른 장비 특성 변화가 원인입니다. 대응은 SPC 모니터링과 캘리브레이션입니다."
+
+### [화면] 디스플레이 프롬프트로 전환
+
+**나레이션**:
+> "두 번째는 디스플레이 분야입니다. OLED와 LCD의 차이점을 구조, 동작 원리, 장단점 중심으로 설명해달라는 프롬프트입니다."
+
+### [화면 조작] 실행
+
+**나레이션**:
+> "실행합니다. 구조는 OLED가 유기 발광층이 스스로 빛을 발생하고, LCD는 백라이트와 액정과 컬러필터로 구성됩니다. 동작 원리는 OLED가 전류 인가 시 유기 물질이 발광하고, LCD는 백라이트를 액정으로 차단 또는 통과 제어합니다. 장단점은 OLED가 명암비 우수하고 시야각이 넓지만 번인 현상이 있고, LCD는 저렴하고 수명이 길지만 명암비가 제한적입니다."
+
+### [화면] 배터리 및 바이오 예제 (시간상 빠르게 진행)
+
+**나레이션**:
+> "배터리 분야는 리튬이온 배터리 용량 열화의 주요 원인과 대책을 물었고, SEI 층 성장, 리튬 석출, 양극 구조 붕괴 세 가지 답변을 받았습니다. 바이오 분야는 AlphaFold가 단백질 접힘을 예측하는 원리를 물었고, MSA 생성, 주의 메커니즘, 3D 좌표 예측, 물리적 제약 적용 네 단계를 설명받았습니다."
+
+---
+
+## 18:00 - 30:00 | NotebookLM 실습
+
+### [화면] NotebookLM 소개 슬라이드
+
+**나레이션**:
+> "NotebookLM은 여러분의 개인 지식 베이스입니다. 논문, 보고서, 실험 데이터를 업로드하면 AI가 해당 자료만 참고하여 답변합니다. 할루시네이션이 없습니다."
+
+> "세 가지 특징이 있습니다. 첫째, 다양한 형식을 지원합니다. PDF, 웹 링크, 구글 문서, YouTube 영상을 업로드할 수 있습니다. 둘째, 출처 기반 답변입니다. 업로드한 자료만 참고하고 외부 지식은 사용하지 않습니다. 셋째, 오디오 팟캐스트입니다. 업로드 자료를 2인 대화 형식으로 생성합니다."
+
+### [화면 조작] 브라우저 → notebooklm.google.com
+
+**나레이션**:
+> "NotebookLM에 접속합니다. notebooklm dot google dot com입니다. Google 계정으로 로그인하고 New Notebook을 클릭합니다."
+
+### [화면] NotebookLM 인터페이스
+
+**나레이션**:
+> "화면 구성을 보겠습니다. 왼쪽은 업로드된 소스 목록, 중앙은 채팅 인터페이스, 오른쪽은 출처 표시 패널입니다."
+
+### [화면 조작] Add Source 클릭
+
+**나레이션**:
+> "논문을 업로드하겠습니다. 세 가지 방법이 있습니다. 첫째, PDF 파일 업로드입니다. Add Source를 클릭하고 Upload를 선택합니다. 예를 들어 Nature_Battery_Degradation_2025 dot pdf를 선택합니다."
+
+### [화면 조작] 파일 업로드 진행
+
+**나레이션**:
+> "업로드 중입니다. 30초에서 1분 정도 걸립니다. 완료되면 왼쪽 패널에 파일 이름이 나타납니다."
+
+### [화면 조작] 웹 링크 추가
+
+**나레이션**:
+> "두 번째 방법은 웹 링크입니다. Add Source에서 Web Link를 선택합니다. arXiv 논문 URL을 입력합니다. https colon slash slash arxiv dot org slash abs slash 2024 dot 12345. NotebookLM이 PDF를 자동으로 다운로드하고 인덱싱합니다."
+
+### [화면] 배터리 연구 논문 분석 시나리오
+
+**나레이션**:
+> "실습 시나리오입니다. 배터리 연구 논문을 분석합니다. 파일명은 Li_Ion_Battery_Capacity_Fade_Mechanisms dot pdf입니다. Journal of Power Sources 2025년 논문입니다."
+
+### [화면 조작] 질문 입력
+
+**나레이션**:
+> "질문을 입력합니다. 이 논문의 핵심 기여는 무엇인가요?"
+
+### [화면] NotebookLM 답변
+
+**나레이션**:
+> "NotebookLM이 답변합니다. 이 논문은 리튬이온 배터리 용량 열화 메커니즘을 3가지로 분류하고, 각 메커니즘의 지배적 구간을 충방전 사이클 수로 정량화했습니다. 초기 100 사이클은 SEI 층 성장이 지배적, 100~500 사이클은 리튬 석출과 SEI 복합, 500 사이클 이상은 양극 구조 붕괴가 가속됩니다. 출처는 논문 3페이지, Figure 2입니다."
+
+### [화면 조작] 출처 패널 클릭
+
+**나레이션**:
+> "오른쪽 출처 패널을 클릭하면 논문 3페이지로 바로 이동합니다. Figure 2가 보입니다. 실제로 이 내용이 논문에 있는 것을 확인할 수 있습니다."
+
+### [화면 조작] 두 번째 질문
+
+**나레이션**:
+> "두 번째 질문입니다. 실험 방법론을 3줄로 요약해주세요."
+
+### [화면] 답변
+
+**나레이션**:
+> "답변입니다. 첫째, LiNi0.8Co0.1Mn0.1O2 양극과 흑연 음극 코인셀 제작. 둘째, 0.5C 충전, 1C 방전, 25도씨에서 1000 사이클 수행. 셋째, 100 사이클마다 EIS, XRD, SEM 분석 실시. 출처는 논문 2페이지 Experimental Section입니다."
+
+### [화면] 오디오 팟캐스트 생성 (시연)
+
+**나레이션**:
+> "오디오 팟캐스트 기능을 소개합니다. 우측 상단 Generate Audio를 클릭합니다. 2~3분 대기하면 5~15분 분량의 팟캐스트가 생성됩니다. 재생하거나 다운로드할 수 있습니다. 출퇴근길에 논문을 들을 수 있습니다."
+
+---
+
+## 30:00 - 35:00 | Firebase 프로젝트 생성
+
+### [화면] Firebase 소개
+
+**나레이션**:
+> "Firebase는 Google이 제공하는 백엔드 플랫폼입니다. Hosting으로 웹을 배포하고, Firestore로 데이터베이스를 만들며, Auth로 인증을 처리합니다. 무료로 사용할 수 있습니다."
+
+> "Spark 플랜은 무료입니다. Hosting은 10GB 저장공간과 월 10GB 전송, Firestore는 1GB 저장과 50K 읽기와 20K 쓰기를 일 단위로 제공하며, Auth는 무제한 사용자를 지원합니다."
+
+### [화면 조작] 브라우저 → console.firebase.google.com
+
+**나레이션**:
+> "Firebase Console에 접속합니다. console dot firebase dot google dot com입니다. Google 계정으로 로그인합니다."
+
+### [화면 조작] Add project 클릭
+
+**나레이션**:
+> "Add project를 클릭합니다. 프로젝트 이름을 입력합니다. 예를 들어 display-ai-monitor입니다."
+
+### [화면 조작] Google Analytics 설정
+
+**나레이션**:
+> "Google Analytics 사용 여부를 선택합니다. 선택 사항이므로 나중에 추가할 수 있습니다. Create project를 클릭합니다. 30초 정도 기다립니다."
+
+### [화면] 프로젝트 생성 완료
+
+**나레이션**:
+> "프로젝트가 생성되었습니다. 이제 Firebase CLI를 설치합니다."
+
+### [화면 조작] 터미널 열기
+
+**나레이션**:
+> "터미널에서 npm install -g firebase-tools를 실행합니다. 설치가 완료되면 firebase --version으로 확인합니다."
+
+### [화면 조작] firebase login
+
+**나레이션**:
+> "firebase login을 입력합니다. 브라우저가 열리면 Google 계정을 선택합니다. Firebase CLI Login Successful 메시지가 나타나면 성공입니다."
+
+### [화면 조작] firebase init
+
+**나레이션**:
+> "프로젝트 폴더에서 firebase init을 실행합니다. Hosting을 선택합니다. 방금 생성한 display-ai-monitor 프로젝트를 선택합니다. public 디렉토리를 입력하고, single-page app으로 설정합니다. 설정이 완료되면 firebase dot json과 dot firebaserc 파일이 생성됩니다."
+
+---
+
+## 35:00 - 40:00 | 정리 및 검증
+
+### [화면] 완성 체크리스트
+
+**나레이션**:
+> "완성 체크리스트입니다. Google AI Studio 접속 완료, API Key 발급 완료, dot env 파일에 GEMINI_API_KEY 저장, dot gitignore에 dot env 추가를 확인하세요."
+
+> "Gemini API는 google-generativeai 패키지 설치, Hello Gemini 코드 실행 성공, 분야별 프롬프트 예제 테스트를 확인하세요."
+
+> "NotebookLM은 notebooklm dot google dot com 접속, 논문 또는 보고서 1개 업로드, 질문하고 출처 기반 답변 받기, 출처 패널에서 참조 페이지 확인을 체크하세요."
+
+> "Firebase는 console dot firebase dot google dot com 접속, 프로젝트 생성 완료, Firebase CLI 설치, firebase login 로그인 성공을 확인하세요."
+
+### [화면] Gemini 생태계 워크플로우
+
+**나레이션**:
+> "완성된 워크플로우입니다. Google AI Studio에서 API Key를 발급받고 프롬프트를 테스트합니다. Gemini API로 Python 스크립트를 작성해 데이터를 분석하고 네 분야 프롬프트를 실행합니다. NotebookLM에 논문과 보고서를 업로드하고 출처 기반 답변을 받으며 팟캐스트를 생성합니다. Firebase로 Streamlit 앱을 배포하고 Firestore에 결과를 저장하며 Auth로 팀과 공유합니다. Telegram Bot으로 Gemini API를 연동하고 이상 발생 시 자동 알림을 보내며 모바일 대시보드를 구축합니다."
+
+### [화면] 보안 체크리스트
+
+**나레이션**:
+> "보안 체크리스트입니다. API Key 관리는 dot env 파일을 로컬에만 보관하고, dot gitignore에 dot env와 별표 dot key를 추가하며, GitHub에 절대 커밋하지 않고, 팀원은 각자 API Key를 발급받아야 합니다."
+
+> "배포 환경은 Streamlit Cloud에서는 secrets dot toml을 사용하고, Firebase에서는 환경 변수로 주입하며, GitHub Actions에서는 Secrets에 저장합니다."
+
+> "모니터링은 Google Cloud Console에서 사용량을 확인하고, 무료 할당량 초과 시 알림을 설정하며, 비정상 호출을 감지하는 설정을 합니다."
+
+### [화면] 12강 예고
+
+**나레이션**:
+> "다음 강의 예고입니다. 12강은 전공 지식 챗봇입니다. 11강에서 마스터한 Gemini 생태계를 이제 전공 지식 챗봇에 적용합니다. NotebookLM에 업로드한 전공 용어를 Gemini API로 불러와 면접 질문에 자동 답변하는 Streamlit 챗봇을 만듭니다."
+
+> "12강 핵심 기술은 RAG, Retrieval-Augmented Generation입니다. NotebookLM 자료를 Gemini에게 전달합니다. Streamlit 채팅 UI로 st dot chat_message와 st dot chat_input을 사용합니다. 전공 용어 파일 display_terms dot txt에 100개 용어를 저장하고, Gemini API로 20개 질문을 자동 생성하며, Firebase에 배포하여 포트폴리오 URL을 만듭니다."
+
+> "12강 결과물은 전공 지식 챗봇 Streamlit, 면접 질문 20개 JSON, Firebase 배포 URL, GitHub 리포지토리입니다."
+
+### [화면] 엔딩 슬라이드
+
+**나레이션**:
+> "11강 Gemini 생태계 마스터를 마칩니다. 핵심 메시지입니다. Gemini 생태계는 API, NotebookLM, Firebase가 유기적으로 연결된 통합 플랫폼입니다. 월 20달러 투자로 엔지니어링 AI 워크플로우 전체를 완성할 수 있습니다."
+
+> "수고하셨습니다. 12강에서 만나요."
+
+---
+
+## 스크립트 작성 완료
+
+**총 시간**: 40분
+**단어 수**: 약 2,800 단어
+**말하기 속도**: 분당 약 170 단어 (약간 빠름)
+**화면 전환**: 25회
+**코드 실습**: 6회
+**브라우저 조작**: 4회
+
+---
+
+## 녹화 팁
+
+1. **화면 녹화 소프트웨어**: OBS Studio 또는 Camtasia 사용
+2. **해상도**: 1920x1080 (Full HD)
+3. **마우스 커서**: 강조 효과 켜기 (노란색 원)
+4. **음성 녹음**: Blue Yeti 또는 Audio-Technica AT2020 마이크 권장
+5. **배경음**: 없음 (또는 매우 낮은 볼륨의 배경음악)
+6. **편집**: 실수 부분 잘라내기, 자막 추가 (선택)
