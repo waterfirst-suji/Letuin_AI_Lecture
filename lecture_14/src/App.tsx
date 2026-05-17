@@ -7,11 +7,31 @@ import {
   ChevronRight, FileCode, Terminal, Rocket, Brain, Target
 } from 'lucide-react';
 
+const assetUrl = (filename: string) => `${import.meta.env.BASE_URL}${filename}`;
+
+function HeroImage({ filename, caption }: { filename: string; caption: string }) {
+  return (
+    <section className="max-w-7xl mx-auto px-6 pb-14">
+      <motion.figure
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="overflow-hidden rounded-3xl border border-white/10 bg-white/10 shadow-2xl backdrop-blur"
+      >
+        <img src={assetUrl(filename)} alt={caption} className="w-full aspect-video object-cover" loading="lazy" />
+        <figcaption className="px-6 py-4 text-sm md:text-base text-gray-200 leading-relaxed">
+          {caption}
+        </figcaption>
+      </motion.figure>
+    </section>
+  );
+}
 function App() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
       <Header />
       <Hero />
+      <HeroImage filename="vision-inspection-overview.png" caption="Gemini Vision API로 AOI 이미지 전처리, 결함 분류, 리뷰 리포트까지 자동화하는 흐름입니다." />
       <ProblemStatement />
       <VisionOverview />
       <DomainApplications />

@@ -897,6 +897,42 @@ section h2 mark {
   margin-top: 0.9rem;
 }
 
+.lecture-image {
+  margin: 2rem 0;
+  border: 1px solid var(--border);
+  background: #ffffff;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 18px 46px rgba(15, 23, 42, 0.1);
+}
+
+.lecture-image img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  background: #f8fafc;
+}
+
+.lecture-image.poster {
+  max-width: 720px;
+}
+
+.lecture-image.poster img {
+  aspect-ratio: 4 / 5;
+  object-fit: contain;
+}
+
+.lecture-image figcaption {
+  padding: 0.9rem 1rem 1rem;
+  color: var(--text-secondary);
+  font-family: var(--font-content);
+  font-size: 0.92rem;
+  line-height: 1.55;
+  word-break: keep-all;
+  border-top: 1px solid var(--border);
+}
+
 .bar-chart {
   display: grid;
   gap: 0.85rem;

@@ -24,6 +24,8 @@ import {
   Zap,
 } from 'lucide-react';
 
+const assetUrl = (filename: string) => `${import.meta.env.BASE_URL}${filename}`;
+
 // ============================================================================
 // DATA ARRAYS - Security & CI/CD
 // ============================================================================
@@ -248,6 +250,14 @@ function SecurityRiskChart() {
   );
 }
 
+function LectureImage({ src, alt, caption }: { src: string; alt: string; caption: string }) {
+  return (
+    <figure className="lecture-image">
+      <img src={assetUrl(src)} alt={alt} loading="lazy" />
+      <figcaption>{caption}</figcaption>
+    </figure>
+  );
+}
 function VerifyChecklist({ points }: { points: string[] }) {
   return (
     <div className="verify-checklist">
@@ -277,7 +287,7 @@ function EnvFileDeepDive() {
         </p>
         <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'center' }}>
           <img
-            src="/panel1.png"
+            src={assetUrl('panel1.png')}
             alt=".env 파일 관리"
             style={{ maxWidth: '100%', height: 'auto', borderRadius: '12px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}
           />
@@ -393,7 +403,7 @@ function GitHubSecretsDeepDive() {
         </p>
         <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'center' }}>
           <img
-            src="/panel2.png"
+            src={assetUrl('panel2.png')}
             alt="GitHub Secrets 설정"
             style={{ maxWidth: '100%', height: 'auto', borderRadius: '12px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}
           />
@@ -511,7 +521,7 @@ function CICDDeepDive() {
         </p>
         <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'center' }}>
           <img
-            src="/panel3.png"
+            src={assetUrl('panel3.png')}
             alt="GitHub Actions CI/CD"
             style={{ maxWidth: '100%', height: 'auto', borderRadius: '12px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}
           />
@@ -754,7 +764,7 @@ export default function App() {
             animate={{ opacity: 1, x: 0 }}
           >
             <img
-              src="/logo.png"
+              src={assetUrl('logo.png')}
               alt="LettUin Edu"
               className="header-logo"
               onError={(e) => { e.currentTarget.style.display = 'none'; }}
@@ -786,6 +796,11 @@ export default function App() {
             <span>결과물: 안전한 배포 파이프라인</span>
           </div>
         </motion.div>
+        <LectureImage
+          src="security-cicd-overview.png"
+          alt="API Key, .env, GitHub Secrets, Actions, Deploy가 한 흐름으로 연결되는 보안 배포 파이프라인입니다."
+          caption="API Key, .env, GitHub Secrets, Actions, Deploy가 한 흐름으로 연결되는 보안 배포 파이프라인입니다."
+        />
       </header>
 
       <main>
@@ -818,7 +833,7 @@ export default function App() {
           </div>
           <div style={{ marginTop: '3rem', display: 'flex', justifyContent: 'center' }}>
             <img
-              src="/comic.png"
+              src={assetUrl('comic.png')}
               alt="API Key 유출 실화"
               style={{ maxWidth: '100%', height: 'auto', borderRadius: '16px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
             />
@@ -912,7 +927,7 @@ export default function App() {
           </p>
           <div style={{ marginTop: '2rem', marginBottom: '2rem', display: 'flex', justifyContent: 'center' }}>
             <img
-              src="/panel4.png"
+              src={assetUrl('panel4.png')}
               alt="보안 파이프라인 실습"
               style={{ maxWidth: '100%', height: 'auto', borderRadius: '12px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}
             />

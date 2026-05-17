@@ -27,6 +27,27 @@ import {
   Zap,
 } from 'lucide-react';
 
+const assetUrl = (filename: string) => `${import.meta.env.BASE_URL}${filename}`;
+
+
+const ProjectImage = ({ filename, caption }: { filename: string; caption: string }) => (
+  <motion.figure
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ delay: 0.1 }}
+    style={{
+      background: 'white',
+      borderRadius: '28px',
+      overflow: 'hidden',
+      marginBottom: '3rem',
+      boxShadow: '0 14px 46px rgba(0, 0, 0, 0.1)',
+      border: '1px solid rgba(0,0,0,0.08)',
+    }}
+  >
+    <img src={assetUrl(filename)} alt={caption} style={{ width: '100%', aspectRatio: '16 / 9', objectFit: 'cover', display: 'block' }} loading="lazy" />
+    <figcaption style={{ padding: '1rem 1.25rem', color: '#555', lineHeight: 1.6, fontSize: '0.98rem' }}>{caption}</figcaption>
+  </motion.figure>
+);
 // ============================================================================
 // PROJECT 03: Final AI Display Tool
 // ============================================================================
@@ -766,6 +787,7 @@ function App() {
     }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
         <ProjectOverview />
+      <ProjectImage filename="final-ai-tool-overview.png" caption="데이터 업로드, AI 분석, 비전 검사, 예측, 리포트, 알림, 포트폴리오까지 연결한 최종 통합 AI 툴입니다." />
         <ProjectIdeas />
         <TechStack />
         <PublicDatasets />

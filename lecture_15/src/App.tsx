@@ -7,11 +7,31 @@ import {
   Brain, Target, Eye, Layers, Settings, Play
 } from 'lucide-react';
 
+const assetUrl = (filename: string) => `${import.meta.env.BASE_URL}${filename}`;
+
+function HeroImage({ filename, caption }: { filename: string; caption: string }) {
+  return (
+    <section className="max-w-7xl mx-auto px-6 pb-14">
+      <motion.figure
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="overflow-hidden rounded-3xl border border-white/10 bg-white/10 shadow-2xl backdrop-blur"
+      >
+        <img src={assetUrl(filename)} alt={caption} className="w-full aspect-video object-cover" loading="lazy" />
+        <figcaption className="px-6 py-4 text-sm md:text-base text-gray-200 leading-relaxed">
+          {caption}
+        </figcaption>
+      </motion.figure>
+    </section>
+  );
+}
 function App() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
       <Header />
       <Hero />
+      <HeroImage filename="sensor-forecast-alert-overview.png" caption="센서 데이터 예측, 이상 감지, Gemini 설명, 알림 발송을 하나의 운영 흐름으로 묶습니다." />
       <ProblemStatement />
       <SensorDataOverview />
       <BeforeAfterComparison />

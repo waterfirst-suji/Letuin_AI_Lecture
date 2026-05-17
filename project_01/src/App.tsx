@@ -18,6 +18,27 @@ import {
   Zap,
 } from 'lucide-react';
 
+const assetUrl = (filename: string) => `${import.meta.env.BASE_URL}${filename}`;
+
+
+const ProjectImage = ({ filename, caption }: { filename: string; caption: string }) => (
+  <motion.figure
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ delay: 0.1 }}
+    style={{
+      background: 'white',
+      borderRadius: '28px',
+      overflow: 'hidden',
+      marginBottom: '3rem',
+      boxShadow: '0 14px 46px rgba(0, 0, 0, 0.1)',
+      border: '1px solid rgba(0,0,0,0.08)',
+    }}
+  >
+    <img src={assetUrl(filename)} alt={caption} style={{ width: '100%', aspectRatio: '16 / 9', objectFit: 'cover', display: 'block' }} loading="lazy" />
+    <figcaption style={{ padding: '1rem 1.25rem', color: '#555', lineHeight: 1.6, fontSize: '0.98rem' }}>{caption}</figcaption>
+  </motion.figure>
+);
 // ============================================================================
 // PROJECT 01: Display Portfolio Webpage
 // ============================================================================
@@ -575,6 +596,7 @@ function App() {
     }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
         <ProjectOverview />
+      <ProjectImage filename="ai-rd-portfolio-overview.png" caption="제조업 R&D 취업 준비생의 문제 정의, 데이터 경험, 대시보드 결과, GitHub Pages 포트폴리오를 한 화면에 보여줍니다." />
         <ProjectGoal />
         <LevelBeginner />
         <LevelIntermediate />

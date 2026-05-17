@@ -27,6 +27,8 @@ import {
   Zap,
 } from 'lucide-react';
 
+const assetUrl = (filename: string) => `${import.meta.env.BASE_URL}${filename}`;
+
 // ============================================================================
 // DATA ARRAYS - Gemini Ecosystem
 // ============================================================================
@@ -285,6 +287,25 @@ function PricingChart() {
   );
 }
 
+function LectureImage({
+  src,
+  alt,
+  caption,
+  variant = 'wide',
+}: {
+  src: string;
+  alt: string;
+  caption: string;
+  variant?: 'wide' | 'poster';
+}) {
+  return (
+    <figure className={`lecture-image ${variant}`}>
+      <img src={assetUrl(src)} alt={alt} loading="lazy" />
+      <figcaption>{caption}</figcaption>
+    </figure>
+  );
+}
+
 function VerifyChecklist({ points }: { points: string[] }) {
   return (
     <div className="verify-checklist">
@@ -313,13 +334,11 @@ function ApiKeyDeepDive() {
           수동으로 프롬프트를 입력하는 대신, API Key를 발급받아 Python 코드로 자동화합니다.
           반도체, 디스플레이, 배터리, 바이오 4개 분야 프롬프트를 테스트합니다.
         </p>
-        <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'center' }}>
-          <img
-            src="/panel1.png"
-            alt="API Key 발급 과정"
-            style={{ maxWidth: '100%', height: 'auto', borderRadius: '12px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}
-          />
-        </div>
+        <LectureImage
+          src="api-key-workflow.png"
+          alt="Google AI Studio에서 API Key를 발급하고 .env에 저장한 뒤 Python으로 Gemini API를 호출하는 3단계 흐름"
+          caption="AI Studio에서 API Key를 발급하고 .env에 저장한 뒤 Python 호출까지 이어지는 실습 흐름입니다."
+        />
       </div>
 
       <div className="yield-case-compare vertical-case-flow" aria-label="API Key 발급 Before Prompt After">
@@ -440,13 +459,11 @@ function NotebookLMDeepDive() {
           PDF 논문을 업로드하면 NotebookLM이 자동으로 인덱싱하고, 출처 기반 답변을 제공합니다.
           할루시네이션 없이 정확한 정보만 추출합니다.
         </p>
-        <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'center' }}>
-          <img
-            src="/panel2.png"
-            alt="NotebookLM 논문 업로드"
-            style={{ maxWidth: '100%', height: 'auto', borderRadius: '12px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}
-          />
-        </div>
+        <LectureImage
+          src="notebooklm-demo.png"
+          alt="NotebookLM에서 논문 PDF를 소스로 추가하고 출처가 달린 답변을 받는 UI 예시"
+          caption="PDF 자료가 왼쪽 소스가 되고, 오른쪽 답변에는 페이지와 그림 출처가 함께 붙습니다."
+        />
       </div>
 
       <div className="yield-case-compare vertical-case-flow">
@@ -527,13 +544,12 @@ function FirebaseDeepDive() {
           Firebase Hosting으로 웹앱을 배포하고, Firestore로 실시간 데이터를 저장합니다.
           배터리 센서 데이터를 웹 대시보드로 모니터링합니다.
         </p>
-        <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'center' }}>
-          <img
-            src="/panel3.png"
-            alt="Firebase 배포 프로세스"
-            style={{ maxWidth: '100%', height: 'auto', borderRadius: '12px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}
-          />
-        </div>
+        <LectureImage
+          src="firebase-setup.png"
+          alt="Firebase Console, 프로젝트 생성, CLI 설치, 로그인, Hosting 초기화로 이어지는 배포 준비 흐름"
+          caption="이 순서대로 따라가면 로컬 대시보드를 Firebase Hosting 배포 준비 상태로 만들 수 있습니다."
+          variant="poster"
+        />
       </div>
 
       <div className="yield-case-compare vertical-case-flow">
@@ -734,7 +750,7 @@ export default function App() {
             animate={{ opacity: 1, x: 0 }}
           >
             <img
-              src="/logo.png"
+              src={assetUrl('logo.png')}
               alt="LettUin Edu"
               className="header-logo"
               onError={(e) => { e.currentTarget.style.display = 'none'; }}
@@ -798,7 +814,7 @@ export default function App() {
           </div>
           <div style={{ marginTop: '3rem', display: 'flex', justifyContent: 'center' }}>
             <img
-              src="/comic.png"
+              src={assetUrl('comic.png')}
               alt="Gemini 생태계 코믹"
               style={{ maxWidth: '100%', height: 'auto', borderRadius: '16px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
             />
@@ -816,6 +832,11 @@ export default function App() {
             <span>한 문장 정의</span>
             <strong>Gemini 생태계는 API, 지식, 배포, 알림을 하나로 묶어 엔지니어의 연구 자동화를 완성합니다.</strong>
           </div>
+          <LectureImage
+            src="gemini-ecosystem.png"
+            alt="Gemini Pro를 중심으로 NotebookLM, AI Studio, Firebase, Telegram Bot이 연결된 Google AI 생태계 다이어그램"
+            caption="Gemini Pro, NotebookLM, AI Studio, Firebase, Telegram Bot이 하나의 자동화 워크플로우로 연결됩니다."
+          />
           <div className="role-flow" aria-label="Gemini 생태계 역할 분리">
             {roleFlow.map((item, index) => (
               <div className="role-step" key={`${item.owner}-${item.task}`}>
@@ -896,7 +917,7 @@ export default function App() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              <img src="/traditional-coding.png" alt="전통적인 수동 방식" />
+              <img src={assetUrl('traditional-coding.png')} alt="전통적인 수동 방식" />
               <div className="compare-content">
                 <span className="compare-kicker">Traditional (Manual Process)</span>
                 <h3>웹 UI에서 매번 복사-붙여넣기</h3>
@@ -919,7 +940,7 @@ export default function App() {
               viewport={{ once: true }}
               transition={{ delay: 0.08 }}
             >
-              <img src="/vibe-coding.png" alt="Gemini API 자동화" />
+              <img src={assetUrl('vibe-coding.png')} alt="Gemini API 자동화" />
               <div className="compare-content">
                 <span className="compare-kicker">Gemini API (Automated)</span>
                 <h3>Python 스크립트로 자동 호출하고 결과 저장</h3>
@@ -945,6 +966,11 @@ export default function App() {
             엔지니어에게 가장 실용적입니다.
           </p>
           <PricingChart />
+          <LectureImage
+            src="pricing-comparison.png"
+            alt="Gemini Pro, Claude Pro, ChatGPT Plus 비교표"
+            caption="Gemini를 먼저 실습하는 이유를 컨텍스트, 무료 API, NotebookLM, Firebase 연동 관점에서 보여줍니다."
+          />
           <div className="highlight-box" style={{ background: '#f5f5f7', borderLeftColor: '#333' }}>
             <p style={{ fontWeight: 700 }}>Target Point:</p>
             <p>"Gemini는 유료 구독 없이 무료 API로 시작할 수 있고, NotebookLM과 Firebase가 완벽하게 연동되어 연구 자동화에 최적화되어 있습니다."</p>
@@ -996,7 +1022,7 @@ export default function App() {
           </p>
           <div style={{ marginTop: '2rem', marginBottom: '2rem', display: 'flex', justifyContent: 'center' }}>
             <img
-              src="/panel4.png"
+              src={assetUrl('panel4.png')}
               alt="Gemini 생태계 실습 가이드"
               style={{ maxWidth: '100%', height: 'auto', borderRadius: '12px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}
             />
@@ -1016,6 +1042,11 @@ export default function App() {
               </div>
             ))}
           </div>
+          <LectureImage
+            src="security-checklist.png"
+            alt="API Key 보안 체크리스트 인포그래픽"
+            caption="실무 자동화 전에 .env, .gitignore, 키 재발급, 사용량 모니터링, 프로덕션 격리를 확인합니다."
+          />
           <div className="wrap-message">
             <Quote size={36} color="var(--accent)" />
             <h3>"Gemini 생태계는 AI 모델 하나가 아니라, API-지식-배포-알림이 연결된 전체 워크플로우입니다."</h3>

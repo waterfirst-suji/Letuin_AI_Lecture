@@ -23,6 +23,8 @@ import {
   Zap,
 } from 'lucide-react';
 
+const assetUrl = (filename: string) => `${import.meta.env.BASE_URL}${filename}`;
+
 // ============================================================================
 // DATA ARRAYS - Data Analysis Automation
 // ============================================================================
@@ -257,6 +259,14 @@ function DomainExampleChart() {
   );
 }
 
+function LectureImage({ src, alt, caption }: { src: string; alt: string; caption: string }) {
+  return (
+    <figure className="lecture-image">
+      <img src={assetUrl(src)} alt={alt} loading="lazy" />
+      <figcaption>{caption}</figcaption>
+    </figure>
+  );
+}
 function VerifyChecklist({ points }: { points: string[] }) {
   return (
     <div className="verify-checklist">
@@ -287,7 +297,7 @@ function CSVAutomationDeepDive() {
         </p>
         <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'center' }}>
           <img
-            src="/panel1.png"
+            src={assetUrl('panel1.png')}
             alt="CSV 자동화"
             style={{ maxWidth: '100%', height: 'auto', borderRadius: '12px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}
           />
@@ -414,7 +424,7 @@ print("✅ 인사이트 저장: insight_report.md")`;
         </p>
         <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'center' }}>
           <img
-            src="/panel2.png"
+            src={assetUrl('panel2.png')}
             alt="Gemini 인사이트"
             style={{ maxWidth: '100%', height: 'auto', borderRadius: '12px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}
           />
@@ -561,7 +571,7 @@ if uploaded_file:
         </p>
         <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'center' }}>
           <img
-            src="/panel3.png"
+            src={assetUrl('panel3.png')}
             alt="Streamlit 대시보드"
             style={{ maxWidth: '100%', height: 'auto', borderRadius: '12px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}
           />
@@ -758,7 +768,7 @@ export default function App() {
             animate={{ opacity: 1, x: 0 }}
           >
             <img
-              src="/logo.png"
+              src={assetUrl('logo.png')}
               alt="LettUin Edu"
               className="header-logo"
               onError={(e) => { e.currentTarget.style.display = 'none'; }}
@@ -790,6 +800,11 @@ export default function App() {
             <span>결과물: 인터랙티브 대시보드</span>
           </div>
         </motion.div>
+        <LectureImage
+          src="data-automation-overview.png"
+          alt="CSV에서 pandas 분석, Gemini 인사이트, Streamlit 대시보드까지 이어지는 데이터 자동화 흐름입니다."
+          caption="CSV에서 pandas 분석, Gemini 인사이트, Streamlit 대시보드까지 이어지는 데이터 자동화 흐름입니다."
+        />
       </header>
 
       <main>
@@ -822,7 +837,7 @@ export default function App() {
           </div>
           <div style={{ marginTop: '3rem', display: 'flex', justifyContent: 'center' }}>
             <img
-              src="/comic.png"
+              src={assetUrl('comic.png')}
               alt="데이터 분석 자동화"
               style={{ maxWidth: '100%', height: 'auto', borderRadius: '16px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
             />
@@ -925,7 +940,7 @@ export default function App() {
           </p>
           <div style={{ marginTop: '2rem', marginBottom: '2rem', display: 'flex', justifyContent: 'center' }}>
             <img
-              src="/panel4.png"
+              src={assetUrl('panel4.png')}
               alt="자동 분석 대시보드"
               style={{ maxWidth: '100%', height: 'auto', borderRadius: '12px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}
             />
